@@ -1,21 +1,18 @@
 package org.psnbtech;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.security.cert.TrustAnchor;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
-import java.util.ArrayList;
 
 import hoon2woon2.Client;
 import hoon2woon2.LoginFrame;
@@ -166,14 +163,6 @@ public class Tetris extends JFrame implements ActionListener{
 	private Client client;
 	private static int user = -1;
 	private static String userid = "";
-
-	/*
-	 * writer: cha seung hoon
-	 * hard drop
-	 * 2020.04.28
-	 * */
-	private boolean isHardDrop = false;
-	private boolean beforeVal = false;
 	
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
@@ -230,12 +219,6 @@ public class Tetris extends JFrame implements ActionListener{
 			@Override
 			public void keyPressed(KeyEvent e) {
 			
-				if(isHardDrop) {
-					beforeVal=true;
-					isHardDrop=false;
-				}
-				else
-					beforeVal=false;
 				
 				switch(e.getKeyCode()) {
 				
@@ -256,7 +239,7 @@ public class Tetris extends JFrame implements ActionListener{
 				 * position is valid. If so, we decrement the current column by 1.
 				 */
 				case KeyEvent.VK_LEFT:		
-					if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
+					if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)) {
 						currentCol--;
 					}
 					
@@ -269,7 +252,7 @@ public class Tetris extends JFrame implements ActionListener{
 				 * position is valid. If so, we increment the current column by 1.
 				 */
 				case KeyEvent.VK_RIGHT:
-					if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
+					if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)) {
 						currentCol++;
 					}
 					break;
@@ -345,10 +328,10 @@ public class Tetris extends JFrame implements ActionListener{
 				/*
 				 * writer : cha seung hoon
 				 * 2020. 04 .28
+				 * fixed problem on May 10.
 				 * Hard Drop
 				 */
 				case KeyEvent.VK_SPACE:
-					isHardDrop=true;
 					int cnt=0;
 					while(board.isValidAndEmpty(currentType, currentCol, currentRow+cnt, currentRotation)) {
 						cnt++;
@@ -356,6 +339,7 @@ public class Tetris extends JFrame implements ActionListener{
 					currentRow+=cnt-1;
 					updateGame();
 					break;
+				
 				}
 			}
 			
@@ -420,11 +404,8 @@ public class Tetris extends JFrame implements ActionListener{
 			/*
 			 * If a cycle has elapsed on the timer, we can update the game and
 			 * move our current piece down.
-			 * 
-			 * modified by cha seung hoon, for hard drop
-			 * 
 			 */
-			if(logicTimer.hasElapsedCycle() && !beforeVal) {
+			if(logicTimer.hasElapsedCycle()) {
 				updateGame();
 			}
 		
@@ -452,6 +433,8 @@ public class Tetris extends JFrame implements ActionListener{
 	
 	/**
 	 * Updates the game and handles the bulk of it's logic.
+	 * fixed by cha seung hoon on 2020.05.19
+	 * because of adding interrupt block
 	 */
 	private void updateGame() {
 		/*
@@ -506,6 +489,8 @@ public class Tetris extends JFrame implements ActionListener{
 			 */
 			spawnPiece();
 			
+			if(cleared>0)
+				makeInterrupt();
 		}		
 	}
 	
@@ -738,6 +723,7 @@ public class Tetris extends JFrame implements ActionListener{
 	 * menu action listener
 	 */
 	public void actionPerformed(ActionEvent event) {
+
 		/*
 		 * if click new game menu
 		 * then start new game
@@ -771,5 +757,27 @@ public class Tetris extends JFrame implements ActionListener{
 				userid = "";
 			}
 		}
+	}
+
+	/**
+	 * writer : cha seung hoon
+	 * 2020.05.19
+	 * creating interrupt block
+	 */
+	public void makeInterrupt() {
+		int randCol;
+		int randRow;
+		int randRot;
+	
+		while(true) {
+			randCol=5+random.nextInt(10);
+			randRow=random.nextInt(10);
+			randRot=random.nextInt(1);
+			
+			if(board.isValidAndEmpty(currentType, randCol, randRow, randRot))
+				break;
+		}
+		
+		board.addPiece(currentType, randCol, randRow, randRot);
 	}
 }
