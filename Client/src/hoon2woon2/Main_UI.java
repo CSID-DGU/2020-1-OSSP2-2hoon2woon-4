@@ -1,12 +1,9 @@
 package hoon2woon2;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 
-import org.psnbtech.*;
-
-import javafx.event.ActionEvent;
+import org.psnbtech.Tetris;
 
 public class Main_UI extends JFrame{
 	public static Tetris tetris;
