@@ -22,11 +22,11 @@ import hoon2woon2.LoginFrame;
 import hoon2woon2.RankPanel;
 import javafx.embed.swing.JFXPanel;
 import javax.swing.JFrame;
+import java.io.File;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import org.psnbtech.Items.ItemManager;
-
 
 /**
  * The {@code Tetris} class is responsible for handling much of the game logic and
@@ -35,7 +35,7 @@ import org.psnbtech.Items.ItemManager;
  *
  */
 public class Tetris extends JFrame implements ActionListener{
-	
+
 	/**
 	 * The Serial Version UID.
 	 */
@@ -197,10 +197,16 @@ public class Tetris extends JFrame implements ActionListener{
 	
 	private int addTimer=1;
 
-    /** 2020-06-07 Jihoon-Kim
-	 */
-	// media
-	Media s_gameover = new Media("D:/tetris/jihoon/2020-1-OSSP2-2hoon2woon-4/Client/src/org/psnbtech/resources/gameover.mp3");
+	/*
+	 * writer: Jihoon Kim
+	 * media
+	 * 2020.06.09
+	 * */
+	final JFXPanel fxPanel = new JFXPanel();
+	String link_gameover = "Client/src/org/psnbtech/resources/gameover.mp3";
+	Media s_gameover = new Media(new File(link_gameover).toURI().toString());
+	String link_getitem = "Client/src/org/psnbtech/resources/item.wav";
+	Media s_getitem = new Media(new File(link_getitem).toURI().toString());
 	
 	/** 2020-04-28 Seungun-Park
 	 */

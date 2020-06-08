@@ -9,6 +9,11 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javafx.embed.swing.JFXPanel;
+import javax.swing.JFrame;
+import java.io.File;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * The {@code BoardPanel} class is responsible for displaying the game grid and
@@ -132,6 +137,17 @@ public class BoardPanel extends JPanel {
 		//setPreferredSize(d_start);
 		setBackground(Color.BLACK);
 	}
+
+	/*
+	 * writer: Jihoon Kim
+	 * media
+	 * 2020.06.09
+	 * */
+	final JFXPanel fxPanel = new JFXPanel();
+	String link_gameover = "Client/src/org/psnbtech/resources/gameover.mp3";
+	Media s_gameover = new Media(new File(link_gameover).toURI().toString());
+	String link_getitem = "Client/src/org/psnbtech/resources/item.wav";
+	Media s_getitem = new Media(new File(link_getitem).toURI().toString());
 	
 	/**
 	 * 2020-04-22 Seungun-Park
@@ -486,6 +502,8 @@ public class BoardPanel extends JPanel {
 
 	//TODO comment
 	public void drawItem(int x, int y, int num, Graphics g){
+		MediaPlayer p = new MediaPlayer(s_getitem);
+		p.play();
 		g.setColor(Color.white);
 		g.drawString(Integer.toString(num),x, y);
 	}
