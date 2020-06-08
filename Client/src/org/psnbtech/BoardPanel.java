@@ -437,7 +437,6 @@ public class BoardPanel extends JPanel {
 					g.drawLine(x * TILE_SIZE, 0, x * TILE_SIZE, VISIBLE_ROW_COUNT * TILE_SIZE);
 				}
 			}
-
 		}
 
 		itemManager = tetris.getItemManager();
@@ -502,8 +501,6 @@ public class BoardPanel extends JPanel {
 
 	//TODO comment
 	public void drawItem(int x, int y, int num, Graphics g){
-		MediaPlayer p = new MediaPlayer(s_getitem);
-		p.play();
 		g.setColor(Color.white);
 		g.drawString(Integer.toString(num),x, y);
 	}
