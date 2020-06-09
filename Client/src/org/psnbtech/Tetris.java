@@ -1,28 +1,24 @@
 package org.psnbtech;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.security.cert.TrustAnchor;
 import java.util.Random;
 
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.imageio.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 import java.util.ArrayList;
 
 import hoon2woon2.Client;
 import hoon2woon2.LoginFrame;
 import hoon2woon2.RankPanel;
-import javafx.embed.swing.JFXPanel;
-import javax.swing.JFrame;
 import java.io.File;
+import java.io.IOException;
+
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -203,9 +199,9 @@ public class Tetris extends JFrame implements ActionListener{
 	 * 2020.06.09
 	 * */
 	final JFXPanel fxPanel = new JFXPanel();
-	String link_gameover = "Client/src/org/psnbtech/resources/gameover.mp3";
+	String link_gameover = "C:\\Users\\jwjung\\git\\2020-1-OSSP2-2hoon2woon-4\\Client\\src\\org\\psnbtech\\resources\\gameover.mp3";
 	Media s_gameover = new Media(new File(link_gameover).toURI().toString());
-	String link_getitem = "Client/src/org/psnbtech/resources/item.wav";
+	String link_getitem = "C:\\Users\\jwjung\\git\\2020-1-OSSP2-2hoon2woon-4\\Client\\src\\org\\psnbtech\\resources\\item.wav";
 	Media s_getitem = new Media(new File(link_getitem).toURI().toString());
 	
 	/** 2020-04-28 Seungun-Park
@@ -228,6 +224,13 @@ public class Tetris extends JFrame implements ActionListener{
 	private static String userid = "";
 
 	/*
+	 * writer: kim jihoon
+	 * mainUI
+	 * 2020.06.09
+	 * */
+	protected BufferedImage main_img = null;
+
+	/*
 	 * writer: cha seung hoon
 	 * hard drop
 	 * 2020.04.28
@@ -238,7 +241,8 @@ public class Tetris extends JFrame implements ActionListener{
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
 	 * and adds a controller listener.
-	 */
+	 */	 
+
 	
 	public Tetris(Client c) {
 		/*
@@ -248,9 +252,9 @@ public class Tetris extends JFrame implements ActionListener{
 		setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
-		
+
 		client = c;
-		
+
 		/*
 		 * Initialize the BoardPanel and SidePanel instances.
 		 */
@@ -503,6 +507,7 @@ public class Tetris extends JFrame implements ActionListener{
 	 * Starts the game running. Initializes everything and enters the game loop.
 	 */
 	public void startGame() {
+
 		/*
 		 * Initialize our random number generator, logic timer, and new game variables.
 		 */
