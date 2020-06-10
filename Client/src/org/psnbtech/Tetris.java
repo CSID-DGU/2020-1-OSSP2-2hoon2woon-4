@@ -230,6 +230,7 @@ public class Tetris extends JFrame implements ActionListener{
     * 2020.06.09
     * */
     final JFXPanel fxPanel = new JFXPanel();
+	Media s_backgroundmusic = new Media(Tetris.class.getResource("/org/psnbtech/resources/backgroundmusic.mp3").toString());
     Media s_gameover = new Media(Tetris.class.getResource("/org/psnbtech/resources/gameover.mp3").toString());
     Media s_tMove = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_move.wav").toString());
     Media s_tharddrop = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_harddrop.wav").toString());
@@ -250,6 +251,13 @@ public class Tetris extends JFrame implements ActionListener{
 		setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
+
+		/*
+		 * play music
+		 */
+		MediaPlayer p_b = new MediaPlayer(s_backgroundmusic);
+		p_b.setVolume(0.5);
+		p_b.play();
 		
 		client = c;
 		

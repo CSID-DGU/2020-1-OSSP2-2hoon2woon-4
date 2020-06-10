@@ -26,7 +26,12 @@ public class Client {
 	static InputStream is;
 	static byte[] buf;
 	static final String inipath = "server.properties";
+<<<<<<< HEAD
 	static final String getP = System.getProperty("user.dir");
+=======
+
+	
+>>>>>>> upstream/dev_gowoon
 	private static int user = -1;
 	private static String userid = "";
 	
@@ -35,12 +40,16 @@ public class Client {
 	public Client(){
 		try {
 			socket = new Socket();
+<<<<<<< HEAD
 			System.out.println(getP);
 			
 			prop.load(new FileInputStream(getP+"\\"+inipath));
 			System.out.println(inipath);
 			
 
+=======
+			prop.load(new FileInputStream(inipath));
+>>>>>>> upstream/dev_gowoon
 			connect();
 		} catch(IOException e) {
 			e.printStackTrace();
