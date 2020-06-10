@@ -142,6 +142,7 @@ public class RankPanel extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		if(tetris.getGamer()==1) {	// chacha
 		super.paintComponent(g);
 		
 		g.setColor(DRAW_COLOR);
@@ -153,7 +154,8 @@ public class RankPanel extends JPanel{
 		g.drawString(Integer.toString(high_score), LARGE_INSET, offset += TEXT_STRIDE);
 		
 		g.drawString("Online Ranking", SMALL_INSET, offset = ONLINE_INSET);
-	}
+			}
+		}
 	
 	private void updateScore() {
 		if(tetris.getScore() > high_score)
