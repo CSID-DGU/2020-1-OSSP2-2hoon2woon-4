@@ -37,47 +37,13 @@ public class Client {
 	public Client(){
 		try {
 			socket = new Socket();
-			System.out.println(getP);
-			System.out.println(inipath);
 			prop.load(new FileInputStream(getP+"\\"+inipath));
-			System.out.println(inipath);
 			connect();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	   public boolean regist(String id, char[] pw) {
-		      try {
-		         if(!socket.isConnected()) return false;
-		         send("register");
-		         send(id);
-		         buf = new byte[256];
-		         is.read(buf);
-		         
-		         MessageDigest sh = MessageDigest.getInstance("SHA-256");
-		         sh.reset();
-		         sh.update((new String(pw)).getBytes("UTF-8"));
-		         os.write(sh.digest());
-		         os.flush();
-		         
-		         buf = new byte[256];
-		         is.read(buf);
-		         
-		         if(new String(buf).substring(0,16).equals("register success"))
-		         {
-		            return true;
-		         }
-		         else
-		         {
-		            return false;
-		         }
-		      }catch(Exception e) {
-		         e.printStackTrace();
-		      }
-		      
-		      return false;
-		   }
 	
 	public boolean connect() {
 		try {
@@ -138,27 +104,35 @@ public class Client {
 	}
 
 	public boolean register(String id, char [] pw) {   //cha seung hoon_for Register Frame
-		try {
-		   if(!socket.isConnected()) return false;
-		   send("register");
-		   send(id);
-		   buf = new byte[256];
-		   is.read(buf);
-		   
-		   MessageDigest sh = MessageDigest.getInstance("SHA-256");
-		   sh.reset();
-		   sh.update((new String(pw)).getBytes("UTF-8"));
-		   os.write(sh.digest());
-		   os.flush();
-		   
-		   buf = new byte[256];
-		   is.read(buf);
-		   System.out.println(new String(buf));
-		} catch(IOException e) {
-		   e.printStackTrace();
-		} catch(NoSuchAlgorithmException e) {
-		   e.printStackTrace();
-		}return false;
+		 try {
+	         if(!socket.isConnected()) return false;
+	         send("register");
+	         send(id);
+	         buf = new byte[256];
+	         is.read(buf);
+	         
+	         MessageDigest sh = MessageDigest.getInstance("SHA-256");
+	         sh.reset();
+	         sh.update((new String(pw)).getBytes("UTF-8"));
+	         os.write(sh.digest());
+	         os.flush();
+	         
+	         buf = new byte[256];
+	         is.read(buf);
+	         
+	         if(new String(buf).substring(0,16).equals("register success"))
+	         {
+	            return true;
+	         }
+	         else
+	         {
+	            return false;
+	         }
+	      }catch(Exception e) {
+	         e.printStackTrace();
+	      }
+	      
+	      return false;
 	 }
 	
 	public boolean send(String message) {

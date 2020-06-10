@@ -32,7 +32,6 @@ public class LoginFrame extends JFrame implements ActionListener{
 	JTextField tf_id = new JTextField(16);
 	JPasswordField pf_pw = new JPasswordField(16);
 	public static JButton btn_login = new JButton("Login");
-	public static JButton btn_register = new JButton("Register");
 	
 	Client client;
 	Tetris tetris;
@@ -46,21 +45,18 @@ public class LoginFrame extends JFrame implements ActionListener{
 		pn_content.setLayout(null);
 		
 		btn_login.addActionListener(this);
-		btn_register.addActionListener(this);
 		
 		la_id.setBounds(13, 10, 60, 25);
 		tf_id.setBounds(45, 10, 210, 25);
 		btn_login.setBounds(265, 10, 70, 25);
 		la_pw.setBounds(10, 40, 60, 30);
 		pf_pw.setBounds(45, 40, 210, 25);
-		btn_register.setBounds(265, 40, 70, 25);
 		
 		pn_content.add(la_id);
 		pn_content.add(tf_id);
 		pn_content.add(btn_login);
 		pn_content.add(la_pw);
 		pn_content.add(pf_pw);
-		pn_content.add(btn_register);
 		add(pn_content);
 		
 		addWindowListener(new WindowAdapter(){
@@ -88,12 +84,6 @@ public class LoginFrame extends JFrame implements ActionListener{
 			}
 			else
 				JOptionPane.showMessageDialog(null, "login failed");
-		}
-		if(event.getSource() == btn_register) {
-			if(client.register(tf_id.getText(), pf_pw.getPassword()))
-				JOptionPane.showMessageDialog(null, "register success");
-			else
-				JOptionPane.showMessageDialog(null, "register failed");
 		}
 	}
 }

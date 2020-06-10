@@ -20,6 +20,13 @@ public class Main extends JFrame{
 	public static void main(String[] args) {
 		JFrame mainframe = new JFrame();
 
+
+		mainframe.setTitle("tetris main");
+		mainframe.setSize(500, 500);
+		mainframe.setVisible(true);
+		mainframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+
 		mainframe.setTitle("tetris main");// 제목
 		mainframe.setSize(500, 500); // 크기
 		mainframe.setVisible(true);// 생성
@@ -32,6 +39,7 @@ public class Main extends JFrame{
 
 		//    @Override
 		//    public void actionPerformed(ActionListener e) {
+
 		client = new Client();
 		tetris = new Tetris(client);
 		tetris.startGame();
