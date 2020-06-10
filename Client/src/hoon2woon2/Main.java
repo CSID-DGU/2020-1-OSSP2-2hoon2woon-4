@@ -10,6 +10,8 @@ public class Main extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	
+	
 	public static Tetris tetris;
 	public static Client client;
 	

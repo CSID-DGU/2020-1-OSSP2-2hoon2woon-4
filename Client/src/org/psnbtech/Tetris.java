@@ -199,10 +199,8 @@ public class Tetris extends JFrame implements ActionListener{
 	 * 2020.06.09
 	 * */
 	final JFXPanel fxPanel = new JFXPanel();
-	String link_gameover = "org\\psnbtech\\resources\\gameover.mp3";
-	Media s_gameover = new Media(new File(link_gameover).toURI().toString());
-	String link_getitem = "org\\psnbtech\\resources\\item.wav";
-	Media s_getitem = new Media(new File(link_getitem).toURI().toString());
+	Media s_gameover = new Media(Tetris.class.getResource("/org/psnbtech/resources/gameover.mp3").toString());
+	Media s_getitem = new Media(Tetris.class.getResource("/org/psnbtech/resources/item.wav").toString());
 	
 	/** 2020-04-28 Seungun-Park
 	 */
@@ -224,13 +222,6 @@ public class Tetris extends JFrame implements ActionListener{
 	private static String userid = "";
 
 	/*
-	 * writer: kim jihoon
-	 * mainUI
-	 * 2020.06.09
-	 * */
-	protected BufferedImage main_img = null;
-
-	/*
 	 * writer: cha seung hoon
 	 * hard drop
 	 * 2020.04.28
@@ -244,7 +235,7 @@ public class Tetris extends JFrame implements ActionListener{
 	 */	 
 
 	
-	public Tetris(Client c) {
+	public Tetris(Client c) {		
 		/*
 		 * Set the basic properties of the window.
 		 */

@@ -137,17 +137,6 @@ public class BoardPanel extends JPanel {
 		//setPreferredSize(d_start);
 		setBackground(Color.BLACK);
 	}
-
-	/*
-	 * writer: Jihoon Kim
-	 * media
-	 * 2020.06.09
-	 * */
-	final JFXPanel fxPanel = new JFXPanel();
-	String link_gameover = "Client/src/org/psnbtech/resources/gameover.mp3";
-	Media s_gameover = new Media(new File(link_gameover).toURI().toString());
-	String link_getitem = "Client/src/org/psnbtech/resources/item.wav";
-	Media s_getitem = new Media(new File(link_getitem).toURI().toString());
 	
 	/**
 	 * 2020-04-22 Seungun-Park
