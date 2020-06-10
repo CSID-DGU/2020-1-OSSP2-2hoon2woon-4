@@ -36,7 +36,7 @@ public class Client {
 		try {
 			socket = new Socket();
 			System.out.println(getP);
-			System.out.println(inipath);
+			
 			prop.load(new FileInputStream(getP+"\\"+inipath));
 			System.out.println(inipath);
 			

@@ -104,15 +104,16 @@ public class RankPanel extends JPanel{
 	/**
 	 * score save & load
 	 */
-	private static final File file = new File("Bscore");
-	
+	private static final File file = new File(System.getProperty("user.dir"));
+
 	private static Dimension d_start;
 	
 	public RankPanel(Tetris tetris) {
 		this.tetris = tetris;
 		//high_score = new int[3];
+		System.out.println(System.getProperty("user.dir") );
 		try {
-			FileInputStream fileInputStream = new FileInputStream(file);
+			FileInputStream fileInputStream = new FileInputStream("Bscore");
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 			
 			byte[] encr = new byte[16];
