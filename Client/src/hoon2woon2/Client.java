@@ -26,7 +26,7 @@ public class Client {
 	static byte[] buf;
 	static final String inipath = "server.properties";
 
-	
+
 	private static int user = -1;
 	private static String userid = "";
 	
