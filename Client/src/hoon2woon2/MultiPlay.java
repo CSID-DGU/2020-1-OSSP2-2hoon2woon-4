@@ -9,7 +9,9 @@ import java.util.HashMap;
 /**
  * gowoon-choi
  * TODO comment
- */
+
+
+// TODO ! 시작하면 게임 인원수 받아서 gamerCount에 할당하기 > gamerBoard에 각 boardPanel객체 할당하기 > 각 유저와 각 보드 연결하기, 즉 userId2boardIndex 내용 할당하기
 
 public class MultiPlay {
     /**
@@ -46,7 +48,6 @@ public class MultiPlay {
      */
     void start(){
         this.tetris.startGame();
-        
         while(true){
             client.send(board2String(myBoard));
             receivedString = client.receive();

@@ -26,6 +26,7 @@ public class Client {
 	static InputStream is;
 	static byte[] buf;
 	static final String inipath = "server.properties";
+
 	static final String getP = System.getProperty("user.dir");
 
 	private static int user = -1;
