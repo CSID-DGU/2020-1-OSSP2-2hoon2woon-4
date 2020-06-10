@@ -452,5 +452,42 @@ public enum TileType {
 		}
 		return -1;
 	}
+
+
+	/**
+	 * valueof 안되면 사용.. 되면 지우기 !
+	 * gowoon-choi
+	 * TODO ! comment
+	 */
+	public TileType string2Tile(String str){
+		TileType tileType;
+		switch (str){
+			case "TypeI":
+				tileType = TypeI;
+				break;
+			case "TypeJ":
+				tileType = TypeJ;
+				break;
+			case "TypeL":
+				tileType = TypeL;
+				break;
+			case "TypeO":
+				tileType = TypeO;
+				break;
+			case "TypeS":
+				tileType = TypeS;
+				break;
+			case "TypeT":
+				tileType = TypeT;
+				break;
+			case "TypeZ":
+				tileType = TypeZ;
+				break;
+			default :
+				tileType = null;
+				break;
+		}
+		return tileType;
+	}
 	
 }

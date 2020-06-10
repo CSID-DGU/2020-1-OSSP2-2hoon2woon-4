@@ -18,7 +18,10 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public class Client {
-	
+
+	// 임시로..옮겨놓음..! gowoon-choi
+	private static String userid = "";
+
 	private static final long serialVersionUID = -3752491464582754341L;
 	
 	static Socket socket;
@@ -100,5 +103,9 @@ public class Client {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public String getUserid(){
+		return this.userid;
 	}
 }
