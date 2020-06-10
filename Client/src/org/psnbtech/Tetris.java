@@ -199,9 +199,9 @@ public class Tetris extends JFrame implements ActionListener{
 	 * 2020.06.09
 	 * */
 	final JFXPanel fxPanel = new JFXPanel();
-	String link_gameover = "C:\\Users\\jwjung\\git\\2020-1-OSSP2-2hoon2woon-4\\Client\\src\\org\\psnbtech\\resources\\gameover.mp3";
+	String link_gameover = "org\\psnbtech\\resources\\gameover.mp3";
 	Media s_gameover = new Media(new File(link_gameover).toURI().toString());
-	String link_getitem = "C:\\Users\\jwjung\\git\\2020-1-OSSP2-2hoon2woon-4\\Client\\src\\org\\psnbtech\\resources\\item.wav";
+	String link_getitem = "org\\psnbtech\\resources\\item.wav";
 	Media s_getitem = new Media(new File(link_getitem).toURI().toString());
 	
 	/** 2020-04-28 Seungun-Park
@@ -249,7 +249,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 * Set the basic properties of the window.
 		 */
 		super("Tetris");
-		setLayout(null);
+		getContentPane().setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 
@@ -291,9 +291,9 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * Add the BoardPanel and SidePanel instances to the window.
 		 */
-		add(rank);
-		add(board);
-		add(side);
+		getContentPane().add(rank);
+		getContentPane().add(board);
+		getContentPane().add(side);
 		
 		/*
 		 * Adds a custom anonymous KeyListener to the frame.
@@ -473,7 +473,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 * center the window on the screen, and show it to the user.
 		 */
 		getContentPane().setBackground(Color.BLACK);
-		setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67);
+		setSize(548, 562);
 		d_start = getSize();
 		setMinimumSize(d_start);
 		setLocationRelativeTo(null);
