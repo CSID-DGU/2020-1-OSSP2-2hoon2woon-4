@@ -200,7 +200,10 @@ public class Tetris extends JFrame implements ActionListener{
 	 * */
 	final JFXPanel fxPanel = new JFXPanel();
 	Media s_gameover = new Media(Tetris.class.getResource("/org/psnbtech/resources/gameover.mp3").toString());
-	Media s_getitem = new Media(Tetris.class.getResource("/org/psnbtech/resources/item.wav").toString());
+	Media s_tMove = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_move.wav").toString());
+	Media s_tharddrop = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_harddrop.wav").toString());
+	Media s_trotate = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_rotate.wav").toString());
+	Media s_hold = new Media(Tetris.class.getResource("/org/psnbtech/resources/hold.wav").toString());
 	
 	/** 2020-04-28 Seungun-Park
 	 */
@@ -310,6 +313,8 @@ public class Tetris extends JFrame implements ActionListener{
 				 */
 				case KeyEvent.VK_DOWN:
 					if(!isPaused && dropCooldown == 0) {
+						MediaPlayer p = new MediaPlayer(s_tMove);
+						p.play();
 						logicTimer.setCyclesPerSecond(25.0f);
 					}
 					break;
@@ -327,11 +332,15 @@ public class Tetris extends JFrame implements ActionListener{
 				case KeyEvent.VK_LEFT:
 					if(reverseIndex){
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
+							MediaPlayer p = new MediaPlayer(s_tMove);
+							p.play();
 							currentCol++;
 						}
 					}
 					else{
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
+							MediaPlayer p = new MediaPlayer(s_tMove);
+							p.play();
 							currentCol--;
 						}
 					}
@@ -345,11 +354,15 @@ public class Tetris extends JFrame implements ActionListener{
 				case KeyEvent.VK_RIGHT:
 					if(reverseIndex){
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
+							MediaPlayer p = new MediaPlayer(s_tMove);
+							p.play();
 							currentCol--;
 						}
 					}
 					else{
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
+							MediaPlayer p = new MediaPlayer(s_tMove);
+							p.play();
 							currentCol++;
 						}
 					}
@@ -369,6 +382,8 @@ public class Tetris extends JFrame implements ActionListener{
 				case KeyEvent.VK_Z:
 					if(rotationIndex){
 						if(!isPaused) {
+							MediaPlayer p = new MediaPlayer(s_trotate);
+							p.play();
 							rotatePiece((currentRotation == 0) ? 3 : currentRotation - 1);
 						}
 					}
@@ -383,6 +398,8 @@ public class Tetris extends JFrame implements ActionListener{
 				case KeyEvent.VK_X:
 					if(rotationIndex){
 						if(!isPaused) {
+							MediaPlayer p = new MediaPlayer(s_trotate);
+							p.play();
 							rotatePiece((currentRotation == 3) ? 0 : currentRotation + 1);
 						}
 					}
@@ -418,6 +435,8 @@ public class Tetris extends JFrame implements ActionListener{
 				 * hold function
 				 */
 				case KeyEvent.VK_C:
+					MediaPlayer p = new MediaPlayer(s_hold);
+					p.play();
 					holdTile();
 					break;
 				
@@ -434,6 +453,8 @@ public class Tetris extends JFrame implements ActionListener{
 						cnt++;
 					}
 					currentRow+=cnt-1;
+					MediaPlayer p1 = new MediaPlayer(s_tharddrop);
+					p1.play();
 					updateGame();
 					break;
 				}
