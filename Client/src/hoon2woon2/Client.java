@@ -82,7 +82,7 @@ public class Client {
 	public boolean connect() {
 		try {
 			if(!(socket.isConnected())) {
-				socket.connect(new InetSocketAddress("54.180.192.185", 20204));
+				socket.connect(new InetSocketAddress(prop.getProperty("ip"), Integer.parseInt(prop.getProperty("port"))));
 				os = socket.getOutputStream();
 				is = socket.getInputStream();
 		
