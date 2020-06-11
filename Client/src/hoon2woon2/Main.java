@@ -26,9 +26,19 @@ public class Main extends JFrame{
 		mainframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
+		// JButton singleplaybutton = new JButton("singleplay");
+		// mainframe.add(singleplaybutton);
+		// ActionListener listener = new ActionListener() {
+
+		//    @Override
+		//    public void actionPerformed(ActionListener e) {
 		client = new Client();
 		tetris = new Tetris(client);
 		tetris.startGame();
 		multi = new MultiPlay(client);
+		//    }
+		// }
+		// singleplaybutton.addActionListener(listener);
+
 	}
 }

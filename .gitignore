@@ -14,3 +14,4 @@ Client/bin
 /Server/Server/x64
 /Client/.settings
 *.prefs
+/.metadata/
