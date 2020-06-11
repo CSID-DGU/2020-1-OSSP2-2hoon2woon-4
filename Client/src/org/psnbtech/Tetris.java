@@ -14,6 +14,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 import hoon2woon2.Client;
 import hoon2woon2.LoginFrame;
@@ -228,14 +231,15 @@ public class Tetris extends JFrame implements ActionListener{
     * writer: Jihoon Kim
     * media
     * 2020.06.09
-    * */
+	* */
+	String getP = Paths.get("").toUri().toString();
     final JFXPanel fxPanel = new JFXPanel();
-	Media s_backgroundmusic = new Media(Tetris.class.getResource("/org/psnbtech/resources/backgroundmusic.mp3").toString());
-    Media s_gameover = new Media(Tetris.class.getResource("/org/psnbtech/resources/gameover.mp3").toString());
-    Media s_tMove = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_move.wav").toString());
-    Media s_tharddrop = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_harddrop.wav").toString());
-    Media s_trotate = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_rotate.wav").toString());
-    Media s_hold = new Media(Tetris.class.getResource("/org/psnbtech/resources/hold.wav").toString());
+	Media s_backgroundmusic = new Media(getP+"Client/resources/Musics/backgroundmusic.mp3");
+    Media s_gameover = new Media(getP+"Client/resources/Musics/gameover.mp3");
+    Media s_tMove = new Media(getP+"Client/resources/Musics/t_move.wav");
+    Media s_tharddrop = new Media(getP+"Client/resources/Musics/t_harddrop.wav");
+    Media s_trotate = new Media(getP+"Client/resources/Musics/t_rotate.wav");
+    Media s_hold = new Media(getP+"Client/resources/Musics/hold.wav");
   
 
 	/**
