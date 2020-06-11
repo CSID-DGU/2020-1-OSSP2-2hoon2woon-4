@@ -232,14 +232,14 @@ public class Tetris extends JFrame implements ActionListener{
     * media
     * 2020.06.09
 	* */
-	String getP = Paths.get("").toUri().toString();
+	String getpath = Paths.get("").toUri().toString();
     final JFXPanel fxPanel = new JFXPanel();
-	Media s_backgroundmusic = new Media(getP+"Client/resources/Musics/backgroundmusic.mp3");
-    Media s_gameover = new Media(getP+"Client/resources/Musics/gameover.mp3");
-    Media s_tMove = new Media(getP+"Client/resources/Musics/t_move.wav");
-    Media s_tharddrop = new Media(getP+"Client/resources/Musics/t_harddrop.wav");
-    Media s_trotate = new Media(getP+"Client/resources/Musics/t_rotate.wav");
-    Media s_hold = new Media(getP+"Client/resources/Musics/hold.wav");
+	Media s_backgroundmusic = new Media(getpath+"Client/resources/Musics/backgroundmusic.mp3");
+    Media s_gameover = new Media(getpath+"Client/resources/Musics/gameover.mp3");
+    Media s_tMove = new Media(getpath+"Client/resources/Musics/t_move.wav");
+    Media s_tharddrop = new Media(getpath+"Client/resources/Musics/t_harddrop.wav");
+    Media s_trotate = new Media(getpath+"Client/resources/Musics/t_rotate.wav");
+    Media s_hold = new Media(getpath+"Client/resources/Musics/hold.wav");
   
 
 	/**

@@ -4,21 +4,18 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.psnbtech.*;
 
 import java.awt.event.*;
-import java.awt.Toolkit;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.BorderLayout;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
-import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -27,6 +24,7 @@ public class Main extends JFrame{
 	/**
 	 * Kim Jihoon
 	 * Main UI
+	 * 2020.06.11
 	 */
 	private static final long serialVersionUID = 5622708864988613307L;
 
