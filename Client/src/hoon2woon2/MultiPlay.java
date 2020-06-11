@@ -6,28 +6,62 @@ import org.psnbtech.TileType;
 
 import java.util.HashMap;
 
+/**
+ * gowoon-choi
+ * TODO comment
+ */
+
+// TODO ! 시작하면 게임 인원수 받아서 gamerCount에 할당하기 > gamerBoard에 각 boardPanel객체 할당하기 > 각 유저와 각 보드 연결하기, 즉 userId2boardIndex 내용 할당하기
 public class MultiPlay {
+    /**
+     * gowoon-choi
+     * TODO comment
+     */
     private static Client client;
     private static Tetris tetris;
     private static BoardPanel myBoard;
 
+    /**
+     * gowoon-choi
+     * TODO comment
+     */
     private int gamerCount;
     private BoardPanel[] gamersBoard = new BoardPanel[gamerCount];
     private HashMap<String, Integer> userId2boardIndex;
 
+    private String receivedString;
+
+    /**
+     * gowoon-choi
+     * TODO comment
+     */
     MultiPlay(Client c){
         this.client = c;
         this.tetris = new Tetris(client);
         this.myBoard = new BoardPanel(tetris);
     }
 
+    /**
+     * gowoon-choi
+     * TODO comment
+     */
     void start(){
+        this.tetris.startGame();
         while(true){
-            
+            client.send(board2String(myBoard));
+            receivedString = client.receive();
+            if(receivedString!=""&&receivedString!=null){
+                string2Board(receivedString);
+            }
         }
     }
 
-    String Board2String(BoardPanel board){
+
+    /**
+     * gowoon-choi
+     * TODO comment
+     */
+    String board2String(BoardPanel board){
         String boardInfo = "";
         String temp = "";
         boardInfo += client.getUserid();
@@ -48,7 +82,11 @@ public class MultiPlay {
         return boardInfo;
     }
 
-    void String2Board(String boardInfo){
+    /**
+     * gowoon-choi
+     * TODO ! comment
+     */
+    void string2Board(String boardInfo){
         BoardPanel board;
         String delimiter = "\\:";
         String[] boardDatas = boardInfo.split(delimiter);

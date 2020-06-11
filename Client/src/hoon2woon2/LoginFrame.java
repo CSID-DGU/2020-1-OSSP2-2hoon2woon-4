@@ -90,7 +90,7 @@ public class LoginFrame extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "login failed");
 		}
 		if(event.getSource() == btn_register) {
-			if(client.regist(tf_id.getText(), pf_pw.getPassword()))
+			if(client.register(tf_id.getText(), pf_pw.getPassword()))
 				JOptionPane.showMessageDialog(null, "register success");
 			else
 				JOptionPane.showMessageDialog(null, "register failed");
