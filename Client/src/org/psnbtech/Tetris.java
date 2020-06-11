@@ -809,6 +809,8 @@ public class Tetris extends JFrame implements ActionListener{
 			rank.uploadScore();
 			this.isGameOver = true;
 			logicTimer.setPaused(true);
+			MediaPlayer p = new MediaPlayer(s_gameover);
+			p.play();
 		}		
 	}
 
