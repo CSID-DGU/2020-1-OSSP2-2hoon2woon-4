@@ -8,6 +8,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -123,10 +125,12 @@ public class Client {
 			{
 				user = 1;
 				userid = id;
+				JOptionPane.showMessageDialog(null, "login success");
 				return true;
 			}
 			else
 			{
+				JOptionPane.showMessageDialog(null, new String(buf).substring(0,16));
 				return false;
 			}
 		} catch(IOException e) {
