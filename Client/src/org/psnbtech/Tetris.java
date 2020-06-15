@@ -18,10 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import hoon2woon2.Client;
-import hoon2woon2.LoginFrame;
-import hoon2woon2.RegisterFrame;
-import hoon2woon2.RankPanel;
+import hoon2woon2.*;
 import hoon2woon2.Items.ItemManager;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -60,6 +57,8 @@ public class Tetris extends JFrame implements ActionListener{
 	 * The ItemManager instance
 	 */
 	private ItemManager itemManager;
+
+	private MultiPlay multiPlay;
 
 	/**
 	 * writer : github.com/choi-gowoon
@@ -260,7 +259,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 * play music
 		 */
 		MediaPlayer p_b = new MediaPlayer(s_backgroundmusic);
-		p_b.setVolume(0.5);
+		p_b.setVolume(0.3);
 		p_b.play();
 
 		client = c;
@@ -660,6 +659,7 @@ public class Tetris extends JFrame implements ActionListener{
 				else{
 					score += 50 << cleared;
 				}
+				multiPlay.attack(cleared);
 			}
 			
 			/*
@@ -1003,6 +1003,10 @@ public class Tetris extends JFrame implements ActionListener{
 	public int getMode() {
 		return this.mode;
 	}
+
+	public void setMode(int mode){ this.mode = mode; }
+
+	public void setMultiPlay(MultiPlay multiPlay){ this.multiPlay = multiPlay; }
 	/**
 	 * writer : cha seung hoon
 	 * 2020.05.19

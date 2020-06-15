@@ -8,6 +8,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -27,7 +29,6 @@ public class Client {
 	static byte[] buf;
 	static final String inipath = "server.properties";
 
-	static final String getP = System.getProperty("user.dir");
 
 	private static int user = -1;
 	private static String userid = "";
@@ -35,16 +36,18 @@ public class Client {
 	Properties prop = new Properties();
 	
 	public Client(){
-		try {
-			System.out.println(System.getProperty("user.dir"));
-			socket = new Socket();
-
-			prop.load(new FileInputStream(inipath));
-
-			connect();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+		socket = new Socket();
+		connect();
+//		try {
+//			System.out.println(System.getProperty("user.dir"));
+//			socket = new Socket();
+//
+//			prop.load(new FileInputStream(inipath));
+//
+//			connect();
+//		} catch(IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	   public boolean regist(String id, char[] pw) {
@@ -123,10 +126,12 @@ public class Client {
 			{
 				user = 1;
 				userid = id;
+				JOptionPane.showMessageDialog(null, "login success");
 				return true;
 			}
 			else
 			{
+				JOptionPane.showMessageDialog(null, new String(buf).substring(0,16));
 				return false;
 			}
 		} catch(IOException e) {
