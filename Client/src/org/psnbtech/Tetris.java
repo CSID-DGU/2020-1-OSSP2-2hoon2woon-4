@@ -259,7 +259,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 * play music
 		 */
 		MediaPlayer p_b = new MediaPlayer(s_backgroundmusic);
-		p_b.setVolume(0.5);
+		p_b.setVolume(0.3);
 		p_b.play();
 
 		client = c;
