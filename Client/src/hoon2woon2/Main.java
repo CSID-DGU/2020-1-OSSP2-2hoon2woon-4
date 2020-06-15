@@ -50,7 +50,7 @@ public class Main extends JFrame{
 		this.setSize(img_width,img_height+20);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setResizable(false);
+		// this.setResizable(false);
 		this.setLocationRelativeTo(null);
 
 		myPanel panel = new myPanel();
@@ -64,7 +64,8 @@ public class Main extends JFrame{
 		singleplaybutton.addMouseListener(listener);
 		singleplaybutton.setBorderPainted(false);
 		singleplaybutton.setFocusPainted(false);
-
+		singleplaybutton.setContentAreaFilled(false);
+		
 		singleplaybutton.addActionListener(new ActionListener() {
 
 		   @Override
