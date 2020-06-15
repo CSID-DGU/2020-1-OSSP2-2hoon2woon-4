@@ -81,16 +81,13 @@ public class LoginFrame extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		if(event.getSource() == btn_login) {
 			if(client.login(tf_id.getText(), pf_pw.getPassword())) {
-				JOptionPane.showMessageDialog(null, "login success");
 				client = null;
 				tetris.loginframe = null;
 				dispose();
 			}
-			else
-				JOptionPane.showMessageDialog(null, "login failed");
 		}
 		if(event.getSource() == btn_register) {
-			if(client.regist(tf_id.getText(), pf_pw.getPassword()))
+			if(client.register(tf_id.getText(), pf_pw.getPassword()))
 				JOptionPane.showMessageDialog(null, "register success");
 			else
 				JOptionPane.showMessageDialog(null, "register failed");

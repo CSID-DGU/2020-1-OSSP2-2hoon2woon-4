@@ -14,10 +14,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 
-import hoon2woon2.Client;
-import hoon2woon2.LoginFrame;
-import hoon2woon2.RankPanel;
+import hoon2woon2.*;
 import hoon2woon2.Items.ItemManager;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -56,6 +57,8 @@ public class Tetris extends JFrame implements ActionListener{
 	 * The ItemManager instance
 	 */
 	private ItemManager itemManager;
+
+	private MultiPlay multiPlay;
 
 	/**
 	 * writer : github.com/choi-gowoon
@@ -198,15 +201,17 @@ public class Tetris extends JFrame implements ActionListener{
 	//program menu
 	JMenuBar menu = new JMenuBar();
 	JMenu mn_file = new JMenu("File");
-	JMenuItem item_new = new JMenuItem("NewGame");
+	JMenuItem item_new = new JMenuItem("New Game");
 	JMenuItem item_exit = new JMenuItem("Exit");
 	JMenu mn_account = new JMenu("Account");
-	JMenuItem item_login = new JMenuItem("Login");
+	JMenuItem item_login = new JMenuItem("Login");	
 	JMenuItem item_logout = new JMenuItem("Logout");
+	JMenuItem item_register = new JMenuItem("Register");	//	cha seung hoon 2020.06.10 Register Frame
 	JMenu mn_mode = new JMenu("Mode");
 	JMenuItem item_basic = new JMenuItem("Basic");
 	JMenuItem item_disturb = new JMenuItem("Interrupt");
 	JMenuItem item_item = new JMenuItem("Item");
+	JMenuItem item_multi = new JMenuItem("Multi");	// cha seung hoon 2020.06.10 Register Frame
 	//socket program
 	private Client client;
 	
@@ -225,14 +230,15 @@ public class Tetris extends JFrame implements ActionListener{
     * writer: Jihoon Kim
     * media
     * 2020.06.09
-    * */
+	* */
+	String getpath = Paths.get("").toUri().toString();
     final JFXPanel fxPanel = new JFXPanel();
-	Media s_backgroundmusic = new Media(Tetris.class.getResource("/org/psnbtech/resources/backgroundmusic.mp3").toString());
-    Media s_gameover = new Media(Tetris.class.getResource("/org/psnbtech/resources/gameover.mp3").toString());
-    Media s_tMove = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_move.wav").toString());
-    Media s_tharddrop = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_harddrop.wav").toString());
-    Media s_trotate = new Media(Tetris.class.getResource("/org/psnbtech/resources/t_rotate.wav").toString());
-    Media s_hold = new Media(Tetris.class.getResource("/org/psnbtech/resources/hold.wav").toString());
+	Media s_backgroundmusic = new Media(getpath+"Client/resources/Musics/backgroundmusic.mp3");
+    Media s_gameover = new Media(getpath+"Client/resources/Musics/gameover.mp3");
+    Media s_tMove = new Media(getpath+"Client/resources/Musics/t_move.wav");
+    Media s_tharddrop = new Media(getpath+"Client/resources/Musics/t_harddrop.wav");
+    Media s_trotate = new Media(getpath+"Client/resources/Musics/t_rotate.wav");
+    Media s_hold = new Media(getpath+"Client/resources/Musics/hold.wav");
   
 
 	/**
@@ -255,7 +261,7 @@ public class Tetris extends JFrame implements ActionListener{
 		MediaPlayer p_b = new MediaPlayer(s_backgroundmusic);
 		p_b.setVolume(0.5);
 		p_b.play();
-		
+
 		client = c;
 		
 		//loginframe = new LoginFrame(this, client);
@@ -275,17 +281,21 @@ public class Tetris extends JFrame implements ActionListener{
 		item_exit.addActionListener(this);
 		item_login.addActionListener(this);
 		item_logout.addActionListener(this);
+		item_register.addActionListener(this); //cha seung hoon 2020.06.10 Register Frame
 		item_basic.addActionListener(this);
 		item_disturb.addActionListener(this);
 		item_item.addActionListener(this);
+		item_multi.addActionListener(this);	// cha seung hoon 2020.06.10 Register Frame
 		
 		mn_file.add(item_new);
 		mn_file.add(item_exit);
 		mn_account.add(item_login);
 		mn_account.add(item_logout);
+		mn_account.add(item_register);
 		mn_mode.add(item_basic);
 		mn_mode.add(item_disturb);
 		mn_mode.add(item_item);
+		mn_mode.add(item_multi);	//	cha seung hoon 2020.06.10 Register Frame
 		
 		menu.add(mn_file);
 		menu.add(mn_account);
@@ -649,6 +659,7 @@ public class Tetris extends JFrame implements ActionListener{
 				else{
 					score += 50 << cleared;
 				}
+				multiPlay.attack(cleared);
 			}
 			
 			/*
@@ -798,6 +809,8 @@ public class Tetris extends JFrame implements ActionListener{
 			rank.uploadScore();
 			this.isGameOver = true;
 			logicTimer.setPaused(true);
+			MediaPlayer p = new MediaPlayer(s_gameover);
+			p.play();
 		}		
 	}
 
@@ -990,6 +1003,10 @@ public class Tetris extends JFrame implements ActionListener{
 	public int getMode() {
 		return this.mode;
 	}
+
+	public void setMode(int mode){ this.mode = mode; }
+
+	public void setMultiPlay(MultiPlay multiPlay){ this.multiPlay = multiPlay; }
 	/**
 	 * writer : cha seung hoon
 	 * 2020.05.19
@@ -1022,7 +1039,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 * then start new game
 		 */
 		if(event.getSource() == item_new) {
-
+		resetGame();		// 2020.06.10 cha seung hoon _ complete mew Game button
 		}
 		/*
 		 * if click exit menu
@@ -1068,6 +1085,13 @@ public class Tetris extends JFrame implements ActionListener{
 			isGameOver = false;
 			isNewGame = true;
 			mode = 1;
+		}
+		if(event.getSource()==item_register) { 	// cha seung hoon 2020.06.10 Register Frame
+				if(!isGameOver && !isNewGame) {
+					isPaused = !isPaused;
+					logicTimer.setPaused(isPaused);
+				}
+			RegisterFrame r = new RegisterFrame(this,client);
 		}
 		if(event.getSource() == item_basic) {
 			isPaused = false;
