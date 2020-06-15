@@ -29,7 +29,6 @@ public class Client {
 	static byte[] buf;
 	static final String inipath = "server.properties";
 
-	static final String getP = System.getProperty("user.dir");
 
 	private static int user = -1;
 	private static String userid = "";
@@ -37,16 +36,18 @@ public class Client {
 	Properties prop = new Properties();
 	
 	public Client(){
-		try {
-			System.out.println(System.getProperty("user.dir"));
-			socket = new Socket();
-
-			prop.load(new FileInputStream(inipath));
-
-			connect();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+		socket = new Socket();
+		connect();
+//		try {
+//			System.out.println(System.getProperty("user.dir"));
+//			socket = new Socket();
+//
+//			prop.load(new FileInputStream(inipath));
+//
+//			connect();
+//		} catch(IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	   public boolean regist(String id, char[] pw) {
@@ -84,7 +85,7 @@ public class Client {
 	public boolean connect() {
 		try {
 			if(!(socket.isConnected())) {
-				socket.connect(new InetSocketAddress(prop.getProperty("ip"), Integer.parseInt(prop.getProperty("port"))));
+				socket.connect(new InetSocketAddress("54.180.192.185", 20204));
 				os = socket.getOutputStream();
 				is = socket.getInputStream();
 		

@@ -1,6 +1,7 @@
 package org.psnbtech;
 
 import hoon2woon2.Items.ItemManager;
+import hoon2woon2.MultiPlay;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -106,6 +107,12 @@ public class BoardPanel extends JPanel {
 	private Tetris tetris;
 
 	private ItemManager itemManager;
+
+	/**
+	 * gowoon -choi
+	 * TODO add comment
+	 */
+	private int lineInOnce = 0;
 
 	/**
 	 * The tiles that make up the board.
@@ -530,6 +537,8 @@ public class BoardPanel extends JPanel {
 			tiles[row][col] = TileType.values()[8];
 		}
 	}
+
+	public TileType[][] getTiles(){ return this.tiles; }
 
 
 		public Dimension getDim() {
