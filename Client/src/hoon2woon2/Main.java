@@ -65,7 +65,7 @@ public class Main extends JFrame{
 		singleplaybutton.setBorderPainted(false);
 		singleplaybutton.setFocusPainted(false);
 		singleplaybutton.setContentAreaFilled(false);
-		
+
 		singleplaybutton.addActionListener(new ActionListener() {
 
 		   @Override
