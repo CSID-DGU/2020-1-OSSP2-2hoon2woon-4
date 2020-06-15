@@ -37,19 +37,20 @@ public class Main extends JFrame{
 	public static SidePanel side;
 
 	public static int num = 0;
-	Image img = Toolkit.getDefaultToolkit().createImage("Client/resources/Images/giphy.gif");
+	Image img = Toolkit.getDefaultToolkit().createImage("Client/resources/Images/Main_Image.gif");
 	ImageIcon start1 = new ImageIcon("Client/resources/Images/start1.jpg");
 	ImageIcon start2 = new ImageIcon("Client/resources/Images/start2.jpg");
 
-	Image img_size = new ImageIcon("Client/resources/Images/giphy.gif").getImage();
+	Image img_size = new ImageIcon("Client/resources/Images/Main_Image.gif").getImage();
 	int img_width = img_size.getWidth(null);
 	int img_height = img_size.getHeight(null);
 
 	public Main(){
 		this.setTitle("Tetris main");
-		this.setSize(img_width,img_height);
+		this.setSize(img_width,img_height+20);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 
 		myPanel panel = new myPanel();
