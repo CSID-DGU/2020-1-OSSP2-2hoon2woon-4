@@ -47,7 +47,7 @@ public class Main extends JFrame{
 
 	public Main(){
 		this.setTitle("Tetris main");
-		this.setSize(img_width,img_height+20);
+		this.setSize(img_width,img_height+38);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
@@ -64,6 +64,7 @@ public class Main extends JFrame{
 		singleplaybutton.addMouseListener(listener);
 		singleplaybutton.setBorderPainted(false);
 		singleplaybutton.setFocusPainted(false);
+		singleplaybutton.setContentAreaFilled(false);
 
 		singleplaybutton.addActionListener(new ActionListener() {
 
