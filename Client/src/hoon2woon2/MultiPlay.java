@@ -12,8 +12,6 @@ import java.util.Random;
  * TODO comment
 
 
-// TODO ! 시작하면 게임 인원수 받아서 gamerCount에 할당하기 > gamerBoard에 각 boardPanel객체 할당하기 > 각 유저와 각 보드 연결하기, 즉 userId2boardIndex 내용 할당하기
-
 public class MultiPlay {
     /**
      * gowoon-choi
@@ -50,6 +48,14 @@ public class MultiPlay {
      * TODO comment
      */
     void start(){
+        // TODO gamerCount 할당
+
+        for(int i=0; i<gamerCount; i++){
+            gamersBoard[i] = new BoardPanel(tetris);
+        }
+
+        // TODO 각 유저 아이디와 보드 index 연결하기 > userId2boardIndex
+
         this.tetris.startGame();
         String delimiter = "\\:";
         String[] datas;
