@@ -259,7 +259,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 * play music
 		 */
 		MediaPlayer p_b = new MediaPlayer(s_backgroundmusic);
-		p_b.setVolume(0.5);
+		p_b.setVolume(0.3);
 		p_b.play();
 
 		client = c;
@@ -1039,7 +1039,9 @@ public class Tetris extends JFrame implements ActionListener{
 		 * then start new game
 		 */
 		if(event.getSource() == item_new) {
-		resetGame();		// 2020.06.10 cha seung hoon _ complete mew Game button
+			resetGame(); // 2020.06.10 cha seung hoon _ complete mew Game button
+			isGameOver = true;
+			isNewGame = true;
 		}
 		/*
 		 * if click exit menu

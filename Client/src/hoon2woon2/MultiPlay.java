@@ -146,7 +146,7 @@ public class MultiPlay {
         for(int i=0; i<line; i++){
             for(int col=0; col<myBoard.COL_COUNT; col++){
                 if(col == randomNum) continue;
-                myBoard.getTiles()[myBoard.ROW_COUNT-1][col] = TileType.values()[7];
+                myBoard.getTiles()[myBoard.ROW_COUNT-1][col] = TileType.values()[8];
             }
         }
     }
