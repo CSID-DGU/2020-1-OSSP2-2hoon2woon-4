@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  *
  */
 public class BoardPanel extends JPanel {
-
+	
 	/**
 	 * Serial Version UID.
 	 */
@@ -125,7 +125,7 @@ public class BoardPanel extends JPanel {
 	 */
 	private static Dimension d_start;
 	private static Dimension d_now;
-		
+	
 	/**
 	 * Crates a new GameBoard instance.
 	 * @param tetris The Tetris instance to use.

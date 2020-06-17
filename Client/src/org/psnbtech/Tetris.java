@@ -12,13 +12,16 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+
 import hoon2woon2.*;
+
 import hoon2woon2.Items.ItemManager;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -195,6 +198,9 @@ public class Tetris extends JFrame implements ActionListener{
 	private Dimension d_now;
 	
 	private int addTimer=1;
+	
+	
+	private int gamer = 1; //chacha
 	
 	/** 2020-04-28 Seungun-Park
 	 */
@@ -610,7 +616,7 @@ public class Tetris extends JFrame implements ActionListener{
 			}
 
 			//Display the window to the user.
-			renderGame();
+			renderGame(this.gamer);
 
 			/*
 			 * Sleep to cap the framerate.
@@ -727,7 +733,8 @@ public class Tetris extends JFrame implements ActionListener{
 	/**
 	 * Forces the BoardPanel and SidePanel to repaint.
 	 */
-	private void renderGame() {
+	private void renderGame(int gamer) {	//chacha
+		if(gamer == 1) {
 		d_now = getSize();
 		board.resize((d_now.getHeight() / d_start.getHeight()) < (d_now.getWidth() / d_start.getWidth()) ? (d_now.getHeight()/ d_start.getHeight()) : (d_now.getWidth() / d_start.getWidth()));
 		int left = (d_now.width - board.getWidth()) / 2;
@@ -737,7 +744,17 @@ public class Tetris extends JFrame implements ActionListener{
 		side.setBounds(left + board.getWidth(), top, side.getWidth(), side.getHeight());
 		side.repaint();	
 		rank.repaint();
+		}
+		else {
+			d_now = getSize();
+			board.resize((d_now.getHeight() / d_start.getHeight()) < (d_now.getWidth() / d_start.getWidth()) ? (d_now.getHeight()/ d_start.getHeight()) : (d_now.getWidth() / d_start.getWidth()));
+			int left = (d_now.width - board.getWidth()) / 2;
+			int top = ((d_now.height - 67) - board.getHeight()) / 2;
+			board.setBounds(left,top,board.getWidth(), board.getHeight());
+			board.repaint();
+		}
 	}
+
 	
 	/**
 	 * Resets the game variables to their default values at the start
@@ -1028,6 +1045,14 @@ public class Tetris extends JFrame implements ActionListener{
 
 		board.addPiece(currentType, randCol, randRow, randRot);
 	}
+	
+	public int getGamer() {	//chacha
+		return gamer;
+	}
+	
+	public void setGamer(int num) { //chacha
+		this.gamer = num;
+	}
 
 	/**
 	 * 2020-04-28 Seungun-Park
@@ -1112,6 +1137,18 @@ public class Tetris extends JFrame implements ActionListener{
 			isGameOver = false;
 			isNewGame = true;
 			mode = 1;
+		}
+		if(event.getSource()==item_multi) {
+			if(client.isLogined()) {
+				isPaused = false;
+				isGameOver = false;
+				isNewGame = true;
+				mode = 3;
+				MultiFrame m = new MultiFrame(this,client);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "You does not login yet. Please login your account first.");
+			}
 		}
 	}
 }
