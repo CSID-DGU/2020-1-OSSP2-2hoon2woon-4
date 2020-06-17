@@ -4,9 +4,9 @@
 
 int main(int argc, char **argv)
 {
-    Server server = Server();
-
+	Server server = Server();
+	
 	server.run();
 
-    return 0;
+	return 0;
 }
