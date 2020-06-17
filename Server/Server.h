@@ -1,39 +1,47 @@
-/**
- * 2020-04-26 Seungun-Park
- * Server.h
- */
-#pragma once
-#pragma comment(lib, "ws2_32.lib");
+#ifndef __SERVER_H__
+#define __SERVER_H__
 
-#include <WinSock2.h>
 #include <thread>
 #include <memory>
 #include <vector>
 
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+
 #define MAX_THREAD_POOL 128
 
-class ClientSocket;
+class Client;
+class Room;
 
 class Server
 {
 public:
-    Server(); 
+	Server();
 	~Server();
 
-    void run();
+	void run();
 
+	bool createRoom(Client&, int, std::string);
+	bool join(Client&, int, std::string);
+	bool exit();
 private:
-    SOCKET server_fd;
-    int port;
-    int backlog;
-	
-	WORD		wVersionRequested;
-    WSADATA		wsaData;
-    SOCKADDR_IN servAddr, cliAddr; //Socket address information
-    int			err;
+	int number = 0;
+	int server_fd;
+	int port;
+	int backlog;
 
-    std::vector<std::shared_ptr<ClientSocket>> clientSockets;
+	int buflen = 128;
+	char buf[128];
+
+	struct sockaddr_in server_address;
+
+	std::vector<std::shared_ptr<Client>> clients;
 	std::vector<std::thread> threads;
+	std::vector<std::shared_ptr<Room>> rooms;
 };
 
-void func(std::shared_ptr<ClientSocket>);
+void func(std::shared_ptr<Client>);
+
+#endif
