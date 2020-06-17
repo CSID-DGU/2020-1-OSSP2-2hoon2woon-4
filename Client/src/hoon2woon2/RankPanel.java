@@ -100,6 +100,7 @@ public class RankPanel extends JPanel{
 	 * The Tetris instance
 	 */
 	private Tetris tetris;
+	private Client client;
 	
 	/**
 	 * score save & load
@@ -108,8 +109,10 @@ public class RankPanel extends JPanel{
 
 	private static Dimension d_start;
 	
-	public RankPanel(Tetris tetris) {
+	public RankPanel(Tetris tetris, Client client) {
 		this.tetris = tetris;
+		this.client = client;
+		
 		//high_score = new int[3];
 		System.out.println(System.getProperty("user.dir") );
 		try {
@@ -130,6 +133,7 @@ public class RankPanel extends JPanel{
 			bufferedInputStream.read(encr);
 			
 			bufferedInputStream.close();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -154,8 +158,10 @@ public class RankPanel extends JPanel{
 		g.drawString(Integer.toString(high_score), LARGE_INSET, offset += TEXT_STRIDE);
 		
 		g.drawString("Online Ranking", SMALL_INSET, offset = ONLINE_INSET);
-			}
+		for(int i = 0; i < 10; i++)
+			g.drawString(client.ranking[i], LARGE_INSET, offset += TEXT_STRIDE);
 		}
+	}
 	
 	private void updateScore() {
 		if(tetris.getScore() > high_score)
