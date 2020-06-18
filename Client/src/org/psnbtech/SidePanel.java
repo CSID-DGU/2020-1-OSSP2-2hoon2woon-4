@@ -117,7 +117,7 @@ public class SidePanel extends JPanel {
 		d_start = new Dimension(200, BoardPanel.PANEL_HEIGHT);
 		setSize(d_start);
 		//setPreferredSize(d_start);
-		setBackground(Color.BLACK);
+		setBackground(Color.YELLOW);
 	}
 	
 	/**
@@ -157,9 +157,9 @@ public class SidePanel extends JPanel {
 		g.setFont(LARGE_FONT);
 		g.drawString("Controls", SMALL_INSET, offset = CONTROLS_INSET);
 		g.setFont(SMALL_FONT);
-		g.drawString("← - Move Left", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("→ - Move Right", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("↓ - Drop", LARGE_INSET, offset += TEXT_STRIDE);
+		g.drawString("�넀 - Move Left", LARGE_INSET, offset += TEXT_STRIDE);
+		g.drawString("�넂 - Move Right", LARGE_INSET, offset += TEXT_STRIDE);
+		g.drawString("�넃 - Drop", LARGE_INSET, offset += TEXT_STRIDE);
 		g.drawString("Z - Rotate Anticlockwise", LARGE_INSET, offset += TEXT_STRIDE);
 		g.drawString("X - Rotate Clockwise", LARGE_INSET, offset += TEXT_STRIDE);
 		g.drawString("C - Hold", LARGE_INSET, offset += TEXT_STRIDE);
@@ -243,7 +243,7 @@ public class SidePanel extends JPanel {
 			 * Calculate the top left corner (origin) of the piece.
 			 */
 			int startX = (SQUARE_CENTER_X + 5 + SQUARE_SIZE + (cols * TILE_SIZE / 2));
-			// TODO : GoWoon - 5�씪�뒗 �닽�옄濡� �븯�뱶�븯寃� 議곗젙�빐���뒗�뜲 諛붽씀湲� !
+			// TODO : GoWoon - 5占쎌뵬占쎈뮉 占쎈떭占쎌쁽嚥∽옙 占쎈릭占쎈굡占쎈릭野껓옙 鈺곌퀣�젟占쎈퉸占쏙옙占쎈뮉占쎈쑓 獄쏅떽��疫뀐옙 !
 			int startY = (SQUARE_CENTER_Y - (rows * TILE_SIZE / 2));
 
 			/*

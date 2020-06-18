@@ -39,7 +39,7 @@ public class Client {
 
 		try {
 			socket = new Socket();
-			prop.load(new FileInputStream(getP+"\\"+inipath));
+			prop.load(new FileInputStream(inipath));
 			connect();
 		} catch(IOException e) {
 			e.printStackTrace();

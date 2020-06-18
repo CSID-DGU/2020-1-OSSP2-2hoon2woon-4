@@ -494,7 +494,6 @@ public class BoardPanel extends JPanel {
 		}
 	}
 
-
 	//TODO comment
 	public void drawItem(int x, int y, int num, Graphics g){
 		g.setColor(Color.white);
@@ -539,7 +538,6 @@ public class BoardPanel extends JPanel {
 	}
 
 	public TileType[][] getTiles(){ return this.tiles; }
-
 
 		public Dimension getDim() {
 			return d_start;
