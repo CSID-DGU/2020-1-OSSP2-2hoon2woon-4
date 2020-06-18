@@ -184,9 +184,19 @@ public class Client {
 		return this.userid;
 	}
 	
-	public void rank() {
+	public String[] rank() {
 		send("rank");
-		for(int i = 0; i < 10; i++)
-			ranking[i] = receive();
+		String receiverank = receive();
+		ranking = receiverank.split("/");
+		return ranking;
+	}
+	public String[] rankupdate(int score) {
+		if(isLogined())
+		{
+			send("rankupdate");
+			send(Integer.toString(score));
+			receive();
+		}
+		return rank();
 	}
 }

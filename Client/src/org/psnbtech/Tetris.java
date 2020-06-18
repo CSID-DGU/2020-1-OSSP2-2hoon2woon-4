@@ -559,7 +559,7 @@ public class Tetris extends JFrame implements ActionListener{
 		rotationIndex = true;
 		reverseIndex = false;
 		
-		client.rank();
+		rank.rankup();
 		
 		/*
 		 * Setup the timer to keep the game from running before the user presses enter
@@ -667,7 +667,7 @@ public class Tetris extends JFrame implements ActionListener{
 				else{
 					score += 50 << cleared;
 				}
-				multiPlay.attack(cleared);
+				//multiPlay.attack(cleared);
 			}
 			
 			/*
@@ -826,6 +826,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 */
 		if(!board.isValidAndEmpty(currentType, currentCol, currentRow, currentRotation)) {
 			rank.uploadScore();
+			rank.rankup(score);
 			this.isGameOver = true;
 			logicTimer.setPaused(true);
 			//MediaPlayer p = new MediaPlayer(s_gameover);
