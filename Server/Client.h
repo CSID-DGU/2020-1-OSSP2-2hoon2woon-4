@@ -25,6 +25,7 @@ private:
 	bool regist();
 	bool rank();
 	bool exit();
+	bool rankupdate();
 
 public:
 	Client(int, sockaddr_in, Server&);
