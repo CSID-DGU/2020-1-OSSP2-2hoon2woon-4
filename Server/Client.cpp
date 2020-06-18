@@ -74,11 +74,12 @@ void Client::run()
 	{
 		std::fill(buf, buf + BUF_LEN, '\0');
 		readLen = read(client_fd, buf, BUF_LEN);
-		fprintf(log, "%s", buf);
+		fprintf(log, "%s\n", buf);
 		if(readLen < 1) break;
-		buf[readLen - 1] = '\0';
 		if(strcmp("login", buf) == 0) login();
 		else if(strcmp("register", buf) == 0) regist();
+		else if(strcmp("rank", buf) == 0) rank();
+		else if(strcmp("rankupdate", buf) == 0) rankupdate();
 		else if(strcmp("join", buf) == 0)
 		{
 			if(room)
@@ -275,7 +276,51 @@ bool Client::regist()
 
 bool Client::rank()
 {
+	if(sqlconnection != NULL)
+	{
+		std::string query = "select score, userid from tetris.users order by score desc";
+		if(mysql_query(sqlconnection, query.c_str()))
+			fprintf(log, "%d error: %s, %d\n", mysql_errno(&sqlconn), mysql_error(&sqlconn));
+		sql_result = mysql_store_result(sqlconnection);
+		int i = 0;
+		std::string ranking = "";
+		for(i = 0; i < mysql_num_rows(sql_result); i++)
+		{
+			sql_row = mysql_fetch_row(sql_result);
+			ranking += (std::to_string(i+1) + "." + sql_row[0] + ":" + sql_row[1] + "/");
+		}
+		write(client_fd, ranking.c_str(), 256);
+	}
+	else
+	{
+		write(client_fd, " ", 1);
+	}
+}
 
+bool Client::rankupdate()
+{
+	std::fill(buf, buf + BUF_LEN, '\0');
+	readLen = read(client_fd, buf, BUF_LEN);
+	if(sqlconnection != NULL)
+	{
+		int score = atoi(buf);
+		std::string query = "select score from tetris.users where userid='" + userid + "'";
+		if(mysql_query(sqlconnection, query.c_str()))
+			fprintf(log, "%d error %s, %d\n", mysql_errno(&sqlconn), mysql_error(&sqlconn));
+		sql_result = mysql_store_result(sqlconnection);
+		if(mysql_num_rows(sql_result) != 0)
+		{
+			sql_row = mysql_fetch_row(sql_result);
+			if(score > atoi(sql_row[0]))
+			{
+				std::string query = "update tetris.users set score=" + std::to_string(score) + " where userid='" + userid +"'";
+				if(mysql_query(sqlconnection, query.c_str()))
+					fprintf(log, "%d error %s, %d\n", mysql_errno(&sqlconn), mysql_error(&sqlconn));
+			}
+		}
+		fprintf(log, "%s\n", query.c_str());
+	}
+	write(client_fd, " ", 1);
 }
 
 void Client::game()
