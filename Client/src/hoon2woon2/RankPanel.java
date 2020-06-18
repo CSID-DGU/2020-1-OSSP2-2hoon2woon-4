@@ -118,7 +118,7 @@ public class RankPanel extends JPanel{
 		//high_score = new int[3];
 		System.out.println(System.getProperty("user.dir") );
 		try {
-			FileInputStream fileInputStream = new FileInputStream("Bscore");
+			FileInputStream fileInputStream = new FileInputStream("/Users/gounchoi/Desktop/dongguk/2020-3-2/OSSP/2020-1-OSSP2-2hoon2woon-4/Client/Bscore");
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 			
 			byte[] encr = new byte[16];
