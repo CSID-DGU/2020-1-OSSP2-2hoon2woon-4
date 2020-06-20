@@ -1137,7 +1137,7 @@ public class Tetris extends JFrame implements ActionListener{
 				isGameOver = false;
 				isNewGame = true;
 				mode = 3;
-				// MultiFrame m = new MultiFrame(this,client);
+				MultiFrame m = new MultiFrame(this,client);
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "You does not login yet. Please login your account first.");
