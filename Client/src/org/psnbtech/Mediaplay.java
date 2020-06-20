@@ -16,7 +16,7 @@ public class Mediaplay {
         AudioFormat format;
         DataLine.Info info;
 
-        music = new File(new File("").getAbsolutePath()+File.separator+"Client"+ File.separator+ "resources" + File.separator+"Musics"+ File.separator+fileName);
+        music = new File(new File("").getAbsolutePath() + File.separator+ "resources" + File.separator+"Musics"+ File.separator+fileName);
 
         Clip clip;
 
