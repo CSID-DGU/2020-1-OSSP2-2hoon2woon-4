@@ -13,6 +13,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.*;
 
 import java.util.ArrayList;
 import java.io.File;
@@ -238,14 +242,19 @@ public class Tetris extends JFrame implements ActionListener{
     * 2020.06.09
 	* */
 	String getpath = Paths.get("").toUri().toString();
-    /*final JFXPanel fxPanel = new JFXPanel();
-	Media s_backgroundmusic = new Media(getpath+"Client/resources/Musics/backgroundmusic.mp3");
-    Media s_gameover = new Media(getpath+"Client/resources/Musics/gameover.mp3");
-    Media s_tMove = new Media(getpath+"Client/resources/Musics/t_move.wav");
-    Media s_tharddrop = new Media(getpath+"Client/resources/Musics/t_harddrop.wav");
-    Media s_trotate = new Media(getpath+"Client/resources/Musics/t_rotate.wav");
-    Media s_hold = new Media(getpath+"Client/resources/Musics/hold.wav");*/
-  
+	public void Play_music(String fileName){
+		try {
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File(fileName));
+			Clip clip = AudioSystem.getClip();
+			clip.stop();
+			clip.open();
+			clip.start();
+		} catch (Exception e) {
+			//TODO: handle exception
+		}
+	}
+	
+
 
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
@@ -264,9 +273,7 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * play music
 		 */
-		//MediaPlayer p_b = new MediaPlayer(s_backgroundmusic);
-		//p_b.setVolume(0.3);
-		//p_b.play();
+		Play_music("resource/backgroundmusic.mp3");
 
 		client = c;
 		
