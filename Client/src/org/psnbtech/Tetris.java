@@ -651,6 +651,7 @@ public class Tetris extends JFrame implements ActionListener{
 			 */
 			int cleared = board.checkLines();
 			if(cleared > 0) {
+				player.play_music("t_break.wav");
 				if(scoreIndex){
 					score += (50 << cleared)*2;
 				}
