@@ -16,6 +16,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
@@ -52,8 +53,10 @@ public class Main extends JFrame{
         this.setSize(img_width,img_height+30);
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setResizable(false);
+        this.setResizable(true);
+        this.setLayout(null);
         this.setLocationRelativeTo(null);
+        this.setBackground(new Color(0,0,0));
 
         myPanel panel = new myPanel();
         panel.setBounds(0, 0, img_width, img_height);
@@ -124,7 +127,7 @@ public class Main extends JFrame{
 
     class myPanel extends JPanel{
         public void paint(Graphics g){
-            g.drawImage(img, 0, 0, this);
+            g.drawImage(img, this.getX() + this.getWidth()/2 - img_width/2, this.getY() + this.getHeight()/2 - img_height/2, this);
         }
     }
 
