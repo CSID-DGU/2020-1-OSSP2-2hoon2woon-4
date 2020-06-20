@@ -101,7 +101,7 @@ public class Client {
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, new String(buf).substring(0,16));
+				JOptionPane.showMessageDialog(null, "login failed");
 				return false;
 			}
 		} catch(IOException e) {
