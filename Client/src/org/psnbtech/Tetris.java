@@ -12,17 +12,26 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.swing.*;
 
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+
 import hoon2woon2.*;
+
 import hoon2woon2.Items.ItemManager;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+//import javafx.embed.swing.JFXPanel;
+//import javafx.scene.media.Media;
+//import javafx.scene.media.MediaPlayer;
 
 
 /**
@@ -196,6 +205,9 @@ public class Tetris extends JFrame implements ActionListener{
 	
 	private int addTimer=1;
 	
+	
+	private int gamer = 1; //chacha
+	
 	/** 2020-04-28 Seungun-Park
 	 */
 	//program menu
@@ -232,14 +244,9 @@ public class Tetris extends JFrame implements ActionListener{
     * 2020.06.09
 	* */
 	String getpath = Paths.get("").toUri().toString();
-    final JFXPanel fxPanel = new JFXPanel();
-	Media s_backgroundmusic = new Media(getpath+"Client/resources/Musics/backgroundmusic.mp3");
-    Media s_gameover = new Media(getpath+"Client/resources/Musics/gameover.mp3");
-    Media s_tMove = new Media(getpath+"Client/resources/Musics/t_move.wav");
-    Media s_tharddrop = new Media(getpath+"Client/resources/Musics/t_harddrop.wav");
-    Media s_trotate = new Media(getpath+"Client/resources/Musics/t_rotate.wav");
-    Media s_hold = new Media(getpath+"Client/resources/Musics/hold.wav");
-  
+	Mediaplay player = new Mediaplay();
+	
+
 
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
@@ -258,10 +265,8 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * play music
 		 */
-		MediaPlayer p_b = new MediaPlayer(s_backgroundmusic);
-		p_b.setVolume(0.3);
-		p_b.play();
-
+		player.play_music("backgroundmusic.wav");
+		
 		client = c;
 		
 		//loginframe = new LoginFrame(this, client);
@@ -271,7 +276,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 */
 		this.board = new BoardPanel(this);
 		this.side = new SidePanel(this);
-		this.rank = new RankPanel(this);
+		this.rank = new RankPanel(this, client);
 		this.tetrisBag = new ArrayList<Integer>();
 		
 		/**2020-04-28 Seungun-Park
@@ -335,8 +340,7 @@ public class Tetris extends JFrame implements ActionListener{
 				case KeyEvent.VK_DOWN:
 					if(!isPaused && dropCooldown == 0) {
 						logicTimer.setCyclesPerSecond(25.0f);
-						MediaPlayer p = new MediaPlayer(s_tMove);
-						p.play();
+						player.play_music("t_move.wav");
 					}
 					break;
 
@@ -354,15 +358,13 @@ public class Tetris extends JFrame implements ActionListener{
 					if(reverseIndex){
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol++;
-							MediaPlayer p = new MediaPlayer(s_tMove);
-							p.play();
+							player.play_music("t_move.wav");
 						}
 					}
 					else{
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol--;
-							MediaPlayer p = new MediaPlayer(s_tMove);
-							p.play();
+							player.play_music("t_move.wav");
 						}
 					}
 					break;
@@ -376,15 +378,13 @@ public class Tetris extends JFrame implements ActionListener{
 					if(reverseIndex){
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol--;
-							MediaPlayer p = new MediaPlayer(s_tMove);
-							p.play();
+							player.play_music("t_move.wav");
 						}
 					}
 					else{
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol++;
-							MediaPlayer p = new MediaPlayer(s_tMove);
-							p.play();
+							player.play_music("t_move.wav");
 						}
 					}
 					break;
@@ -404,8 +404,7 @@ public class Tetris extends JFrame implements ActionListener{
 					if(rotationIndex){
 						if(!isPaused) {
 							rotatePiece((currentRotation == 0) ? 3 : currentRotation - 1);
-							MediaPlayer p = new MediaPlayer(s_trotate);
-							p.play();
+							player.play_music("t_rotate.wav");
 						}
 					}
 					break;
@@ -420,8 +419,7 @@ public class Tetris extends JFrame implements ActionListener{
 					if(rotationIndex){
 						if(!isPaused) {
 							rotatePiece((currentRotation == 3) ? 0 : currentRotation + 1);
-							MediaPlayer p = new MediaPlayer(s_trotate);
-							p.play();
+							player.play_music("t_rotate.wav");
 						}
 					}
 					break;
@@ -457,8 +455,7 @@ public class Tetris extends JFrame implements ActionListener{
 				 */
 				case KeyEvent.VK_SHIFT:
 					holdTile();
-					MediaPlayer p = new MediaPlayer(s_hold);
-					p.play();
+					player.play_music("hold.wav");
 					break;
 				
 				/*
@@ -475,8 +472,7 @@ public class Tetris extends JFrame implements ActionListener{
 					}
 					currentRow+=cnt-1;
 					updateGame();
-					MediaPlayer p1 = new MediaPlayer(s_tharddrop);
-					p1.play();
+					player.play_music("t_harddrop.wav");
 					break;
 				}
 			}
@@ -553,6 +549,8 @@ public class Tetris extends JFrame implements ActionListener{
 		rotationIndex = true;
 		reverseIndex = false;
 		
+		rank.rankup();
+		
 		/*
 		 * Setup the timer to keep the game from running before the user presses enter
 		 * to start it.
@@ -610,7 +608,7 @@ public class Tetris extends JFrame implements ActionListener{
 			}
 
 			//Display the window to the user.
-			renderGame();
+			renderGame(this.gamer);
 
 			/*
 			 * Sleep to cap the framerate.
@@ -653,13 +651,14 @@ public class Tetris extends JFrame implements ActionListener{
 			 */
 			int cleared = board.checkLines();
 			if(cleared > 0) {
+				player.play_music("t_break.wav");
 				if(scoreIndex){
 					score += (50 << cleared)*2;
 				}
 				else{
 					score += 50 << cleared;
 				}
-				multiPlay.attack(cleared);
+				//multiPlay.attack(cleared);
 			}
 			
 			/*
@@ -727,7 +726,8 @@ public class Tetris extends JFrame implements ActionListener{
 	/**
 	 * Forces the BoardPanel and SidePanel to repaint.
 	 */
-	private void renderGame() {
+	private void renderGame(int gamer) {	//chacha
+		if(gamer == 1) {
 		d_now = getSize();
 		board.resize((d_now.getHeight() / d_start.getHeight()) < (d_now.getWidth() / d_start.getWidth()) ? (d_now.getHeight()/ d_start.getHeight()) : (d_now.getWidth() / d_start.getWidth()));
 		int left = (d_now.width - board.getWidth()) / 2;
@@ -737,7 +737,17 @@ public class Tetris extends JFrame implements ActionListener{
 		side.setBounds(left + board.getWidth(), top, side.getWidth(), side.getHeight());
 		side.repaint();	
 		rank.repaint();
+		}
+		else {
+			d_now = getSize();
+			board.resize((d_now.getHeight() / d_start.getHeight()) < (d_now.getWidth() / d_start.getWidth()) ? (d_now.getHeight()/ d_start.getHeight()) : (d_now.getWidth() / d_start.getWidth()));
+			int left = (d_now.width - board.getWidth()) / 2;
+			int top = ((d_now.height - 67) - board.getHeight()) / 2;
+			board.setBounds(left,top,board.getWidth(), board.getHeight());
+			board.repaint();
+		}
 	}
+
 	
 	/**
 	 * Resets the game variables to their default values at the start
@@ -807,10 +817,10 @@ public class Tetris extends JFrame implements ActionListener{
 		 */
 		if(!board.isValidAndEmpty(currentType, currentCol, currentRow, currentRotation)) {
 			rank.uploadScore();
+			rank.rankup(score);
 			this.isGameOver = true;
 			logicTimer.setPaused(true);
-			MediaPlayer p = new MediaPlayer(s_gameover);
-			p.play();
+			player.play_music("gameover.wav");
 		}		
 	}
 
@@ -1028,6 +1038,14 @@ public class Tetris extends JFrame implements ActionListener{
 
 		board.addPiece(currentType, randCol, randRow, randRot);
 	}
+	
+	public int getGamer() {	//chacha
+		return gamer;
+	}
+	
+	public void setGamer(int num) { //chacha
+		this.gamer = num;
+	}
 
 	/**
 	 * 2020-04-28 Seungun-Park
@@ -1039,7 +1057,9 @@ public class Tetris extends JFrame implements ActionListener{
 		 * then start new game
 		 */
 		if(event.getSource() == item_new) {
-		resetGame();		// 2020.06.10 cha seung hoon _ complete mew Game button
+			resetGame(); // 2020.06.10 cha seung hoon _ complete mew Game button
+			isGameOver = true;
+			isNewGame = true;
 		}
 		/*
 		 * if click exit menu
@@ -1110,6 +1130,18 @@ public class Tetris extends JFrame implements ActionListener{
 			isGameOver = false;
 			isNewGame = true;
 			mode = 1;
+		}
+		if(event.getSource()==item_multi) {
+			if(client.isLogined()) {
+				isPaused = false;
+				isGameOver = false;
+				isNewGame = true;
+				mode = 3;
+				// MultiFrame m = new MultiFrame(this,client);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "You does not login yet. Please login your account first.");
+			}
 		}
 	}
 }

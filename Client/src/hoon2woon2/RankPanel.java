@@ -96,23 +96,29 @@ public class RankPanel extends JPanel{
 	private Cipher cipher;
 	private SecretKeySpec secretKeySpec;
 	
+	private static String[] ranking;
+	
 	/**
 	 * The Tetris instance
 	 */
 	private Tetris tetris;
+	private Client client;
 	
 	/**
 	 * score save & load
 	 */
 	private static final File file = new File("Bscore");
-	
+
 	private static Dimension d_start;
 	
-	public RankPanel(Tetris tetris) {
+	public RankPanel(Tetris tetris, Client client) {
 		this.tetris = tetris;
+		this.client = client;
+		
 		//high_score = new int[3];
+		System.out.println(System.getProperty("user.dir") );
 		try {
-			FileInputStream fileInputStream = new FileInputStream(file);
+			FileInputStream fileInputStream = new FileInputStream("Bscore");
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 			
 			byte[] encr = new byte[16];
@@ -129,6 +135,7 @@ public class RankPanel extends JPanel{
 			bufferedInputStream.read(encr);
 			
 			bufferedInputStream.close();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -141,17 +148,39 @@ public class RankPanel extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+		if(tetris.getGamer()==1) {	// chacha
+			super.paintComponent(g);
 		
-		g.setColor(DRAW_COLOR);
+			g.setColor(DRAW_COLOR);
 		
-		int offset;
+			int offset;
 		
-		g.setFont(LARGE_FONT);
-		g.drawString("Local High Score", SMALL_INSET, offset = LOCAL_INSET);
-		g.drawString(Integer.toString(high_score), LARGE_INSET, offset += TEXT_STRIDE);
+			g.setFont(LARGE_FONT);
+			g.drawString("Local High Score", SMALL_INSET, offset = LOCAL_INSET);
+			g.drawString(Integer.toString(high_score), LARGE_INSET, offset += TEXT_STRIDE);
 		
-		g.drawString("Online Ranking", SMALL_INSET, offset = ONLINE_INSET);
+			g.drawString("Online Ranking", SMALL_INSET, offset = ONLINE_INSET);
+			if(ranking.length > 11)
+			{
+				for(int i = 0; i < 11; i++)
+					g.drawString(ranking[i], SMALL_INSET, offset += TEXT_STRIDE);
+			}
+			else
+			{
+				for(int i = 0; i < ranking.length - 1; i++)
+					g.drawString(ranking[i],  SMALL_INSET, offset += TEXT_STRIDE);
+			}
+		}
+	}
+	
+	public void rankup()
+	{
+		ranking = client.rank();
+	}
+	
+	public void rankup(int score)
+	{
+		ranking = client.rankupdate(score);
 	}
 	
 	private void updateScore() {
