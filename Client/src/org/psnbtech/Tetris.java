@@ -13,9 +13,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.*;
 
 import java.util.ArrayList;
@@ -242,17 +244,7 @@ public class Tetris extends JFrame implements ActionListener{
     * 2020.06.09
 	* */
 	String getpath = Paths.get("").toUri().toString();
-	public void Play_music(String fileName){
-		try {
-			AudioInputStream ais = AudioSystem.getAudioInputStream(new File(fileName));
-			Clip clip = AudioSystem.getClip();
-			clip.stop();
-			clip.open();
-			clip.start();
-		} catch (Exception e) {
-			//TODO: handle exception
-		}
-	}
+	Mediaplay player = new Mediaplay();
 	
 
 
@@ -273,8 +265,8 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * play music
 		 */
-		Play_music("resource/backgroundmusic.mp3");
-
+		player.play_music("backgroundmusic.mp3");
+		
 		client = c;
 		
 		//loginframe = new LoginFrame(this, client);
@@ -1154,7 +1146,7 @@ public class Tetris extends JFrame implements ActionListener{
 				isGameOver = false;
 				isNewGame = true;
 				mode = 3;
-				MultiFrame m = new MultiFrame(this,client);
+				// MultiFrame m = new MultiFrame(this,client);
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "You does not login yet. Please login your account first.");
