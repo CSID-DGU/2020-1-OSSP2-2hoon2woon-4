@@ -98,15 +98,6 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 			
 		if(roomInfo.equals("noroominfo"))
 			isEmpty = true;
-//		addWindowListener(new WindowAdapter(){
-//			public void windowClosing(WindowEvent e) {
-//				JFrame frame = (JFrame)e.getWindow();
-//				client = null;
-//				tetris.loginframe = null;
-//				frame.dispose();
-//			}
-//		});
-
 				
 		setSize(450, 200);
 		setLocation(t.getLocation().x+t.getSize().width/2-180, t.getLocation().y+t.getSize().height/2-60);
@@ -167,9 +158,8 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 	}
 	
 	public void createRoom(String roomname) {
-		System.out.println(myRoomInfo);
 		ReadyFrame ready = new ReadyFrame(1,roomname);
-		System.out.println(myRoomInfo);
+		dispose();
 	}
 	
 	public void actionPerformed(ActionEvent event) {
@@ -193,8 +183,6 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 				createRoom(myRoomInfo);
 				System.out.println("create room");
 			}
-			//			enterRoom(roomName);
-			//			 dispose();
 		}
 	}
 	
