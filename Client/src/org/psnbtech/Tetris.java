@@ -314,6 +314,9 @@ public class Tetris extends JFrame implements ActionListener{
 		add(rank);
 		add(board);
 		add(side);
+
+		rank.rankup();
+		rank.repaint();
 		
 		/*
 		 * Adds a custom anonymous KeyListener to the frame.
