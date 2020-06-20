@@ -1,12 +1,9 @@
 package hoon2woon2;
 
 import java.io.File;
-import java.nio.file.Paths;
-import javax.swing.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.psnbtech.*;
@@ -17,9 +14,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
-import javax.imageio.ImageIO;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
