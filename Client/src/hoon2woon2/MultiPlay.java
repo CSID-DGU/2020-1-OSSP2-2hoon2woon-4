@@ -164,4 +164,18 @@ public class MultiPlay {
         randomNum = random.nextInt(myBoard.COL_COUNT);
         return randomNum;
     }
+
+    public void finishGame(){
+        String message = "finish Game";
+        client.send(message);
+    }
+
+    public void afterFinishGame(){
+        String message = "dummy";
+        while(true){
+            client.send(message);
+        }
+    }
+
+
 }

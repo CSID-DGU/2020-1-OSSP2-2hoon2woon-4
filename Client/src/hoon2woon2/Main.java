@@ -2,11 +2,9 @@
 package hoon2woon2;
 
 import java.io.File;
-import javax.swing.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.psnbtech.*;
@@ -16,43 +14,45 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.BorderLayout;
-import java.awt.image.BufferedImage;
+import java.awt.Color;
 import java.awt.Toolkit;
-import javax.imageio.ImageIO;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
 public class Main extends JFrame{
-    /**
-     * Kim Jihoon
-     * Main UI
-     * 2020.06.11
-     */
-    private static final long serialVersionUID = 5622708864988613307L;
+	/**
+	 * Kim Jihoon
+	 * Main UI
+	 * 2020.06.11
+	 */
+	private static final long serialVersionUID = 5622708864988613307L;
+	
+	public static Tetris tetris;
+	public static Client client;
+	public static MultiPlay multi;
+	public static BoardPanel board;
+	public static SidePanel side;
 
-    public static Tetris tetris;
-    public static Client client;
-    public static MultiPlay multi;
-    public static BoardPanel board;
-    public static SidePanel side;
+	public static int num = 0;
+	
+	Image img = Toolkit.getDefaultToolkit().createImage(new File("").getAbsolutePath() + File.separator+ "resources" + File.separator+"Images"+ File.separator+ "Main_Image.gif");
+    ImageIcon start1 = new ImageIcon(new File("").getAbsolutePath() + File.separator+ "resources" + File.separator+"Images"+ File.separator+ "start1.jpg");
+    ImageIcon start2 = new ImageIcon(new File("").getAbsolutePath() + File.separator+ "resources" + File.separator+"Images"+ File.separator+ "start2.jpg");
 
-    public static int num = 0;
-    Image img = Toolkit.getDefaultToolkit().createImage("Client/resources/Images/Main_Image.gif");
-    ImageIcon start1 = new ImageIcon("Client/resources/Images/start1.jpg");
-    ImageIcon start2 = new ImageIcon("Client/resources/Images/start2.jpg");
-
-    Image img_size = new ImageIcon("Client/resources/Images/Main_Image.gif").getImage();
+    Image img_size = new ImageIcon(new File("").getAbsolutePath() + File.separator+ "resources" + File.separator+"Images"+ File.separator+ "Main_Image.gif").getImage();
     int img_width = img_size.getWidth(null);
     int img_height = img_size.getHeight(null);
 
     public Main(){
         this.setTitle("Tetris main");
-        this.setSize(img_width,img_height+48);
+        this.setSize(img_width,img_height+30);
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setResizable(false);
+        this.setResizable(true);
+        this.setLayout(null);
         this.setLocationRelativeTo(null);
+        this.setBackground(new Color(0,0,0));
 
         myPanel panel = new myPanel();
         panel.setBounds(0, 0, img_width, img_height);
@@ -123,7 +123,7 @@ public class Main extends JFrame{
 
     class myPanel extends JPanel{
         public void paint(Graphics g){
-            g.drawImage(img, 0, 0, this);
+            g.drawImage(img, this.getX() + this.getWidth()/2 - img_width/2, this.getY() + this.getHeight()/2 - img_height/2, this);
         }
     }
 
