@@ -29,9 +29,9 @@ import java.nio.file.Paths;
 import hoon2woon2.*;
 
 import hoon2woon2.Items.ItemManager;
-//import javafx.embed.swing.JFXPanel;
-//import javafx.scene.media.Media;
-//import javafx.scene.media.MediaPlayer;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 /**
@@ -245,7 +245,6 @@ public class Tetris extends JFrame implements ActionListener{
 	* */
 	String getpath = Paths.get("").toUri().toString();
 	Mediaplay player = new Mediaplay();
-	
 
 
 	/**
@@ -266,7 +265,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 * play music
 		 */
 		player.play_music("backgroundmusic_long.wav", -10.0f);
-		
+
 		client = c;
 		
 		//loginframe = new LoginFrame(this, client);
@@ -661,7 +660,9 @@ public class Tetris extends JFrame implements ActionListener{
 				else{
 					score += 50 << cleared;
 				}
-				//multiPlay.attack(cleared);
+				if(mode == 3){
+					multiPlay.attack(cleared);
+				}
 			}
 			
 			/*
@@ -824,6 +825,10 @@ public class Tetris extends JFrame implements ActionListener{
 			this.isGameOver = true;
 			logicTimer.setPaused(true);
 			player.play_music("gameover.wav", 0);
+			if(mode == 3){
+				multiPlay.finishGame();
+				multiPlay.afterFinishGame();
+			}
 		}		
 	}
 
@@ -1093,19 +1098,19 @@ public class Tetris extends JFrame implements ActionListener{
 		}
 		if(event.getSource() == item_basic) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 0;
 		}
 		if(event.getSource() == item_disturb) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 2;
 		}
 		if(event.getSource() == item_item) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 1;
 		}
@@ -1118,26 +1123,26 @@ public class Tetris extends JFrame implements ActionListener{
 		}
 		if(event.getSource() == item_basic) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 0;
 		}
 		if(event.getSource() == item_disturb) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 2;
 		}
 		if(event.getSource() == item_item) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 1;
 		}
 		if(event.getSource()==item_multi) {
 			if(client.isLogined()) {
 				isPaused = false;
-				isGameOver = false;
+				isGameOver = true;
 				isNewGame = true;
 				mode = 3;
 				MultiFrame m = new MultiFrame(this,client);
