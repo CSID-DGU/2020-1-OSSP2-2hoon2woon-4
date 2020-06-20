@@ -1,6 +1,8 @@
 package org.psnbtech;
 
 import java.io.File;
+import java.nio.file.Paths;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -14,7 +16,7 @@ public class Mediaplay {
         AudioFormat format;
         DataLine.Info info;
 
-        music = new File("home"+ File.separator+ "ubuntu"+ File.separator+ "Documents"+ File.separator+ "git"+ File.separator+ "my tetris"+ File.separator+ "2020-1-OSSP2-2hoon2woon-4"+ File.separator+ "Client"+ File.separator+ "resources" + File.separator+"Musics"+ File.separator+fileName);
+        music = new File(new File("").getAbsolutePath()+File.separator+"Client"+ File.separator+ "resources" + File.separator+"Musics"+ File.separator+fileName);
 
         Clip clip;
 
