@@ -49,7 +49,7 @@ public class Main extends JFrame{
 
     public Main(){
         this.setTitle("Tetris main");
-        this.setSize(img_width,img_height+48);
+        this.setSize(img_width,img_height+30);
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
