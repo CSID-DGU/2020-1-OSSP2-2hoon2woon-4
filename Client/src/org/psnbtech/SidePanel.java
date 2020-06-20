@@ -162,7 +162,7 @@ public class SidePanel extends JPanel {
 		g.drawString("�넃 - Drop", LARGE_INSET, offset += TEXT_STRIDE);
 		g.drawString("Z - Rotate Anticlockwise", LARGE_INSET, offset += TEXT_STRIDE);
 		g.drawString("X - Rotate Clockwise", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("C - Hold", LARGE_INSET, offset += TEXT_STRIDE);
+		g.drawString("Shift - Hold", LARGE_INSET, offset += TEXT_STRIDE);
 		g.drawString("Space - Hard Drop", LARGE_INSET, offset += TEXT_STRIDE);
 		g.drawString("P - Pause Game", LARGE_INSET, offset += TEXT_STRIDE);
 		

@@ -1,6 +1,7 @@
 package hoon2woon2;
 
 import java.io.File;
+import java.nio.file.Paths;
 import javax.swing.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,7 +30,7 @@ public class Main extends JFrame{
 	 * 2020.06.11
 	 */
 	private static final long serialVersionUID = 5622708864988613307L;
-
+	
 	public static Tetris tetris;
 	public static Client client;
 	public static MultiPlay multi;
@@ -37,24 +38,106 @@ public class Main extends JFrame{
 	public static SidePanel side;
 
 	public static int num = 0;
-	Image img = Toolkit.getDefaultToolkit().createImage("Client/resources/Images/Main_Image.gif");
-	ImageIcon start1 = new ImageIcon("Client/resources/Images/start1.jpg");
-	ImageIcon start2 = new ImageIcon("Client/resources/Images/start2.jpg");
+	
+	Image img = Toolkit.getDefaultToolkit().createImage(new File("").getAbsolutePath() + File.separator+ "resources" + File.separator+"Images"+ File.separator+ "Main_Image.gif");
+    ImageIcon start1 = new ImageIcon(new File("").getAbsolutePath() + File.separator+ "resources" + File.separator+"Images"+ File.separator+ "start1.jpg");
+    ImageIcon start2 = new ImageIcon(new File("").getAbsolutePath() + File.separator+ "resources" + File.separator+"Images"+ File.separator+ "start2.jpg");
 
-	Image img_size = new ImageIcon("Client/resources/Images/Main_Image.gif").getImage();
-	int img_width = img_size.getWidth(null);
-	int img_height = img_size.getHeight(null);
+    Image img_size = new ImageIcon(new File("").getAbsolutePath() + File.separator+ "resources" + File.separator+"Images"+ File.separator+ "Main_Image.gif").getImage();
+    int img_width = img_size.getWidth(null);
+    int img_height = img_size.getHeight(null);
+
+    public Main(){
+        this.setTitle("Tetris main");
+        this.setSize(img_width,img_height+30);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+
+        myPanel panel = new myPanel();
+        panel.setBounds(0, 0, img_width, img_height);
+
+        JButton singleplaybutton = new JButton("");
+        MyMouseListener listener = new MyMouseListener();
+        singleplaybutton.setHorizontalAlignment(JButton.CENTER);
+        singleplaybutton.setIcon(start1);
+        singleplaybutton.setVisible(true);
+        singleplaybutton.addMouseListener(listener);
+        singleplaybutton.setBorderPainted(false);
+        singleplaybutton.setFocusPainted(false);
+        singleplaybutton.setContentAreaFilled(false);
+
+        singleplaybutton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                num = 1;
+                dispose();
+                System.out.println(num);
+            }
+        });
+
+        this.setLayout( new BorderLayout() );
+        panel.setLayout( new FlowLayout() );
+        panel.add(singleplaybutton);
+        this.add(panel);
+        this.setVisible(true);
+        panel.setVisible(true);
+    }
+
+    class MyMouseListener implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            JButton b = (JButton)e.getSource();
+            b.setIcon(start1);
+            b.setVisible(true);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            JButton b = (JButton)e.getSource();
+            b.setIcon(start1);
+            b.setVisible(true);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            JButton b = (JButton)e.getSource();
+            b.setIcon(start2);
+            b.setVisible(true);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            JButton b = (JButton)e.getSource();
+            b.setIcon(start1);
+            b.setVisible(true);
+        }
+
+    }
+
+    class myPanel extends JPanel{
+        public void paint(Graphics g){
+            g.drawImage(img, 0, 0, this);
+        }
+    }
 
 	public static void main(String[] args) {
-		//new Main();
-		//while(true){
-		//	System.out.println(num);
-		//	if(num==1){
+		new Main();
+		while(true){
+			System.out.println(num);
+			if(num==1){
 				client = new Client();
 				tetris = new Tetris(client);
 				tetris.startGame();
 				multi = new MultiPlay(client);
-		//	}
-		//}
+			}
+		}
 	}
 }

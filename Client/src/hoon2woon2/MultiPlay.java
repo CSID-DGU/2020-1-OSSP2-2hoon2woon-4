@@ -12,7 +12,6 @@ import java.util.Random;
  * TODO comment
 */
 
-
 public class MultiPlay {
     /**
      * gowoon-choi
@@ -48,6 +47,14 @@ public class MultiPlay {
      * TODO comment
      */
     void start(){
+        // TODO gamerCount 할당
+
+        for(int i=0; i<gamerCount; i++){
+            gamersBoard[i] = new BoardPanel(tetris);
+        }
+
+        // TODO 각 유저 아이디와 보드 index 연결하기 > userId2boardIndex
+
         this.tetris.startGame();
     //    this.tetris.startMulti(gamerCount);
      

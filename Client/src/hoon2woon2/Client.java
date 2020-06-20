@@ -29,14 +29,17 @@ public class Client {
 	static byte[] buf;
 	static final String inipath = "server.properties";
 
-
 	private static int user = -1;
 	private static String userid = "";
+	
+	public static String[] ranking;
 	
 	Properties prop = new Properties();
 	
 	public Client(){
-
+		ranking = new String[10];
+		for(int i = 0; i < 10; i++)
+			ranking[i] = "";
 		try {
 			socket = new Socket();
 			prop.load(new FileInputStream(inipath));
@@ -93,6 +96,7 @@ public class Client {
 				user = 1;
 				userid = id;
 				JOptionPane.showMessageDialog(null, "login success");
+				rank();
 				return true;
 			}
 			else
@@ -178,5 +182,21 @@ public class Client {
 
 	public String getUserid(){
 		return this.userid;
+	}
+	
+	public String[] rank() {
+		send("rank");
+		String receiverank = receive();
+		ranking = receiverank.split("/");
+		return ranking;
+	}
+	public String[] rankupdate(int score) {
+		if(isLogined())
+		{
+			send("rankupdate");
+			send(Integer.toString(score));
+			receive();
+		}
+		return rank();
 	}
 }
