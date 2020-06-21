@@ -23,17 +23,19 @@ public:
 
 	void run();
 
-	bool createRoom(Client&, int, std::string);
+	bool createRoom(int, Client&, std::string);
 	bool join(Client&, int, std::string);
 	bool exit();
+	bool getroominfo(int);
+
 private:
 	int number = 0;
 	int server_fd;
 	int port;
 	int backlog;
 
-	int buflen = 128;
-	char buf[128];
+	int buflen = 256;
+	char buf[256];
 
 	struct sockaddr_in server_address;
 

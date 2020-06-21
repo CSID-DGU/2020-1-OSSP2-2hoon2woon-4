@@ -97,40 +97,68 @@ void func(std::shared_ptr<Client> client)
 	printf("Disconnect : %s\n", client->ip());
 }
 
-bool Server::createRoom(Client& c, int bj, std::string bjname)
+bool Server::createRoom(int fd, Client& c, std::string bjname)
 {
-	auto room = std::make_shared<Room>(bj, bjname);
+	std::fill(buf, buf + buflen, '\0');
 
-	rooms.push_back(room);
-
-	c.room = room;
-	write(bj, "create room success", 19);
+	read(fd, buf, buflen);
+	std::string roomname = buf;
+	bool duplicate = true;
+	std::fill(buf, buf + buflen, '\0');
+	if(roomname.length() < 1)
+	{
+		strcpy(buf, "fail");
+	}
+	for(std::vector<std::shared_ptr<Room>>::iterator iter = rooms.begin();
+	    iter != rooms.end(); iter++)
+	{
+		if((*iter)->getName().compare(roomname) == 0)
+		{
+			std::fill(buf, buf + buflen, '\0');
+			strcpy(buf, "fail");
+			duplicate = false;
+			break;
+		}
+	}
+	if(duplicate)
+	{
+		auto room = std::make_shared<Room>(fd, bjname, roomname);
+		rooms.push_back(room);
+		c.room = room;
+		printf("%s\n", room->getName().c_str());
+		strcpy(buf, c.room->getName().c_str());
+	}
+	write(fd, buf, buflen);
+	printf("send room name : %s\n", buf);
 	return true;
 }
 
 bool Server::join(Client& c, int fd, std::string name)
 {
+	std::fill(buf, buf + buflen, '\0');
 	read(fd, buf, buflen);
-	int num = atoi(buf);
-	if(rooms.size() == 0 || num > rooms.size())
+	std::string roomname = buf;
+
+	for(std::vector<std::shared_ptr<Room>>::iterator iter = rooms.begin();
+	    iter != rooms.end(); iter++)
 	{
-		write(fd, "join failed", 11);
-		return false;
-	}
-	if(rooms[num]->number < 4)
-	{
-		(rooms[num]->clients)[rooms[num]->number] = fd;
-		(rooms[num]->names)[rooms[num]->number] = name;
-		c.room = rooms[num];
-		(rooms[num]->number)++;
-		write(fd, "join success : ", 12);
-		write(fd, (rooms[num]->getBjname()).c_str(), 8);
-		return true;
-	}
-	else
-	{
-		write(fd, "join failed", 11);
-		return false;
+		if((*iter)->getName().compare(roomname) == 0)
+		{
+			if((*iter)->number < 4)
+			{
+				((*iter)->clients)[(*iter)->number] = fd;
+				((*iter)->names)[(*iter)->number] = name;
+				c.room = (*iter);
+				write(fd, std::to_string((*iter)->number).c_str(), 1);
+				((*iter)->number)++;
+				return true;
+			}
+			else
+			{
+				write(fd, "fail", 4);
+				return false;
+			}
+		}
 	}
 }
 
@@ -146,4 +174,22 @@ bool Server::exit()
 			}
 			++iter;
 		}
+}
+
+bool Server::getroominfo(int fd)
+{
+	std::string roominfo = "noroominfo";
+	if(rooms.size()>0){
+	roominfo = "";
+	for(std::vector<std::shared_ptr<Room>>::iterator iter = rooms.begin();
+	    iter != rooms.end(); iter++)
+	{
+		printf("1.%s\n", (*iter)->getName().c_str());
+		roominfo += ((*iter)->getName() + "," + std::to_string((*iter)->getNumber()) + "\n");
+	}}
+	char roombuf[1024];
+	std::fill(roombuf, roombuf + 1024, '\0');
+	strcpy(roombuf, roominfo.c_str());
+	printf("%s\n", roombuf);
+	write(fd, roombuf, 1024);
 }

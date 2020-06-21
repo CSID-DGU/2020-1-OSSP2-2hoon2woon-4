@@ -7,15 +7,18 @@ class Room
 {
 public:
 	int number;
-
+	bool game;
+	std::string name;
 public:
-	Room(int, std::string);
+	Room(int, std::string, std::string);
 
 	int getNumber();
 	std::string getBjname();
 
 	int clients[4] = {0, };
 	std::string names[4] = {"", };
+
+	std::string getName();
 };
 
 #endif
