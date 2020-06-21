@@ -128,15 +128,15 @@ public class Main extends JFrame{
     }
 
     public static void main(String[] args) {
-        //new Main();
-        //while(true){
-          //  System.out.println(num);
-            //if(num==1){
+        new Main();
+        while(true){
+          System.out.println(num);
+            if(num==1){
                 client = new Client();
                 tetris = new Tetris(client);
                 tetris.startGame();
-              //  multi = new MultiPlay(client);
-            //}
-        //}
+                multi = new MultiPlay(client);
+            }
+        }
     }
 }
