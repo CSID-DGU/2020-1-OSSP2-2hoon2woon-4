@@ -64,6 +64,7 @@ public class LoginFrame extends JFrame implements ActionListener{
 				JFrame frame = (JFrame)e.getWindow();
 				client = null;
 				tetris.loginframe = null;
+				tetris = null;
 				frame.dispose();
 			}
 		});
@@ -79,8 +80,11 @@ public class LoginFrame extends JFrame implements ActionListener{
 			if(client.login(tf_id.getText(), pf_pw.getPassword())) {
 				client = null;
 				tetris.loginframe = null;
+				tetris = null;
+				
 				dispose();
 			}
 		}
+
 	}
 }
