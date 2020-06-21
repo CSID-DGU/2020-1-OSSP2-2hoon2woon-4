@@ -3,10 +3,7 @@ package org.psnbtech;
 import hoon2woon2.Items.ItemManager;
 import hoon2woon2.MultiPlay;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -354,7 +351,9 @@ public class BoardPanel extends JPanel {
 			 * the messages that are displayed.
 			 */
 			String msg = tetris.isNewGame() ? "TETRIS" : "GAME OVER";
-			if(tetris.isGameOver()) itemManager.clear();
+			if(tetris.getMode() == 2){
+				if(tetris.isGameOver()) itemManager.clear();
+			}
 			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
 			g.setFont(SMALL_FONT);
 			msg = "Press Enter to Play" + (tetris.isNewGame() ? "" : " Again");
@@ -435,7 +434,7 @@ public class BoardPanel extends JPanel {
 			}
 			itemManager = tetris.getItemManager();
 			for(int i=0; i<itemManager.getItems().size(); i++){
-				drawItem(itemManager.getItems().get(i).getX()*TILE_SIZE + TILE_SIZE/4,(itemManager.getItems().get(i).getY()-HIDDEN_ROW_COUNT)*TILE_SIZE + TILE_SIZE/2,itemManager.getItems().get(i).getItemIndex(),g);
+				drawItem(itemManager.getItems().get(i).getX()*TILE_SIZE,(itemManager.getItems().get(i).getY()-HIDDEN_ROW_COUNT)*TILE_SIZE + TILE_SIZE * 2,itemManager.getItems().get(i).getImage(),g);
 			}
 		}
 
@@ -496,9 +495,8 @@ public class BoardPanel extends JPanel {
 
 
 	//TODO comment
-	public void drawItem(int x, int y, int num, Graphics g){
-		g.setColor(Color.white);
-		g.drawString(Integer.toString(num),x, y);
+	public void drawItem(int x, int y, Image image, Graphics g){
+		g.drawImage(image, x, y, TILE_SIZE, TILE_SIZE, this);
 	}
 
 	public void addUnremovableLine(){
