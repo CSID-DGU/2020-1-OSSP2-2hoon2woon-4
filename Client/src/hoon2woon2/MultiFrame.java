@@ -13,6 +13,9 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.psnbtech.Tetris;
 
@@ -23,16 +26,19 @@ import org.psnbtech.Tetris;
  * then call loginframe and start login
  */
 
-public class MultiFrame extends JFrame implements ActionListener{
+public class MultiFrame extends JFrame implements ActionListener, ListSelectionListener{
 	
 	//private static final long serialVersionUID = -3742138942119483831L;
 	Vector <String> vec = new Vector<String>();
 	private JList lstRoom;
 	private String roomInfo;
+	private String myRoomInfo;
+	private String message;
+	private boolean isEmpty=false;
 	public static JLabel la_roomName = new JLabel("Room Name:");
 	public static JTextField tf_roomName = new JTextField(12);
 	public static JButton btn_reload = new JButton("Reload");
-	public static JButton btn_MakeorEnter = new JButton("Make Room / Enter");
+	public static JButton btn_MakeRoom = new JButton("Make Room");
 	Client client;
 	Tetris tetris;
 	
@@ -42,41 +48,56 @@ public class MultiFrame extends JFrame implements ActionListener{
 		client = c;
 		tetris = t;
 		
-		//String roomInfo = c.receive();
-		
 		setLayout(new FlowLayout());
+		client.send("getroominfo");
 		
-		String roomInfo = "let's play,2\nbattle,4\ntetris Gosu Please,2\naaaa,1\nbbbbbb,2\nacacacaca,1\na,1\nb,2\nc,3";
+		try {
 		
-		updateVector(roomInfo);
-		lstRoom = new JList(vec);
+		System.out.println("1.");
+		roomInfo = client.receive();
+		System.out.println(roomInfo);
+		}
+		catch(Exception e) {
+		e.printStackTrace();	
+		}
 		
+		System.out.print	("roominfo: "+roomInfo);
+		System.out.println("aa");
+		System.out.println(roomInfo.equals("noroomin"));
+		
+		if(roomInfo.equals("noroominfo")) {
+			updateVector(roomInfo);
+			lstRoom = new JList(vec);	
+		}
 		
 		btn_reload.addActionListener(this);
-		btn_MakeorEnter.addActionListener(this);
+		btn_MakeRoom.addActionListener(this);
 		btn_reload.setBounds(265, 70, 80, 20);
 		la_roomName.setBounds(10,10,90,25);
 		tf_roomName.setBounds(90,10,110,25);
-		btn_MakeorEnter.setBounds(210,10,140,25);
+		btn_MakeRoom.setBounds(210,10,140,25);
+		
+		if(roomInfo.equals("noroominfo")) {
 		lstRoom.setBounds(10,40,250,200);
 		lstRoom.setVisibleRowCount(5);
+		lstRoom.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		lstRoom.addListSelectionListener(this);
+		}
 		
 		add(la_roomName);
 		add(tf_roomName);
-		add(btn_MakeorEnter);
-		add(lstRoom);
-		add(new JScrollPane(lstRoom));
-		add(btn_reload);
+		add(btn_MakeRoom);
 		
-//		addWindowListener(new WindowAdapter(){
-//			public void windowClosing(WindowEvent e) {
-//				JFrame frame = (JFrame)e.getWindow();
-//				client = null;
-//				tetris.loginframe = null;
-//				frame.dispose();
-//			}
-//		});
-
+		if(roomInfo.equals("noroominfo"))
+		{	
+			add(lstRoom);
+			add(new JScrollPane(lstRoom));
+		}
+			add(btn_reload);
+		
+			
+		if(roomInfo.equals("noroominfo"))
+			isEmpty = true;
 				
 		setSize(450, 200);
 		setLocation(t.getLocation().x+t.getSize().width/2-180, t.getLocation().y+t.getSize().height/2-60);
@@ -98,35 +119,77 @@ public class MultiFrame extends JFrame implements ActionListener{
 		}
 	}
 	
-	public void reload() { // chacha
+	public void reload() { 
+		client.send("getroominfo"); 
+		roomInfo = client.receive();
+		System.out.println("reload:"+roomInfo);
+		updateVector(roomInfo);
+		lstRoom = new JList(vec);
+		if(isEmpty) {
+			lstRoom.setBounds(10,40,250,200);
+			lstRoom.setVisibleRowCount(5);
+			lstRoom.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			lstRoom.addListSelectionListener(this);
+			this.add(lstRoom);
+			this.add(new JScrollPane(lstRoom));
+			isEmpty=false;
+		}
 		
+		add(lstRoom); // TODO: Changing immediately after reload clicked 
+		lstRoom.setVisible(true);
+	}
+	
+	public void enterRoom(String roomName) {
+		client.send(roomName);
+		message = client.receive();
+		
+		if(message.equals("full")) {  // enter the existing room
+			JOptionPane.showMessageDialog(null, "Room is full !!!");
+			reload();
+		}
+		else if (message.equals("enter")){
+			client.send(client.getUserid());
+			message = client.receive();
+			int memberNum=Integer.parseInt(message);
+			
+			ReadyFrame r = new ReadyFrame(memberNum,roomName);
+		}
+		
+	}
+	
+	public void createRoom(String roomname) {
+		ReadyFrame ready = new ReadyFrame(1,roomname);
+		dispose();
 	}
 	
 	public void actionPerformed(ActionEvent event) {
 		if(event.getSource() == btn_reload) {
-			// client.send("reload");
-			//roomInfo = client.receive();
-			roomInfo="s,1\nx,2\ny,3\nz,3\nb,2\ncc,1\nbb,1\ncdcd,1";
-			updateVector(roomInfo);
-			
-			lstRoom= new JList(vec);
-			
-			add(lstRoom); // should fixed >>> don't change immediately after reload clicked 
+			reload();
 		}
-		if(event.getSource()==btn_MakeorEnter) {
-			client.send(roomInfo);
-			String roomName;
-			boolean isExist=false;
+		
+		if(event.getSource()==btn_MakeRoom) {
+			System.out.println("make room clicked");
+			client.send("createroom");
+			client.send(tf_roomName.getText());
 			
-			if(isExist) {  // enter the existing room
-				
+			myRoomInfo = client.receive();
+			System.out.println(myRoomInfo);
+			
+			if(myRoomInfo.equals("fail")) { 	// TODO : if room aleady exist?
+				JOptionPane.showMessageDialog(null, "Room already Exists!!!");
+				reload();
 			}
-			else { // make the new room
-				JOptionPane.showMessageDialog(null, "Room Made Successfully!");
-				dispose();
-				// 멅티 플레이 화면 부르기
+			else {
+				createRoom(myRoomInfo);
+				System.out.println("create room");
 			}
-			dispose();
 		}
 	}
+	
+	public void valueChanged(ListSelectionEvent e) {
+		int ind = lstRoom.getSelectedIndex();
+		myRoomInfo = vec.elementAt(ind).substring(vec.elementAt(ind).lastIndexOf("/")+1);
+		enterRoom(myRoomInfo);
+	}
 }
+ 

@@ -1,5 +1,10 @@
 package hoon2woon2.Items;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 public abstract class ItemType {
 
     protected int itemIndex;
@@ -8,7 +13,11 @@ public abstract class ItemType {
     protected String message;
     protected int x;
     protected int y;
+    protected Image image;
     protected ItemManager itemManager;
+    protected String path = System.getProperty("user.dir") + "/Client/resources/Images/";
+    protected String fileName;
+
 
     ItemType(int x, int y, ItemManager itemManager){
         this.x = x;
@@ -27,6 +36,8 @@ public abstract class ItemType {
     public void setY(int y) { this.y = y; }
 
     public int getItemIndex(){ return itemIndex; }
+
+    public Image getImage(){return image; }
 
     public abstract void action();
 }
