@@ -36,21 +36,14 @@ public class MultiPlay {
      * gowoon-choi
      * TODO comment
      */
-    MultiPlay(Client c){
+    MultiPlay(Client c,Tetris tetris){
         this.client = c;
+        
+        this.tetris = tetris;
         
         gamerCount = c.getGamerCount();
         System.out.println(gamerCount);
         gamersBoard = new BoardPanel[gamerCount];
-        
-        for(int i=0;gamerCount>i;i++) {
-        	System.out.println(client.userList.elementAt(i));
-        }
-        
-//        Tetris [] tArr = tArr
-//        for(int i = 0;gamerCount>i;i++) {
-//        		tArr[i]=new Tetris(client,this);
-//        }
         
         for(int i=0; i<gamerCount; i++){
             gamersBoard[i] = new BoardPanel(tetris);
@@ -60,7 +53,35 @@ public class MultiPlay {
             gamersBoard[i].setUserId(client.userList.elementAt(i));
         }
         
-        this.tetris = new Tetris(client,this);
+        myBoard = this.tetris.getBoardPanel();
+        int bWidth = myBoard.getWidth();
+        int bHeight = myBoard.getHeight();
+        
+        this.tetris.setSize(200+bWidth*gamerCount,bHeight);
+        
+        
+        int x = 0;		
+
+  
+       this.tetris.getBoardPanel().setLocation(x,0); 
+       
+       x += bWidth;		  
+       
+       this.tetris.boards = gamersBoard;
+       this.tetris.rankvisible(false);
+        
+        for(int i = 1; i < gamerCount; i++) {
+        	this.tetris.setLocation(x+10,0);
+        	this.tetris.add(this.tetris.boards[i]);
+       
+        	if(i==gamerCount-1) {
+        		this.tetris.getSidePanel().setLocation(x,0);
+        	}
+        	
+        	x += bWidth;
+        }
+        
+        this.tetris.repaint();
         this.tetris.setMultiPlay(this);
         // this.myBoard = new BoardPanel(tetris);
         this.tetris.setMode(3);

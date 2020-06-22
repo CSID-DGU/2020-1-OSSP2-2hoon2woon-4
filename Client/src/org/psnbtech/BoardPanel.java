@@ -506,6 +506,7 @@ public class BoardPanel extends JPanel {
 			int rotation = tetris.getPieceRotation();
 		
 			//Draw the piece onto the board.
+			try {
 			for(int col = 0; col < type.getDimension(); col++) {
 				for(int row = 0; row < type.getDimension(); row++) {
 					if(pieceRow + row >= 2 && type.isTile(col, row, rotation) == 1) {
@@ -513,12 +514,13 @@ public class BoardPanel extends JPanel {
 					}
 				}
 			}
-			
+		}catch(Exception e) {}
 			/*
 			 * Draw the ghost (semi-transparent piece that shows where the current piece will land). I couldn't think of
 			 * a better way to implement this so it'll have to do for now. We simply take the current position and move
 			 * down until we hit a row that would cause a collision.
 			 */
+		try {
 			Color base = type.getBaseColor();
 			base = new Color(base.getRed(), base.getGreen(), base.getBlue(), 20);
 			for(int lowest = pieceRow; lowest < ROW_COUNT; lowest++) {
@@ -541,7 +543,7 @@ public class BoardPanel extends JPanel {
 				
 				break;
 			}
-			
+		}catch(Exception e) {}
 			/*
 			 * Draw the background grid above the pieces (serves as a useful visual
 			 * for players, and makes the pieces look nicer by breaking them up.

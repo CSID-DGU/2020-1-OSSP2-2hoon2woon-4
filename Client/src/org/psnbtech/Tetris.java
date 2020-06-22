@@ -93,6 +93,7 @@ public class Tetris extends JFrame implements ActionListener{
 	 */
 	private BoardPanel board;
 	
+	
 	/**
 	 * The SidePanel instance.
 	 */
@@ -204,7 +205,10 @@ public class Tetris extends JFrame implements ActionListener{
 	private int addTimer=1;
 	
 	public int flag = 0;
-	private int gamer = 1; // chacha
+	private int gamerCount = 1; // chacha
+	
+	public static BoardPanel[] boards;
+	
 	
 	/** 2020-04-28 Seungun-Park
 	 */
@@ -262,7 +266,7 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * play music
 		 */
-		player.play_music("backgroundmusic_long.wav", -10.0f);
+	//	player.play_music("backgroundmusic_long.wav", -10.0f);
 
 		client = c;
 		
@@ -577,8 +581,8 @@ public class Tetris extends JFrame implements ActionListener{
 		 * Add the BoardPanel and SidePanel instances to the window.
 		 */
 		
-		add(board);
-		add(side);	
+//		add(board);
+//		add(side);	
 
 		/*
 		 * Adds a custom anonymous KeyListener to the frame.
@@ -766,19 +770,29 @@ public class Tetris extends JFrame implements ActionListener{
 		 * Here we resize the frame to hold the BoardPanel and SidePanel instances,
 		 * center the window on the screen, and show it to the user.
 		 */
-		getContentPane().setBackground(Color.BLACK);
+		// getContentPane().setBackground(Color.RED);
+		this.gamerCount = m.getGamerCount();
 		
 		switch(m.getGamerCount()) {
 		case 2:
 			//setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67+side.getHeight());
-			 setSize(650,557);
-			board.setBounds(0,0,board.getWidth(),board.getHeight());
-			side.setBounds(490, 0, 200, 123);
-			 BoardPanel user1 = m.getBoard(0);
-			 user1.setBounds(490,200,200,392);
-			 add(user1);
-			// user1.setVisible(true);
-			break;
+			 setSize(board.getWidth()*2+side.getWidth(),board.getHeight()); // 650, 557
+			 System.out.println("after sizing");
+			 setBackground(Color.BLACK);
+			 System.out.println("after coloring");
+			 board.setBounds(0,0,board.getWidth(),board.getHeight());
+			 System.out.println("aftering sizing board");
+			 side.setBounds(board.getWidth(), 0, 200, 123);
+			 System.out.println("afetr side");
+			 add(board);
+			 add(side);	
+			 board.setVisible(true);
+			 side.setVisible(true);
+			 //user1 = m.getBoard(0);
+			 //user1.setBounds(board.getWidth()+side.getWidth(),0,board.getWidth(),board.getHeight());
+			 //add(user1);
+			 //user1.setVisible(true);
+		break;
 			
 		case 3:
 			setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67+side.getHeight());
@@ -792,9 +806,8 @@ public class Tetris extends JFrame implements ActionListener{
 		}
 		
 		d_start = getSize();
-		System.out.println(d_start);
 		setMinimumSize(d_start);
-//                         		setLocationRelativeTo(null);
+		setLocationRelativeTo(null);
 		setVisible(true);
 		board.setVisible(true);
 	}
@@ -864,7 +877,8 @@ public class Tetris extends JFrame implements ActionListener{
 			 */
 			if(logicTimer.hasElapsedCycle() && !beforeVal) {
 				updateGame();
-				rank.update();
+				if(mode!=3)
+					rank.update();
 			}
 		
 			//Decrement the drop cool down if necessary.
@@ -898,7 +912,7 @@ public class Tetris extends JFrame implements ActionListener{
 			}
 
 			//Display the window to the user.
-			renderGame(this.gamer);
+			renderGame(this.gamerCount);
 
 			/*
 			 * Sleep to cap the framerate.
@@ -1018,8 +1032,8 @@ public class Tetris extends JFrame implements ActionListener{
 	/**
 	 * Forces the BoardPanel and SidePanel to repaint.
 	 */
-	private void renderGame(int gamer) {	//chacha
-		if(gamer == 1) {
+	private void renderGame(int gamerCount) {	//chacha
+		if(gamerCount == 1) {
 		d_now = getSize();
 		board.resize((d_now.getHeight() / d_start.getHeight()) < (d_now.getWidth() / d_start.getWidth()) ? (d_now.getHeight()/ d_start.getHeight()) : (d_now.getWidth() / d_start.getWidth()));
 		int left = (d_now.width - board.getWidth()) / 2;
@@ -1027,17 +1041,17 @@ public class Tetris extends JFrame implements ActionListener{
 		board.setBounds(left,top,board.getWidth(), board.getHeight());
 		board.repaint();
 		side.setBounds(left + board.getWidth(), top, side.getWidth(), side.getHeight());
-		side.repaint();	
+		side.repaint();
 		rank.repaint();
 		}
-		else {
-			d_now = getSize();
-			board.resize((d_now.getHeight() / d_start.getHeight()) < (d_now.getWidth() / d_start.getWidth()) ? (d_now.getHeight()/ d_start.getHeight()) : (d_now.getWidth() / d_start.getWidth()));
-			int left = (d_now.width - board.getWidth()) / 2;
-			int top = ((d_now.height - 67) - board.getHeight()) / 2;
-			board.setBounds(left,top,board.getWidth(), board.getHeight());
-			board.repaint();
-		}
+//		else {
+//			d_now = getSize();
+//			board.resize((d_now.getHeight() / d_start.getHeight()) < (d_now.getWidth() / d_start.getWidth()) ? (d_now.getHeight()/ d_start.getHeight()) : (d_now.getWidth() / d_start.getWidth()));
+//			int left = (d_now.width - board.getWidth()) / 2;
+//			int top = ((d_now.height - 67) - board.getHeight()) / 2;
+//			board.setBounds(left,top,board.getWidth(), board.getHeight());
+//			board.repaint();
+//		}
 	}
 
 	
@@ -1318,6 +1332,18 @@ public class Tetris extends JFrame implements ActionListener{
 	 * 2020.05.19
 	 * creating interrupt block
 	 */
+	
+	public int getGamerCount() {
+		return this.gamerCount;
+	}
+	
+	public BoardPanel getBoardPanel() {
+		return this.board;
+	}
+	
+	public SidePanel getSidePanel() {
+		return this.side;
+	}
 	public void makeInterrupt() {
 		int randCol;
 		int randRow;
@@ -1335,14 +1361,6 @@ public class Tetris extends JFrame implements ActionListener{
 		board.addPiece(currentType, randCol, randRow, randRot);
 	}
 	
-	public int getGamer() {	//chacha
-		return gamer;
-	}
-	
-	public void setGamer(int num) { //chacha
-		this.gamer = num;
-	}
-
 	/**
 	 * 2020-04-28 Seungun-Park
 	 * menu action listener
@@ -1441,4 +1459,8 @@ public class Tetris extends JFrame implements ActionListener{
 		}
 	}
 
+	public void rankvisible(boolean b) {
+		rank.setVisible(b);
+	}
+	
 }

@@ -11,17 +11,22 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
+import org.psnbtech.Tetris;
+
 class Socket extends Thread{
 	Client c;
-
+	Tetris t;
 	private String receivedMessage;
 	 static String sendMessage="ready";
 	static boolean master = false;
 	static Vector<String> users = new Vector<String>();
 	
-	Socket(Client c) {
+	
+	Socket(Client c,Tetris t) {
 		super("Socket");
 		this.c = c ;
+		this.t = t;
+		users.add(c.getUserid());
 	}
 	
 	public void run() {
@@ -45,7 +50,7 @@ class Socket extends Thread{
 			else if(receivedMessage.equals("start")) {
 				c.setGamerCount(users.size());
 				c.setUserList(users);
-				MultiPlay m = new MultiPlay(c);
+				MultiPlay m = new MultiPlay(c,t);
 				break;
 			}
 			
@@ -126,8 +131,8 @@ setLayout(null);
 public class waiting {
 	
 	waiting(Client c,MultiFrame m) {
-		Socket s = new Socket(c);
-		
+		Socket s = new Socket(c,m.tetris);
+	
 		Runnable r = new GUI(c,m);
 		Thread g = new Thread(r);
 		

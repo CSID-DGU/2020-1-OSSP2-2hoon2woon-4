@@ -32,6 +32,7 @@ public class Client {
 	private static int user = -1;
 	private static String userid = "";
 	private int gamecount;
+	private int mode;
 	
 	public static Vector<String>userList = new Vector<String>();
 	public static String[] ranking;

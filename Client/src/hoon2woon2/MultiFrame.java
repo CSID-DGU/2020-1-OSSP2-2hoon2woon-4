@@ -31,7 +31,7 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 	public static JButton btn_MakeRoom = new JButton("Make Room");
 	public static JScrollPane sp;
 	Client client;
-	Tetris tetris ;
+	public static Tetris tetris ;
 	
 	public MultiFrame(Tetris t, Client c) {
 		super("Tetris.net");

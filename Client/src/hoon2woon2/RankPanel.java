@@ -148,7 +148,7 @@ public class RankPanel extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		if(tetris.getGamer()==1) {
+		if(tetris.getGamerCount()==1) {
 			super.paintComponent(g);
 		
 			g.setColor(DRAW_COLOR);
