@@ -1,7 +1,9 @@
 # 2hoon2woon-Tetris
+
+
 ## 1. 목차
-[*](/## 팀구성) 팀구성
-[*](/## Base Project) BaseProject
+* 팀구성
+* BaseProject
 
 ## 팀구성
 > 박승운(팀장)
