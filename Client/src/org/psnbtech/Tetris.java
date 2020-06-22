@@ -2,6 +2,7 @@ package org.psnbtech;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -203,7 +204,7 @@ public class Tetris extends JFrame implements ActionListener{
 	private int addTimer=1;
 	
 	
-	private int gamer = 1; //chacha
+	private int gamer = 1; // chacha
 	
 	/** 2020-04-28 Seungun-Park
 	 */
@@ -272,17 +273,21 @@ public class Tetris extends JFrame implements ActionListener{
 		 */
 		this.board = new BoardPanel(this);
 		this.side = new SidePanel(this);
+		
+	
 		this.rank = new RankPanel(this, client);
+		
 		this.tetrisBag = new ArrayList<Integer>();
 		
 		/**2020-04-28 Seungun-Park
 		 * Menu control
 		 */
+		
 		item_new.addActionListener(this);
 		item_exit.addActionListener(this);
 		item_login.addActionListener(this);
 		item_logout.addActionListener(this);
-		item_register.addActionListener(this); //cha seung hoon 2020.06.10 Register Frame
+		item_register.addActionListener(this); // cha seung hoon 2020.06.10 Register Frame
 		item_basic.addActionListener(this);
 		item_disturb.addActionListener(this);
 		item_item.addActionListener(this);
@@ -307,13 +312,13 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * Add the BoardPanel and SidePanel instances to the window.
 		 */
-		add(rank);
+		
 		add(board);
-		add(side);
-
+		add(side);	
+		add(rank);
 		rank.rankup();
 		rank.repaint();
-		
+
 		/*
 		 * Adds a custom anonymous KeyListener to the frame.
 		 */
@@ -508,12 +513,297 @@ public class Tetris extends JFrame implements ActionListener{
 		setLocationRelativeTo(null);
 		setVisible(true);
 		board.setVisible(true);
+	
+	
 	}
 
+	public Tetris(Client c, MultiPlay m) {
+		/*
+		 * Set the basic properties of the window.
+		 */
+		super("Tetris");
+		setLayout(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(true);
+
+		/*
+		 * play music
+		 */
+		player.play_music("backgroundmusic_long.wav", -10.0f);
+
+		client = c;
+		
+		//loginframe = new LoginFrame(this, client);
+		
+		/*
+		 * Initialize the BoardPanel and SidePanel instances.
+		 */
+		this.board = new BoardPanel(this);
+		this.side = new SidePanel(this);
+		
+		this.tetrisBag = new ArrayList<Integer>();
+		
+		/**2020-04-28 Seungun-Park
+		 * Menu control
+		 */
+		
+		item_new.addActionListener(this);
+		item_exit.addActionListener(this);
+		item_login.addActionListener(this);
+		item_logout.addActionListener(this);
+		item_register.addActionListener(this); // cha seung hoon 2020.06.10 Register Frame
+		item_basic.addActionListener(this);
+		item_disturb.addActionListener(this);
+		item_item.addActionListener(this);
+		item_multi.addActionListener(this);	// cha seung hoon 2020.06.10 Register Frame
+		
+		mn_file.add(item_new);
+		mn_file.add(item_exit);
+		mn_account.add(item_login);
+		mn_account.add(item_logout);
+		mn_account.add(item_register);
+		mn_mode.add(item_basic);
+		mn_mode.add(item_disturb);
+		mn_mode.add(item_item);
+		mn_mode.add(item_multi);	//	cha seung hoon 2020.06.10 Register Frame
+		
+		menu.add(mn_file);
+		menu.add(mn_account);
+		menu.add(mn_mode);
+		
+		setJMenuBar(menu);
+		
+		/*
+		 * Add the BoardPanel and SidePanel instances to the window.
+		 */
+		
+		add(board);
+		add(side);	
+
+		/*
+		 * Adds a custom anonymous KeyListener to the frame.
+		 */
+		addKeyListener(new KeyAdapter() {
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			
+				if(isHardDrop) {
+					beforeVal=true;
+					isHardDrop=false;
+				}
+				else
+					beforeVal=false;
+				
+				switch(e.getKeyCode()) {
+				
+				/*
+				 * Drop - When pressed, we check to see that the game is not
+				 * paused and that there is no drop cooldown, then set the
+				 * logic timer to run at a speed of 25 cycles per second.
+				 */
+				case KeyEvent.VK_DOWN:
+					if(!isPaused && dropCooldown == 0) {
+						logicTimer.setCyclesPerSecond(25.0f);
+						player.play_music("t_move.wav", 0);
+					}
+					break;
+
+				/*
+				 * Move Left - When pressed, we check to see that the game is
+				 * not paused and that the position to the left of the current
+				 * position is valid. If so, we decrement the current column by 1.
+				 */
+				/**
+				 * writer: choi gowoon
+				 * Move Left and Move Right
+				 * add flag for key reversing item
+				 */
+				case KeyEvent.VK_LEFT:
+					if(reverseIndex){
+						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
+							currentCol++;
+							player.play_music("t_move.wav", 0);
+						}
+					}
+					else{
+						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
+							currentCol--;
+							player.play_music("t_move.wav", 0);
+						}
+					}
+					break;
+
+				/*
+				 * Move Right - When pressed, we check to see that the game is
+				 * not paused and that the position to the right of the current
+				 * position is valid. If so, we increment the current column by 1.
+				 */
+				case KeyEvent.VK_RIGHT:
+					if(reverseIndex){
+						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
+							currentCol--;
+							player.play_music("t_move.wav", 0);
+						}
+					}
+					else{
+						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
+							currentCol++;
+							player.play_music("t_move.wav", 0);
+						}
+					}
+					break;
+
+				/*
+				 * Rotate Anticlockwise - When pressed, check to see that the game is not paused
+				 * and then attempt to rotate the piece anticlockwise. Because of the size and
+				 * complexity of the rotation code, as well as it's similarity to clockwise
+				 * rotation, the code for rotating the piece is handled in another method.
+				 */
+				/**
+				 * writer: choi gowoon
+				 * Rotate Anticlockwise and clockwise
+				 * add flag for key nonRotation item
+				 */
+				case KeyEvent.VK_Z:
+					if(rotationIndex){
+						if(!isPaused) {
+							rotatePiece((currentRotation == 0) ? 3 : currentRotation - 1);
+							player.play_music("t_rotate.wav", 0);
+						}
+					}
+					break;
+				
+				/*
+			     * Rotate Clockwise - When pressed, check to see that the game is not paused
+				 * and then attempt to rotate the piece clockwise. Because of the size and
+				 * complexity of the rotation code, as well as it's similarity to anticlockwise
+				 * rotation, the code for rotating the piece is handled in another method.
+				 */
+				case KeyEvent.VK_X:
+					if(rotationIndex){
+						if(!isPaused) {
+							rotatePiece((currentRotation == 3) ? 0 : currentRotation + 1);
+							player.play_music("t_rotate.wav", 0);
+						}
+					}
+					break;
+					
+				/*
+				 * Pause Game - When pressed, check to see that we're currently playing a game.
+				 * If so, toggle the pause variable and update the logic timer to reflect this
+				 * change, otherwise the game will execute a huge number of updates and essentially
+				 * cause an instant game over when we unpause if we stay paused for more than a
+				 * minute or so.
+				 */
+				case KeyEvent.VK_P:
+					if(!isGameOver && !isNewGame) {
+						isPaused = !isPaused;
+						logicTimer.setPaused(isPaused);
+					}
+					break;
+				
+				/*
+				 * Start Game - When pressed, check to see that we're in either a game over or new
+				 * game state. If so, reset the game.
+				 */
+				case KeyEvent.VK_ENTER:
+					if(isGameOver || isNewGame) {
+						resetGame();
+					}
+					break;
+
+				/*
+				 * writer : github.com/choi-gowoon
+				 * 2020.04.26
+				 * hold function
+				 */
+				case KeyEvent.VK_SHIFT:
+					holdTile();
+					player.play_music("hold.wav", 0);
+					break;
+				
+				/*
+				 * writer : cha seung hoon
+				 * 2020. 04 .28
+				 * Hard Drop
+				 */
+				case KeyEvent.VK_SPACE:
+					isHardDrop=true;
+					addTimer = 0;
+					int cnt=0;
+					while(board.isValidAndEmpty(currentType, currentCol, currentRow+cnt, currentRotation)) {
+						cnt++;
+					}
+					currentRow+=cnt-1;
+					updateGame();
+					player.play_music("t_harddrop.wav", 0);
+					break;
+				}
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				switch(e.getKeyCode()) {
+				
+				/*
+				 * Drop - When released, we set the speed of the logic timer
+				 * back to whatever the current game speed is and clear out
+				 * any cycles that might still be elapsed.
+				 */
+				case KeyEvent.VK_DOWN:
+					logicTimer.setCyclesPerSecond(gameSpeed);
+					logicTimer.reset();
+					break;
+				}
+				
+			}
+			
+		});
+				
+		/*
+		 * Here we resize the frame to hold the BoardPanel and SidePanel instances,
+		 * center the window on the screen, and show it to the user.
+		 */
+		getContentPane().setBackground(Color.BLACK);
+		
+		switch(m.getGamerCount()) {
+		case 2:
+			//setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67+side.getHeight());
+			 setSize(650,557);
+			board.setBounds(0,0,board.getWidth(),board.getHeight());
+			side.setBounds(490, 0, 200, 123);
+			 BoardPanel user1 = m.getBoard(0);
+			 user1.setBounds(490,200,200,392);
+			 add(user1);
+			// user1.setVisible(true);
+			break;
+			
+		case 3:
+			setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67+side.getHeight());
+			
+			break;
+			
+		case 4:
+			setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67+side.getHeight());
+			
+			break;
+		}
+		
+		d_start = getSize();
+		System.out.println(d_start);
+		setMinimumSize(d_start);
+//                         		setLocationRelativeTo(null);
+		setVisible(true);
+		board.setVisible(true);
+	}
+	
 	/**
 	 * writer : github.com/choi-gowoon
 	 * hold function
 	 */
+	
 	public void holdTile(){
 		if(!isPaused && isHoldable) {
 			TileType temp = currentType;
@@ -646,7 +936,7 @@ public class Tetris extends JFrame implements ActionListener{
 			/*
 			 * Check to see if adding the new piece resulted in any cleared lines. If so,
 			 * increase the player's score. (Up to 4 lines can be cleared in a single go;
-			 * [1 = 100pts, 2 = 200pts, 3 = 400pts, 4 = 800pts]).
+			 * [1 = 100pts, 2 = 67pts, 3 = 400pts, 4 = 800pts]).
 			 */
 			int cleared = board.checkLines();
 			if(cleared > 0) {
@@ -1149,4 +1439,5 @@ public class Tetris extends JFrame implements ActionListener{
 			}
 		}
 	}
+
 }

@@ -8,9 +8,11 @@ public class test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Client c = new Client();
-		Tetris t = new Tetris(c);
-		t.setGamer(1);
-		t.startGame();
+		c.setGamerCount(2);
+		MultiPlay p = new MultiPlay(c);
+		
+		Tetris t = new Tetris(c,p);
+		p.start();
 		BoardPanel b = new BoardPanel(t);
 		
 	}

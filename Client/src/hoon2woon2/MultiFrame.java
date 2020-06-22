@@ -1,21 +1,10 @@
 package hoon2woon2;
 
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.StringTokenizer;
-import java.util.Vector;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 import org.psnbtech.Tetris;
 
@@ -32,13 +21,15 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 	Vector <String> vec = new Vector<String>();
 	private JList lstRoom;
 	private String roomInfo;
-	private String myRoomInfo;
+	public static String roomName;
 	private String message;
+	private int memberNum;
 	private boolean isEmpty=false;
 	public static JLabel la_roomName = new JLabel("Room Name:");
 	public static JTextField tf_roomName = new JTextField(12);
 	public static JButton btn_reload = new JButton("Reload");
 	public static JButton btn_MakeRoom = new JButton("Make Room");
+	public static JScrollPane sp;
 	Client client;
 	Tetris tetris;
 	
@@ -48,27 +39,24 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 		client = c;
 		tetris = t;
 		
-		setLayout(new FlowLayout());
+		setLayout(null);
 		client.send("getroominfo");
 		
 		try {
-		
-		System.out.println("1.");
-		roomInfo = client.receive();
-		System.out.println(roomInfo);
+		roomInfo = str_refining(client.receive());
 		}
 		catch(Exception e) {
 		e.printStackTrace();	
 		}
 		
-		System.out.print	("roominfo: "+roomInfo);
-		System.out.println("aa");
-		System.out.println(roomInfo.equals("noroomin"));
-		
 		if(roomInfo.equals("noroominfo")) {
-			updateVector(roomInfo);
-			lstRoom = new JList(vec);	
+		vec.add("There is no room");
 		}
+		else {
+			updateVector(roomInfo);	
+		}
+		
+		lstRoom = new JList(vec);	
 		
 		btn_reload.addActionListener(this);
 		btn_MakeRoom.addActionListener(this);
@@ -76,33 +64,40 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 		la_roomName.setBounds(10,10,90,25);
 		tf_roomName.setBounds(90,10,110,25);
 		btn_MakeRoom.setBounds(210,10,140,25);
-		
-		if(roomInfo.equals("noroominfo")) {
-		lstRoom.setBounds(10,40,250,200);
+		// lstRoom.setBounds(10,40,250,200);
 		lstRoom.setVisibleRowCount(5);
 		lstRoom.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		lstRoom.addListSelectionListener(this);
-		}
+		//	lstRoom.setVisible(true);
 		
 		add(la_roomName);
 		add(tf_roomName);
 		add(btn_MakeRoom);
-		
-		if(roomInfo.equals("noroominfo"))
-		{	
-			add(lstRoom);
-			add(new JScrollPane(lstRoom));
-		}
-			add(btn_reload);
-		
+		// add(lstRoom);
+		sp = new JScrollPane(lstRoom);
+		sp.setBounds(10,40,250,100);
+		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		add(sp);
+		//add(new JScrollPane(lstRoom));
+		add(btn_reload);
+		lstRoom.setVisible(true);
 			
-		if(roomInfo.equals("noroominfo"))
+		if(!roomInfo.equals("noroominfo"))
 			isEmpty = true;
 				
-		setSize(450, 200);
+		setSize(400, 400);
 		setLocation(t.getLocation().x+t.getSize().width/2-180, t.getLocation().y+t.getSize().height/2-60);
 		setResizable(false);
 		setVisible(true);
+	}
+	
+	public int getMemberNum() {
+		return this.memberNum;
+	}
+	
+	public String getRoomName() {
+		return this.roomName;
 	}
 	
 	public void updateVector(String str) {
@@ -120,46 +115,50 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 	}
 	
 	public void reload() { 
-		client.send("getroominfo"); 
-		roomInfo = client.receive();
-		System.out.println("reload:"+roomInfo);
-		updateVector(roomInfo);
-		lstRoom = new JList(vec);
-		if(isEmpty) {
-			lstRoom.setBounds(10,40,250,200);
-			lstRoom.setVisibleRowCount(5);
-			lstRoom.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			lstRoom.addListSelectionListener(this);
-			this.add(lstRoom);
-			this.add(new JScrollPane(lstRoom));
-			isEmpty=false;
+		client.send("getroominfo"); // buffer 1024
+		roomInfo=str_refining(client.receive());
+		if(roomInfo.equals("noroominfo")) {
+			vec.add("There is no room");
 		}
+		else
+			updateVector(roomInfo);
 		
-		add(lstRoom); // TODO: Changing immediately after reload clicked 
-		lstRoom.setVisible(true);
+		lstRoom.setListData(vec);
 	}
 	
 	public void enterRoom(String roomName) {
+		client.send("enterroom");
+		System.out.println("after enterroom:"+roomName);
+		this.roomName = roomName;
 		client.send(roomName);
 		message = client.receive();
+		System.out.println("after receive message:"+message);
 		
-		if(message.equals("full")) {  // enter the existing room
+		if(message.equals("fail")) {
 			JOptionPane.showMessageDialog(null, "Room is full !!!");
 			reload();
 		}
-		else if (message.equals("enter")){
-			client.send(client.getUserid());
-			message = client.receive();
-			int memberNum=Integer.parseInt(message);
-			
-			ReadyFrame r = new ReadyFrame(memberNum,roomName);
-		}
+		else{
+			memberNum=Integer.parseInt("1"); // TODO: "1로 되는 이유
+			System.out.println(memberNum);
+			dispose();
+			// ReadyFrame r = new ReadyFrame(this,client);
+	//		threadEx t = new threadEx(client,this);
+			waiting w = new waiting(client,this);
+			}
 		
 	}
 	
 	public void createRoom(String roomname) {
-		ReadyFrame ready = new ReadyFrame(1,roomname);
+//		ReadyFrame ready = new ReadyFrame(this,client);
 		dispose();
+//		threadEx t = new threadEx(client,this);
+		waiting w = new waiting(client,this);
+	}
+	
+	public String str_refining(String message) {
+		String result=message.replaceAll("\0","");
+		return result;
 	}
 	
 	public void actionPerformed(ActionEvent event) {
@@ -168,28 +167,31 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 		}
 		
 		if(event.getSource()==btn_MakeRoom) {
-			System.out.println("make room clicked");
-			client.send("createroom");
+			client.send("createroom"); // buffer 128
 			client.send(tf_roomName.getText());
+
 			
-			myRoomInfo = client.receive();
-			System.out.println(myRoomInfo);
+			roomName = str_refining(client.receive());
 			
-			if(myRoomInfo.equals("fail")) { 	// TODO : if room aleady exist?
+			if(roomName.equals("fail")) { 	// TODO : if room aleady exist?
 				JOptionPane.showMessageDialog(null, "Room already Exists!!!");
 				reload();
 			}
 			else {
-				createRoom(myRoomInfo);
-				System.out.println("create room");
+				createRoom(roomName);
 			}
 		}
+		
 	}
 	
 	public void valueChanged(ListSelectionEvent e) {
 		int ind = lstRoom.getSelectedIndex();
-		myRoomInfo = vec.elementAt(ind).substring(vec.elementAt(ind).lastIndexOf("/")+1);
-		enterRoom(myRoomInfo);
+		roomName = vec.elementAt(ind).substring(11,vec.elementAt(ind).indexOf("(")-1);
+		enterRoom(roomName);
+	}
+	
+	public void windowClosing(WindowEvent e) {
+		client.send("exit");
 	}
 }
  

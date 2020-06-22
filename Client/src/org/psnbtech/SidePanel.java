@@ -114,7 +114,8 @@ public class SidePanel extends JPanel {
 	public SidePanel(Tetris tetris) {
 		this.tetris = tetris;
 		
-		d_start = new Dimension(200, BoardPanel.PANEL_HEIGHT);
+		// d_start = new Dimension(200, BoardPanel.PANEL_HEIGHT);
+		 d_start = new Dimension(200,123);
 		setSize(d_start);
 		//setPreferredSize(d_start);
 		setBackground(Color.BLACK);
@@ -131,9 +132,9 @@ public class SidePanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
+		this.setBackground(Color.BLUE);
 		//Set the color for drawing.
-		g.setColor(DRAW_COLOR);
+		 g.setColor(DRAW_COLOR);
 		
 		/*
 		 * This variable stores the current y coordinate of the string.
@@ -145,26 +146,26 @@ public class SidePanel extends JPanel {
 		/*
 		 * Draw the "Stats" category.
 		 */
-		g.setFont(LARGE_FONT);
-		g.drawString("Stats", SMALL_INSET, offset = STATS_INSET);
-		g.setFont(SMALL_FONT);
-		g.drawString("Level: " + tetris.getLevel(), LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("Score: " + tetris.getScore(), LARGE_INSET, offset += TEXT_STRIDE);
+//		g.setFont(LARGE_FONT);
+//		g.drawString("Stats", SMALL_INSET, offset = STATS_INSET);
+//		g.setFont(SMALL_FONT);
+//		g.drawString("Level: " + tetris.getLevel(), LARGE_INSET, offset += TEXT_STRIDE);
+//		g.drawString("Score: " + tetris.getScore(), LARGE_INSET, offset += TEXT_STRIDE);
 		
 		/*
 		 * Draw the "Controls" category.
 		 */
-		g.setFont(LARGE_FONT);
-		g.drawString("Controls", SMALL_INSET, offset = CONTROLS_INSET);
-		g.setFont(SMALL_FONT);
-		g.drawString("← - Move Left", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("→ - Move Right", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("↓ - Drop", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("Z - Rotate Anticlockwise", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("X - Rotate Clockwise", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("Shift - Hold", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("Space - Hard Drop", LARGE_INSET, offset += TEXT_STRIDE);
-		g.drawString("P - Pause Game", LARGE_INSET, offset += TEXT_STRIDE);
+//		g.setFont(LARGE_FONT);
+//		g.drawString("Controls", SMALL_INSET, offset = CONTROLS_INSET);
+//		g.setFont(SMALL_FONT);
+//		g.drawString("← - Move Left", LARGE_INSET, offset += TEXT_STRIDE);
+//		g.drawString("→ - Move Right", LARGE_INSET, offset += TEXT_STRIDE);
+//		g.drawString("↓ - Drop", LARGE_INSET, offset += TEXT_STRIDE);
+//		g.drawString("Z - Rotate Anticlockwise", LARGE_INSET, offset += TEXT_STRIDE);
+//		g.drawString("X - Rotate Clockwise", LARGE_INSET, offset += TEXT_STRIDE);
+//		g.drawString("Shift - Hold", LARGE_INSET, offset += TEXT_STRIDE);
+//		g.drawString("Space - Hard Drop", LARGE_INSET, offset += TEXT_STRIDE);
+//		g.drawString("P - Pause Game", LARGE_INSET, offset += TEXT_STRIDE);
 		
 		/*
 		 * Draw the next piece preview box.

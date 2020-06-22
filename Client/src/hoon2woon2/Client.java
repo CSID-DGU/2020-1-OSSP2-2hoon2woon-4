@@ -1,17 +1,17 @@
 package hoon2woon2;
 
-import java.io.IOException;
 import java.io.FileInputStream;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Properties;
-
-import javax.swing.JOptionPane;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 /**
  * 2020-04-27
@@ -31,7 +31,9 @@ public class Client {
 
 	private static int user = -1;
 	private static String userid = "";
+	private int gamecount;
 	
+	public static Vector<String>users = new Vector<String>();
 	public static String[] ranking;
 	
 	Properties prop = new Properties();
@@ -160,7 +162,7 @@ public class Client {
 	public String receive() {
 		try {
 			if(!socket.isConnected()) return "";
-			buf = new byte[256];
+			buf = new byte[1024];
 			is.read(buf);
 			return (new String(buf));
 		} catch(Exception e) {
@@ -177,6 +179,8 @@ public class Client {
 	public boolean logout() {
 		user = -1;
 		userid = "";
+		send("logout");
+		receive();
 		return true;
   }
 
@@ -198,5 +202,13 @@ public class Client {
 			receive();
 		}
 		return rank();
+	}
+	
+	public int getGamerCount() {
+		return this.gamecount;
+	}
+	
+	public void setGamerCount(int gamecount) {
+		this.gamecount = gamecount;
 	}
 }
