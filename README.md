@@ -1,15 +1,18 @@
 # 2hoon2woon-Tetris
 
 
-## 1. 목차
-* 팀구성
-* BaseProject
+## 1. Contents
+* Client
+* Server
+* Base Project
 
-## 팀구성
-> 박승운(팀장)
-> 최고운
-> 차승훈
-> 김지훈
+## 2. Client
+* Language : Java
+* Runtime Environment : JavaSE-1.7
+* Development Environment : jdk1.8.0_131
 
-## Base Project
+## 3. Server
+* Language : C++
+
+## 4. Base Project
 [PSNB92/Tetris](https://github.com/PSNB92/Tetris)
