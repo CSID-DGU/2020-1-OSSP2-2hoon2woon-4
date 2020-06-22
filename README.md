@@ -11,7 +11,7 @@
 ### 2.1 Development Environment
 > jdk1.8.0
 ### 2.2 Runtime Environment
-> JavaSE-1.7
+> JavaSE-1.8
 
   
 ## 3. Server
