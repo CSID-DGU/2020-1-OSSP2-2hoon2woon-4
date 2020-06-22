@@ -22,10 +22,13 @@ class Client
 {
 private:
 	bool login();
+	bool logout();
 	bool regist();
 	bool rank();
 	bool exit();
 	bool rankupdate();
+	bool ready();
+	bool gamestart();
 
 public:
 	Client(int, sockaddr_in, Server&);
@@ -34,7 +37,6 @@ public:
 	bool isRunnable();
 	char* ip();
 	void game();
-	void gamestart();
 	std::shared_ptr<Room> room;
 
 private:

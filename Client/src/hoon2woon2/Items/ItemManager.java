@@ -49,7 +49,7 @@ public class ItemManager {
         Vector<Point> list = new Vector<>();
         for(int row = 0; row < board.VISIBLE_ROW_COUNT; row++){
             for(int col = 0; col < board.COL_COUNT; col++){
-                if(board.getTile(col, row)!= null && board.getTile(col, row) != TileType.UnremovableLine){
+                if(board.getTile(col, row)!= null && board.getTile(col, row) != TileType.UnTypeX){
                     for(int i=0; i<items.size(); i++){
                         if(items.get(i).x == row && items.get(i).y == col) continue;
                     }

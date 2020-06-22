@@ -4,6 +4,7 @@ import org.psnbtech.BoardPanel;
 import org.psnbtech.Tetris;
 import org.psnbtech.TileType;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -17,6 +18,7 @@ public class MultiPlay {
      * gowoon-choi
      * TODO comment
      */
+    private static String line = "";
     private static Client client;
     private static Tetris tetris;
     private static BoardPanel myBoard;
@@ -25,22 +27,74 @@ public class MultiPlay {
      * gowoon-choi
      * TODO comment
      */
-    private int gamerCount;
-    private BoardPanel[] gamersBoard = new BoardPanel[gamerCount];
-    private HashMap<String, Integer> userId2boardIndex;
-
+    private static int gamerCount;
+    private BoardPanel[] gamersBoard;
+    private HashMap <String,Boolean> status=new HashMap();  
+    private HashMap<String, Integer> userId2boardIndex=new HashMap();
     private String receivedString;
 
     /**
      * gowoon-choi
      * TODO comment
      */
-    MultiPlay(Client c){
+    MultiPlay(Client c,Tetris tetris){
         this.client = c;
-        this.tetris = new Tetris(client);
-        this.myBoard = new BoardPanel(tetris);
-        this.tetris.setMode(3);
+        
+        this.tetris = tetris;
+        
+        gamerCount = c.getGamerCount();
+        System.out.println(gamerCount);
+        gamersBoard = new BoardPanel[gamerCount];
+
+        int j = 1;
+
+        for(int i=0; i<gamerCount; i++){
+            if(client.userList.elementAt(i).equals(client.getUserid())){
+                continue;
+            }
+            else{
+                gamersBoard[j] = new BoardPanel(tetris);
+                userId2boardIndex.put(client.userList.elementAt(i), j); //각 유저 아이디와 보드 index 연결하기
+                // status.put(client.userList.elementAt(i),true);
+                gamersBoard[j].setMultiplay(this);
+                gamersBoard[j++].setUserId(client.userList.elementAt(i)); // 나빼고 매핑
+            }
+        }
+        myBoard = this.tetris.getBoardPanel();
+        gamersBoard[0] = myBoard;
+        int bWidth = myBoard.getWidth();
+        int bHeight = myBoard.getHeight();
+        
+        this.tetris.setSize(200+bWidth*gamerCount,bHeight);
+        
+        
+        int x = 0;		
+
+  
+       this.tetris.getBoardPanel().setLocation(x,0); 
+       
+       x += bWidth;		  
+
+       this.tetris.rankvisible(false);
+        for(int i = 1; i < gamerCount; i++) {
+            this.tetris.boards = new BoardPanel[gamerCount];
+            this.tetris.boards[i] = gamersBoard[i];
+        	this.tetris.setLocation(x+10,0);
+        	this.tetris.add(this.tetris.boards[i]);
+       
+        	if(i==gamerCount-1) {
+        		this.tetris.getSidePanel().setLocation(x,0);
+        	}
+        	
+        	x += bWidth;
+        }
+        
+        this.tetris.repaint();
         this.tetris.setMultiPlay(this);
+        // this.myBoard = new BoardPanel(tetris);
+        this.tetris.setMode(3);
+        start();
+        //TODO : 게임 시작
     }
 
     /**
@@ -48,33 +102,60 @@ public class MultiPlay {
      * TODO comment
      */
     void start(){
-        // TODO gamerCount 할당
-
-        for(int i=0; i<gamerCount; i++){
-            gamersBoard[i] = new BoardPanel(tetris);
-        }
-
-        // TODO 각 유저 아이디와 보드 index 연결하기 > userId2boardIndex
-
-        this.tetris.startGame();
+        this.tetris.resetGame();
         String delimiter = "\\:";
         String[] datas;
+        int index = 0;
         while(true){
-            client.send(board2String(myBoard));
-            receivedString = client.receive();
-            if(receivedString!=""&&receivedString!=null){
-                datas = receivedString.split(delimiter);
-                if(datas[0] != client.getUserid()){
-                    if(datas[1] == "board"){
-                        string2Board(receivedString);
-                    }
-                    else if(datas[1] == "attack"){
-                        addLinebyAttack(receivedString);
-                    }
-                    else{
-                        System.out.println("error : wrong string");
+            index ++;
+            if(index == 50){
+                if(tetris.isGameOver()){
+                    client.send(line);
+                }
+                else{
+                    if(line.equals(""))
+                        client.send(board2String(myBoard));
+                    else
+                    {
+                        client.send(line);
+                        line = "";
                     }
                 }
+                receivedString = client.receive();
+                receivedString = receivedString.replaceAll("\0", "");
+                System.out.println(receivedString);
+                if(receivedString!=""&&receivedString!=null){
+                    datas = receivedString.split(delimiter);
+                    if(datas[0].equals("gameend")){
+                        // TODO RANKING
+                        String message = "";
+                        for (int i=0; i<gamerCount; i++){
+                            message += "RANK";
+                            message += i;
+                            message += datas[1+i];
+                            message +="\n";
+                        }
+                        JOptionPane.showMessageDialog(null, message );
+                    }
+                    if(datas[0] != client.getUserid() && datas.length > 1){
+                        if(datas[1].equals("board")){
+                            string2Board(receivedString);
+                        }
+                        else if(datas[1].equals("attack")){
+                            System.out.println("test attack");
+                            addLinebyAttack(receivedString);
+                        }
+                        else if (datas[2].equals("dead")){
+                            // TODO 이 유저의 보드 status false로
+                            status.put(datas[0],false);
+                            gamersBoard[userId2boardIndex.get(datas[0])].repaint();
+                        }
+                        else{
+                            System.out.println("error : wrong string");
+                        }
+                    }
+                }
+                index = 0;
             }
         }
     }
@@ -86,23 +167,20 @@ public class MultiPlay {
      */
     String board2String(BoardPanel board){
         String boardInfo = "";
-        String temp = "";
         boardInfo += client.getUserid();
-        boardInfo += ":board";
+        boardInfo += ":board:";
         for(int col=0; col<board.COL_COUNT; col++){
-            for(int row=0; row<board.ROW_COUNT; row++){
-                if(board.getTile(col,row) != null){
-                    temp += col;
-                    temp += ",";
-                    temp += row;
-                    temp += ",";
-                    temp += board.getTile(col,row);
-                    boardInfo += ":";
-                    boardInfo += temp;
-                    temp = "";
+            for(int row=2; row<board.ROW_COUNT; row++){
+                if(board.getTile(col,row) == null){
+                    boardInfo += "0";
+                }
+                else{
+                    boardInfo += board.getTile(col,row).toString().substring(4);
                 }
             }
         }
+        boardInfo += ">";
+        boardInfo += tetris.getPieceType().toString() + ":" + tetris.getPieceCol() + ":"+ tetris.getPieceRow() + ":"+ tetris.getPieceRotation();
         return boardInfo;
     }
 
@@ -112,17 +190,23 @@ public class MultiPlay {
      */
     void string2Board(String boardInfo){
         BoardPanel board;
-        String delimiter = "\\:";
-        String[] boardDatas = boardInfo.split(delimiter);
+        String delimiter = "\\>";
+        String[] Datas = boardInfo.split(delimiter);
+        delimiter = "\\:";
+        String[] boardDatas = Datas[0].split(delimiter);
         board = gamersBoard[userId2boardIndex.get(boardDatas[0])];
         board.clear();
-        delimiter = "\\,";
-        for(int i=2; i<boardDatas.length; i++){
-            String[] tileDatas = boardDatas[i].split(delimiter);
-            for(int j=0; j<3; j++){
-                board.setTile(Integer.parseInt(tileDatas[0]),Integer.parseInt(tileDatas[1]), TileType.valueOf(tileDatas[2]));
+        for(int i=0; i<board.COL_COUNT*board.VISIBLE_ROW_COUNT; i++){
+            if(boardDatas[2].charAt(i) != '0'){
+                board.setTile(i/20, i%20 + 2,TileType.valueOf("Type"+boardDatas[2].charAt(i)));
             }
         }
+        String[] current = Datas[1].split(delimiter);
+        board.setType(TileType.valueOf(current[0]));
+        board.setPieceCol(Integer.parseInt(current[1]));
+        board.setPieceRow(Integer.parseInt(current[2]));
+        board.setRotation(Integer.parseInt(current[3]));
+        board.repaint();
     }
 
     /**
@@ -131,11 +215,10 @@ public class MultiPlay {
      *
      */
     public void attack(int count){
-        String line = "";
+        line = "";
         line += client.getUserid();
-        line += ":attack";
+        line += ":attack:";
         line += count;
-        client.send(line);
     }
 
 
@@ -143,17 +226,22 @@ public class MultiPlay {
         String delimiter = "\\:";
         String datas[] = attackInfo.split(delimiter);
         int line = Integer.parseInt(datas[2]);
-        for(int row = 1; row < myBoard.ROW_COUNT; row++) {
+        for(int row = line; row < myBoard.ROW_COUNT; row++) {
             for(int col = 0; col < myBoard.COL_COUNT; col++) {
                 myBoard.setTile(col, row - line, myBoard.getTile(col, row));
             }
         }
 
         int randomNum = randomNumberGenerator();
+        System.out.println(randomNum);
         for(int i=0; i<line; i++){
             for(int col=0; col<myBoard.COL_COUNT; col++){
-                if(col == randomNum) continue;
-                myBoard.getTiles()[myBoard.ROW_COUNT-1][col] = TileType.values()[8];
+                if(col == randomNum){
+                    System.out.println();
+                    myBoard.setTile(col, myBoard.ROW_COUNT-1-i,null);
+                    continue;
+                }
+                myBoard.setTile(col, myBoard.ROW_COUNT-1-i,TileType.values()[8]);
             }
         }
     }
@@ -165,17 +253,26 @@ public class MultiPlay {
         return randomNum;
     }
 
+    
+    public int getGamerCount() {
+    	return this.gamerCount;
+    }
+    
+    public BoardPanel getBoard(int ind) {
+	return this.gamersBoard[ind];
+    }
+
+
     public void finishGame(){
-        String message = "finish Game";
-        client.send(message);
+        line = "die";
     }
 
     public void afterFinishGame(){
-        String message = "dummy";
-        while(true){
-            client.send(message);
-        }
+        line = "dead";
     }
-
+    
+    public HashMap getStatus() {
+    	return status;
+    }
 
 }

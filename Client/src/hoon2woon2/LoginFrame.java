@@ -81,8 +81,10 @@ public class LoginFrame extends JFrame implements ActionListener{
 				client = null;
 				tetris.loginframe = null;
 				tetris = null;
+
 				dispose();
 			}
 		}
+
 	}
 }

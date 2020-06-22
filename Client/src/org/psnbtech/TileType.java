@@ -92,6 +92,8 @@ public enum TileType {
 	}),
 	
 	/**
+
+	 *
 	 * Piece TypeO.
 	 */
 	TypeO(new Color(BoardPanel.COLOR_MAX, BoardPanel.COLOR_MAX, BoardPanel.COLOR_MIN), 2, 2, 2, new int[][] {
@@ -191,7 +193,7 @@ public enum TileType {
 		}
 	}),
 
-	UnremovableLine(new Color(116, 116, 116), 1, 1, 1, new int[][] {
+	UnTypeX(new Color(116, 116, 116), 1, 1, 1, new int[][] {
 			{
 					-1
 			},
@@ -206,7 +208,7 @@ public enum TileType {
 			}
 	}),
 
-	RemovableLine(new Color(116, 116, 116), 1, 1, 1, new int[][] {
+	TypeX(new Color(116, 116, 116), 1, 1, 1, new int[][] {
 			{
 					1
 			},
@@ -250,7 +252,7 @@ public enum TileType {
 	/**
 	 * The dimensions of the array for this piece.
 	 */
-	private int dimension;
+	private int dimension=0;
 	
 	/**
 	 * The number of rows in this piece. (Only valid when rotation is 0 or 2,

@@ -21,7 +21,7 @@ public class Item_AddOneLine extends ItemType {
 
     @Override
     public void action() {
-        itemManager.getBoard().addUnremovableLine();
+        itemManager.getBoard().addUnTypeX();
     }
 
 }
