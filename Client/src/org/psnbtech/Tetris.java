@@ -262,7 +262,7 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * play music
 		 */
-		player.play_music("backgroundmusic_long.wav", -10.0f);
+		player.play_music("backgroundmusic_long.wav");
 
 		client = c;
 		
@@ -344,7 +344,7 @@ public class Tetris extends JFrame implements ActionListener{
 				case KeyEvent.VK_DOWN:
 					if(!isPaused && dropCooldown == 0) {
 						logicTimer.setCyclesPerSecond(25.0f);
-						player.play_music("t_move.wav", 0);
+						player.play_music("t_move.wav");
 					}
 					break;
 
@@ -362,13 +362,13 @@ public class Tetris extends JFrame implements ActionListener{
 					if(reverseIndex){
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol++;
-							player.play_music("t_move.wav", 0);
+							player.play_music("t_move.wav");
 						}
 					}
 					else{
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol--;
-							player.play_music("t_move.wav", 0);
+							player.play_music("t_move.wav");
 						}
 					}
 					break;
@@ -382,13 +382,13 @@ public class Tetris extends JFrame implements ActionListener{
 					if(reverseIndex){
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol--;
-							player.play_music("t_move.wav", 0);
+							player.play_music("t_move.wav");
 						}
 					}
 					else{
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol++;
-							player.play_music("t_move.wav", 0);
+							player.play_music("t_move.wav");
 						}
 					}
 					break;
@@ -408,7 +408,7 @@ public class Tetris extends JFrame implements ActionListener{
 					if(rotationIndex){
 						if(!isPaused) {
 							rotatePiece((currentRotation == 0) ? 3 : currentRotation - 1);
-							player.play_music("t_rotate.wav", 0);
+							player.play_music("t_rotate.wav");
 						}
 					}
 					break;
@@ -423,7 +423,7 @@ public class Tetris extends JFrame implements ActionListener{
 					if(rotationIndex){
 						if(!isPaused) {
 							rotatePiece((currentRotation == 3) ? 0 : currentRotation + 1);
-							player.play_music("t_rotate.wav", 0);
+							player.play_music("t_rotate.wav");
 						}
 					}
 					break;
@@ -459,7 +459,7 @@ public class Tetris extends JFrame implements ActionListener{
 				 */
 				case KeyEvent.VK_SHIFT:
 					holdTile();
-					player.play_music("hold.wav", 0);
+					player.play_music("hold.wav");
 					break;
 				
 				/*
@@ -476,7 +476,7 @@ public class Tetris extends JFrame implements ActionListener{
 					}
 					currentRow+=cnt-1;
 					updateGame();
-					player.play_music("t_harddrop.wav", 0);
+					player.play_music("t_harddrop.wav");
 					break;
 				}
 			}
@@ -529,7 +529,7 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * play music
 		 */
-		player.play_music("backgroundmusic_long.wav", -10.0f);
+		player.play_music("backgroundmusic_long.wav");
 
 		client = c;
 		
@@ -605,7 +605,7 @@ public class Tetris extends JFrame implements ActionListener{
 				case KeyEvent.VK_DOWN:
 					if(!isPaused && dropCooldown == 0) {
 						logicTimer.setCyclesPerSecond(25.0f);
-						player.play_music("t_move.wav", 0);
+						player.play_music("t_move.wav");
 					}
 					break;
 
@@ -623,13 +623,13 @@ public class Tetris extends JFrame implements ActionListener{
 					if(reverseIndex){
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol++;
-							player.play_music("t_move.wav", 0);
+							player.play_music("t_move.wav");
 						}
 					}
 					else{
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol--;
-							player.play_music("t_move.wav", 0);
+							player.play_music("t_move.wav");
 						}
 					}
 					break;
@@ -643,13 +643,13 @@ public class Tetris extends JFrame implements ActionListener{
 					if(reverseIndex){
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol--;
-							player.play_music("t_move.wav", 0);
+							player.play_music("t_move.wav");
 						}
 					}
 					else{
 						if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)&&!beforeVal) {
 							currentCol++;
-							player.play_music("t_move.wav", 0);
+							player.play_music("t_move.wav");
 						}
 					}
 					break;
@@ -669,7 +669,7 @@ public class Tetris extends JFrame implements ActionListener{
 					if(rotationIndex){
 						if(!isPaused) {
 							rotatePiece((currentRotation == 0) ? 3 : currentRotation - 1);
-							player.play_music("t_rotate.wav", 0);
+							player.play_music("t_rotate.wav");
 						}
 					}
 					break;
@@ -684,7 +684,7 @@ public class Tetris extends JFrame implements ActionListener{
 					if(rotationIndex){
 						if(!isPaused) {
 							rotatePiece((currentRotation == 3) ? 0 : currentRotation + 1);
-							player.play_music("t_rotate.wav", 0);
+							player.play_music("t_rotate.wav");
 						}
 					}
 					break;
@@ -720,7 +720,7 @@ public class Tetris extends JFrame implements ActionListener{
 				 */
 				case KeyEvent.VK_SHIFT:
 					holdTile();
-					player.play_music("hold.wav", 0);
+					player.play_music("hold.wav");
 					break;
 				
 				/*
@@ -737,7 +737,7 @@ public class Tetris extends JFrame implements ActionListener{
 					}
 					currentRow+=cnt-1;
 					updateGame();
-					player.play_music("t_harddrop.wav", 0);
+					player.play_music("t_harddrop.wav");
 					break;
 				}
 			}
@@ -940,7 +940,7 @@ public class Tetris extends JFrame implements ActionListener{
 			 */
 			int cleared = board.checkLines();
 			if(cleared > 0) {
-				player.play_music("t_break.wav", 0);
+				player.play_music("t_break.wav");
 				if(scoreIndex){
 					score += (50 << cleared)*2;
 				}
@@ -1111,7 +1111,7 @@ public class Tetris extends JFrame implements ActionListener{
 			rank.rankup(score);
 			this.isGameOver = true;
 			logicTimer.setPaused(true);
-			player.play_music("gameover.wav", 0);
+			player.play_music("gameover.wav");
 			if(mode == 3){
 				multiPlay.finishGame();
 				multiPlay.afterFinishGame();

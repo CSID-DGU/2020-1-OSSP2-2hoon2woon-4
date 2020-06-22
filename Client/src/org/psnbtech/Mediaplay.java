@@ -11,7 +11,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.*;
 
 public class Mediaplay {
-    public void play_music(String fileName, float reduce_volume) {
+    public void play_music(String fileName) {
         File music;
         AudioInputStream stream;
         AudioFormat format;
@@ -28,7 +28,6 @@ public class Mediaplay {
                 clip = (Clip)AudioSystem.getLine(info);
                 clip.open(stream);
                 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(reduce_volume); // Reduce volume by 10 decibels.
                 clip.start();    
         } catch (Exception e) {
                 System.out.println("err : " + e);
