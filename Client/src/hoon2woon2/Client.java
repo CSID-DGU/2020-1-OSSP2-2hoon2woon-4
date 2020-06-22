@@ -82,6 +82,7 @@ public class Client {
 		try {
 			if(!socket.isConnected()) return false;
 			send("login");
+			receive();
 			send(id);
 			buf = new byte[256];
 			is.read(buf);
@@ -119,6 +120,7 @@ public class Client {
 		 try {
 	         if(!socket.isConnected()) return false;
 	         send("register");
+	         receive();
 	         send(id);
 	         buf = new byte[256];
 	         is.read(buf);

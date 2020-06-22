@@ -130,6 +130,7 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 		client.send("enterroom");
 		System.out.println("after enterroom:"+roomName);
 		this.roomName = roomName;
+		client.receive();
 		client.send(roomName);
 		message = client.receive();
 		System.out.println("after receive message:"+message);
@@ -168,6 +169,7 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 		
 		if(event.getSource()==btn_MakeRoom) {
 			client.send("createroom"); // buffer 128
+			client.receive();
 			client.send(tf_roomName.getText());
 
 			
