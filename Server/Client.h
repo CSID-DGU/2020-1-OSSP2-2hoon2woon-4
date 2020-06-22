@@ -11,7 +11,7 @@
 #include <mysql/mysql.h>
 #include <string>
 
-#define BUF_LEN 32
+#define BUF_LEN 1024
 
 #define print_time() fprintf(log, "%04d-%02d-%02d %02d:%02d:%02d\n", curr_tm.tm_year + 1900, curr_tm.tm_mon + 1, curr_tm.tm_mday, curr_tm.tm_hour, curr_tm.tm_min, curr_tm.tm_sec);
 

@@ -7,6 +7,8 @@ Room::Room(int _bj, std::string _bjname, std::string _name)
 	names[0] = _bjname;
 	name = _name.c_str();
 	game = false;
+	dead = 0;
+	wait = 0;
 }
 
 int Room::getNumber()

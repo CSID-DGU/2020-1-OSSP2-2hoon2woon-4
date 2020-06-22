@@ -18,6 +18,11 @@ public:
 	int clients[4] = {0, };
 	std::string names[4] = {"", };
 
+	int wait;
+
+	int dead;
+	int rank[4] = {0, };
+
 	std::string getName();
 };
 

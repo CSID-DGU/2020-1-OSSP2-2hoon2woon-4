@@ -1051,6 +1051,8 @@ public class Tetris extends JFrame implements ActionListener{
 			rank.repaint();
 		}
 		else{
+			rank.setVisible(false);
+			rank.repaint();
 		    board.setType(getPieceType());
 		    board.setPieceCol(getPieceCol());
 		    board.setPieceRow(getPieceRow());

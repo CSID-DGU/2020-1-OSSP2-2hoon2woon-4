@@ -99,6 +99,7 @@ void func(std::shared_ptr<Client> client)
 
 bool Server::createRoom(int fd, Client& c, std::string bjname)
 {
+	write(fd, "create", 6);
 	std::fill(buf, buf + buflen, '\0');
 
 	read(fd, buf, buflen);
@@ -135,6 +136,7 @@ bool Server::createRoom(int fd, Client& c, std::string bjname)
 
 bool Server::join(Client& c, int fd, std::string name)
 {
+	write(fd, "enter", 5);
 	std::fill(buf, buf + buflen, '\0');
 	read(fd, buf, buflen);
 	std::string roomname = buf;
@@ -164,6 +166,16 @@ bool Server::join(Client& c, int fd, std::string name)
 
 bool Server::exit()
 {
+	for(std::vector<std::shared_ptr<Client>>::iterator iter = clients.begin();
+		    iter != clients.end();)
+		{
+			if(!((*iter)->isRunnable()))
+			{
+				iter = clients.erase(iter);
+				continue;
+			}
+			++iter;
+		}
 	for(std::vector<std::shared_ptr<Room>>::iterator iter = rooms.begin();
 		    iter != rooms.end();)
 		{

@@ -111,9 +111,10 @@ void Client::run()
 	}
 	
 	//save log file
-	fclose(log);
 	//end process
 	runnable = false;
+	fclose(log);
+	exit();
 }
 
 bool Client::logout()
@@ -167,6 +168,7 @@ char* Client::ip()
  * */
 bool Client::login()
 {
+	write(client_fd, buf, BUF_LEN);
 	//receive id
 	std::fill(buf, buf + BUF_LEN, '\0');
 	readLen = read(client_fd, buf, BUF_LEN);
@@ -177,10 +179,12 @@ bool Client::login()
 	}
 	userid = buf;
 	write(client_fd, buf, readLen);
+	printf("login : %s\n", userid.c_str());
 
+	char pwbuf[32];
 	//receive pw
-	std::fill(buf, buf + BUF_LEN, '\0');
-	readLen = read(client_fd, buf, BUF_LEN);
+	std::fill(pwbuf, pwbuf + 32, '\0');
+	readLen = read(client_fd, pwbuf, 32);
 	if(readLen < 1)
 	{
 		write(client_fd, "error", 5);
@@ -190,7 +194,7 @@ bool Client::login()
 	//encrypt pw
 	//login authentication
 	std::stringstream ss;
-	for(char e : buf)
+	for(char e : pwbuf)
 		ss << std::hex << std::setw(2) << std::setfill('0') << (((int)e)&0x000000FF);
 	pw = ss.str();
 	if(sqlconnection != NULL)
@@ -234,6 +238,7 @@ bool Client::login()
 
 bool Client::regist()
 {
+	write(client_fd, buf, BUF_LEN);
 	//receive id
 	std::fill(buf, buf + BUF_LEN, '\0');
 	readLen = read(client_fd, buf, BUF_LEN);
@@ -245,9 +250,10 @@ bool Client::regist()
 	userid = buf;
 	write(client_fd, buf, readLen);
 
+	char pwbuf[32];
 	//receive pw
-	std::fill(buf, buf + BUF_LEN, '\0');
-	readLen = read(client_fd, buf, BUF_LEN);
+	std::fill(pwbuf, pwbuf + 32, '\0');
+	readLen = read(client_fd, pwbuf, 32);
 	if(readLen < 1)
 	{
 		write(client_fd, "error", 5);
@@ -257,7 +263,7 @@ bool Client::regist()
 	//encrypt pw
 	//login authentication
 	std::stringstream ss;
-	for(char e : buf)
+	for(char e : pwbuf)
 		ss << std::hex << std::setw(2) << std::setfill('0') << (((int)e)&0x000000FF);
 	pw = ss.str();
 	if(sqlconnection != NULL)
@@ -344,13 +350,53 @@ void Client::game()
 	if(room->game)
 	{	
 		write(client_fd, "start", 5);
+		(room->wait)++;
 		while(1)
 		{
-			read(client_fd, buf, BUF_LEN);
+			if(room->wait == room->getNumber())
+			{
+			std::fill(buf, buf + BUF_LEN, '\0');
+			readLen = read(client_fd, buf, BUF_LEN);
+			if(readLen < 1) break;
+			//printf("%s : %s\n\n", userid.c_str(), buf);
+			if(strcmp(buf, "die") == 0)
+			{
+				room->rank[(room->dead)++] = client_fd;	
+				if(room->dead == room->getNumber())
+				{
+					std::fill(buf, buf + BUF_LEN, '\0');
+					strcpy(buf, "gameend");
+					for(int i = room->dead - 1; i >= 0; i--)
+					{
+						strcat(buf, ":");
+						for(int j = 0; j < room->getNumber(); j++)
+						{
+							if(room->clients[j] == room->rank[i])
+							{
+								strcat(buf, room->names[j].c_str());
+								break;
+							}
+						}
+					}
+				}
+				else
+				{
+					std::fill(buf, buf + BUF_LEN, '\0');
+					strcpy(buf, userid.c_str());
+					strcat(buf, ":dead");
+				}
+			}
+			else if(strcmp(buf, "dead") == 0)
+			{
+				std::fill(buf, buf +BUF_LEN, '\0');
+				strcpy(buf, userid.c_str());
+				strcat(buf, ":dead");				
+			}
 			for(int i = 0; i < (*room).getNumber(); i++)
 			{
 				if((*room).clients[i] != client_fd)
 					write((*room).clients[i], buf, BUF_LEN);
+			}
 			}
 		}
 	}
