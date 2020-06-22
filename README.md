@@ -9,7 +9,7 @@
   
 ## 2. Client
 ### 2.1 Development Environment
-> jdk1.8.0_131
+> jdk1.8.0
 ### 2.2 Runtime Environment
 > JavaSE-1.7
 
