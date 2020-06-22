@@ -101,6 +101,8 @@ public class BoardPanel extends JPanel {
 	 */
 	private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
 
+	public boolean isOver = false;
+
 	/**
 	 * The Tetris instance.
 	 */
@@ -467,53 +469,59 @@ public class BoardPanel extends JPanel {
 			g.drawRect(0, 0, TILE_SIZE * COL_COUNT, TILE_SIZE * VISIBLE_ROW_COUNT);
 		}
 		else {
-			g.setFont(LARGE_FONT);
-			g.setColor(Color.WHITE);
+			if(tetris.isPaused()) {
+				g.setFont(LARGE_FONT);
+				g.setColor(Color.WHITE);
+				String msg = "PAUSED";
+				g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, CENTER_Y);
+			} else if(tetris.isNewGame() || tetris.isGameOver()) {
+				g.setFont(LARGE_FONT);
+				g.setColor(Color.WHITE);
 
-			/*
-			 * Because both the game over and new game screens are nearly identical,
-			 * we can handle them together and just use a ternary operator to change
-			 * the messages that are displayed.
-			 */
-			String msg;
-
-			if(tetris.flag==0)
-				msg = (boolean) tetris.isNewGame() ? "TETRIS" : "GAME OVER";
-			else
-				msg = (boolean) m.getStatus().get(userId) ? "TETRIS" : "GAME OVER";
-
-			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
-			g.setFont(SMALL_FONT);
-			msg = "Press Enter to Play" + (tetris.isNewGame() ? "" : " Again");
-			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 300);
-
-			/*
-			 * Draw the tiles onto the board.
-			 */
-			for(int x = 0; x < COL_COUNT; x++) {
-				for(int y = HIDDEN_ROW_COUNT; y < ROW_COUNT; y++) {
-					TileType tile = getTile(x, y);
-					if(tile != null) {
-						drawTile(tile, x * TILE_SIZE, (y - HIDDEN_ROW_COUNT) * TILE_SIZE, g);
-					}
+				/*
+				 * Because both the game over and new game screens are nearly identical,
+				 * we can handle them together and just use a ternary operator to change
+				 * the messages that are displayed.
+				 */
+				String msg = tetris.isNewGame() ? "TETRIS" : "GAME OVER";
+				if(tetris.getMode()==2)
+				{
+					if(tetris.isGameOver()) itemManager.clear();
 				}
+				g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
+				g.setFont(SMALL_FONT);
+				msg = "Press Enter to Play" + (tetris.isNewGame() ? "" : " Again");
+				g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 300);
 			}
 
+			else {
 
-			/*
-			 * Draw the current piece. This cannot be drawn like the rest of the
-			 * pieces because it's still not part of the game board. If it were
-			 * part of the board, it would need to be removed every frame which
-			 * would just be slow and confusing.
-			 */
+				/*
+				 * Draw the tiles onto the board.
+				 */
+				for(int x = 0; x < COL_COUNT; x++) {
+					for(int y = HIDDEN_ROW_COUNT; y < ROW_COUNT; y++) {
+						TileType tile = getTile(x, y);
+						if(tile != null) {
+							drawTile(tile, x * TILE_SIZE, (y - HIDDEN_ROW_COUNT) * TILE_SIZE, g);
+						}
+					}
+				}
 
-			/*TileType type = tetris.getPieceType();
-			int pieceCol = tetris.getPieceCol();
-			int pieceRow = tetris.getPieceRow();
-			int rotation = tetris.getPieceRotation();*/
 
-			//Draw the piece onto the board.
-			try {
+				/*
+				 * Draw the current piece. This cannot be drawn like the rest of the
+				 * pieces because it's still not part of the game board. If it were
+				 * part of the board, it would need to be removed every frame which
+				 * would just be slow and confusing.
+				 */
+
+//				TileType type = tetris.getPieceType();
+//				int pieceCol = tetris.getPieceCol();
+//				int pieceRow = tetris.getPieceRow();
+//				int rotation = tetris.getPieceRotation();
+
+				//Draw the piece onto the board.
 				for(int col = 0; col < type.getDimension(); col++) {
 					for(int row = 0; row < type.getDimension(); row++) {
 						if(pieceRow + row >= 2 && type.isTile(col, row, rotation) == 1) {
@@ -521,13 +529,12 @@ public class BoardPanel extends JPanel {
 						}
 					}
 				}
-			}catch(Exception e) {}
-			/*
-			 * Draw the ghost (semi-transparent piece that shows where the current piece will land). I couldn't think of
-			 * a better way to implement this so it'll have to do for now. We simply take the current position and move
-			 * down until we hit a row that would cause a collision.
-			 */
-			try {
+
+				/*
+				 * Draw the ghost (semi-transparent piece that shows where the current piece will land). I couldn't think of
+				 * a better way to implement this so it'll have to do for now. We simply take the current position and move
+				 * down until we hit a row that would cause a collision.
+				 */
 				Color base = type.getBaseColor();
 				base = new Color(base.getRed(), base.getGreen(), base.getBlue(), 20);
 				for(int lowest = pieceRow; lowest < ROW_COUNT; lowest++) {
@@ -550,25 +557,31 @@ public class BoardPanel extends JPanel {
 
 					break;
 				}
-			}catch(Exception e) {}
-			/*
-			 * Draw the background grid above the pieces (serves as a useful visual
-			 * for players, and makes the pieces look nicer by breaking them up.
-			 */
-			g.setColor(Color.DARK_GRAY);
-			for(int x = 0; x < COL_COUNT; x++) {
-				for(int y = 0; y < VISIBLE_ROW_COUNT; y++) {
-					g.drawLine(0, y * TILE_SIZE, COL_COUNT * TILE_SIZE, y * TILE_SIZE);
-					g.drawLine(x * TILE_SIZE, 0, x * TILE_SIZE, VISIBLE_ROW_COUNT * TILE_SIZE);
-				}
-			}
 
-			if(tetris.getMode()!= 3) {
+				/*
+				 * Draw the background grid above the pieces (serves as a useful visual
+				 * for players, and makes the pieces look nicer by breaking them up.
+				 */
+				g.setColor(Color.DARK_GRAY);
+				for(int x = 0; x < COL_COUNT; x++) {
+					for(int y = 0; y < VISIBLE_ROW_COUNT; y++) {
+						g.drawLine(0, y * TILE_SIZE, COL_COUNT * TILE_SIZE, y * TILE_SIZE);
+						g.drawLine(x * TILE_SIZE, 0, x * TILE_SIZE, VISIBLE_ROW_COUNT * TILE_SIZE);
+					}
+				}
+
 				itemManager = tetris.getItemManager();
 				for(int i=0; i<itemManager.getItems().size(); i++){
 					drawItem(itemManager.getItems().get(i).getX()*TILE_SIZE + TILE_SIZE/4,(itemManager.getItems().get(i).getY()-HIDDEN_ROW_COUNT)*TILE_SIZE + TILE_SIZE/2,itemManager.getItems().get(i).getItemIndex(),g);
+
 				}
 			}
+
+			/*
+			 * Draw the outline.
+			 */
+			g.setColor(Color.WHITE);
+			g.drawRect(0, 0, TILE_SIZE * COL_COUNT, TILE_SIZE * VISIBLE_ROW_COUNT);
 		}
 
 		/*

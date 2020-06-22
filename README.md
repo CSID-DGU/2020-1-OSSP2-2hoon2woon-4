@@ -5,6 +5,7 @@
 * Client
 * Server
 * Base Project
+* Control Keys
 
   
 ## 2. Client
@@ -24,3 +25,13 @@
   
 ## 4. Base Project
 [PSNB92/Tetris](https://github.com/PSNB92/Tetris)
+
+## 5. Control Keys
+* ← - Move Left
+* → - Move Right
+* ↓ - Drop
+* Z - Rotate Anticlockwise
+* X - Rotate Clockwise
+* Shift - Hold
+* Space - Hard Drop
+* P - Pause Game

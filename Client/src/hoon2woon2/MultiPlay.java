@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 /**
  * gowoon-choi
  * TODO comment
@@ -37,62 +39,65 @@ public class MultiPlay {
      * gowoon-choi
      * TODO comment
      */
+  	
+    
     MultiPlay(Client c,Tetris tetris){
         this.client = c;
-        
+        System.out.println("111111111111111111111111111111111");
         this.tetris = tetris;
         
         gamerCount = c.getGamerCount();
-        System.out.println(gamerCount);
+        
+        this.tetris.setGamerCount(gamerCount); 
+        // JOptionPane.showMessageDialog(null, gamerCount);
+        // System.out.println(gamerCount);
         gamersBoard = new BoardPanel[gamerCount];
 
         int j = 1;
 
         for(int i=0; i<gamerCount; i++){
+            status.put(client.userList.elementAt(i),true);
             if(client.userList.elementAt(i).equals(client.getUserid())){
                 continue;
             }
             else{
                 gamersBoard[j] = new BoardPanel(tetris);
                 userId2boardIndex.put(client.userList.elementAt(i), j); //각 유저 아이디와 보드 index 연결하기
-                // status.put(client.userList.elementAt(i),true);
                 gamersBoard[j].setMultiplay(this);
                 gamersBoard[j++].setUserId(client.userList.elementAt(i)); // 나빼고 매핑
             }
         }
-        myBoard = this.tetris.getBoardPanel();
+        myBoard = this.tetris.board;
         gamersBoard[0] = myBoard;
+
         int bWidth = myBoard.getWidth();
         int bHeight = myBoard.getHeight();
-        
-        this.tetris.setSize(200+bWidth*gamerCount,bHeight);
-        
-        
-        int x = 0;		
-
-  
-       this.tetris.getBoardPanel().setLocation(x,0); 
        
-       x += bWidth;		  
+        
+        
+        this.tetris.setSize(200+bWidth*gamerCount+10*gamerCount,bHeight);
 
-       this.tetris.rankvisible(false);
-        for(int i = 1; i < gamerCount; i++) {
-            this.tetris.boards = new BoardPanel[gamerCount];
-            this.tetris.boards[i] = gamersBoard[i];
-        	this.tetris.setLocation(x+10,0);
-        	this.tetris.add(this.tetris.boards[i]);
+        this.tetris.board.setLocation(0,0); 
+        this.tetris.add(this.tetris.board);
+
+        int x = bWidth;		  
        
-        	if(i==gamerCount-1) {
-        		this.tetris.getSidePanel().setLocation(x,0);
-        	}
-        	
-        	x += bWidth;
+        this.tetris.boards = gamersBoard;
+        this.tetris.rankvisible(false);
+        
+        for(int i = 1; i <	 gamerCount; i++) {
+        		this.tetris.boards[i].setLocation(x+10,0);
+        		this.tetris.add(this.tetris.boards[i]);
+        		x =x+bWidth+10;
         }
         
-        this.tetris.repaint();
-        this.tetris.setMultiPlay(this);
+        this.tetris.side.setLocation(x+10,0);
+		this.tetris.add(this.tetris.side);
+        
+      this.tetris.repaint();
+      this.tetris.setMultiPlay(this);
         // this.myBoard = new BoardPanel(tetris);
-        this.tetris.setMode(3);
+      this.tetris.setMode(3);
         start();
         //TODO : 게임 시작
     }
@@ -148,6 +153,7 @@ public class MultiPlay {
                         else if (datas[2].equals("dead")){
                             // TODO 이 유저의 보드 status false로
                             status.put(datas[0],false);
+                            gamersBoard[userId2boardIndex.get(datas[0])].isOver = false;
                             gamersBoard[userId2boardIndex.get(datas[0])].repaint();
                         }
                         else{
@@ -275,4 +281,8 @@ public class MultiPlay {
     	return status;
     }
 
+    public void setStatus(String userId) {
+        status.put(userId,false);
+        gamersBoard[userId2boardIndex.get(userId)].isOver = false;
+    }
 }
