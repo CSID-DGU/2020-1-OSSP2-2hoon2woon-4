@@ -1,12 +1,15 @@
+
 package hoon2woon2;
+
 
 import java.io.File;	
 import java.nio.file.Paths;
 import javax.swing.*;
+
+import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.psnbtech.*;
@@ -17,9 +20,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
-import javax.imageio.ImageIO;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -112,7 +113,7 @@ public class Main extends JFrame{
         @Override
         public void mouseEntered(MouseEvent e) {
             JButton b = (JButton)e.getSource();
-            b.setIcon(start2);
+            b.setIcon(start2);	
             b.setVisible(true);
         }
 
@@ -131,16 +132,16 @@ public class Main extends JFrame{
         }
     }
 
-	public static void main(String[] args) {
-		new Main();
-		while(true){
-			System.out.println(num);
-			if(num==1){
-				client = new Client();
-				tetris = new Tetris(client);
-				tetris.startGame();
-				multi = new MultiPlay(client);
-			}
-		}
-	}
+    public static void main(String[] args) {
+        new Main();
+        while(true){
+            System.out.println(num);
+            if(num==1){
+                client = new Client();
+                tetris = new Tetris(client);
+                tetris.startGame();
+                multi = new MultiPlay(client);
+            }
+        }
+    }
 }

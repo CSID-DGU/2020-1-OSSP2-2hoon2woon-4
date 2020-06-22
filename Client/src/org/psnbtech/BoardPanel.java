@@ -313,7 +313,8 @@ public class BoardPanel extends JPanel {
 	 * Sets a tile located at the desired column and row.
 	 * @param x The column.
 	 * @param y The row.
-	 * @param type The value to set to the tile to.
+	 * @param
+	 *  type The value to set to the tile to.
 	 */
 	public void setTile(int  x, int y, TileType type) {
 		tiles[y][x] = type;
@@ -347,14 +348,17 @@ public class BoardPanel extends JPanel {
 		} else if(tetris.isNewGame() || tetris.isGameOver()) {
 			g.setFont(LARGE_FONT);
 			g.setColor(Color.WHITE);
-			
+			 
 			/*
 			 * Because both the game over and new game screens are nearly identical,
 			 * we can handle them together and just use a ternary operator to change
 			 * the messages that are displayed.
 			 */
 			String msg = tetris.isNewGame() ? "TETRIS" : "GAME OVER";
+			if(tetris.getMode()==2)
+			{
 			if(tetris.isGameOver()) itemManager.clear();
+			}
 			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
 			g.setFont(SMALL_FONT);
 			msg = "Press Enter to Play" + (tetris.isNewGame() ? "" : " Again");

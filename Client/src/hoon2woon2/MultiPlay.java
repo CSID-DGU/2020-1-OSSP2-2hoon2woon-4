@@ -36,13 +36,19 @@ public class MultiPlay {
      * TODO comment
      */
     MultiPlay(Client c){
-        this.client = c;
-        this.tetris.setMultiPlay(this);
-        this.gamerCount = client.getGamerCount(); // gamerCount 할당 
-        // this.tetris = new Tetris(client);
+        this.client = c;	
+        gamerCount = c.getGamerCount();
+      
+        for(int i=0; i<gamerCount; i++){
+            gamersBoard[i] = new BoardPanel(tetris);
+            userId2boardIndex.put(client.users.elementAt(i), i); //각 유저 아이디와 보드 index 연결하기 
+        }
+        
         this.tetris = new Tetris(client,this);
-        this.myBoard = new BoardPanel(tetris);
+        this.tetris.setMultiPlay(this);
+        // this.myBoard = new BoardPanel(tetris);
         this.tetris.setMode(3);
+    
     }
 
     /**
@@ -55,7 +61,7 @@ public class MultiPlay {
             gamersBoard[i] = new BoardPanel(tetris);
             userId2boardIndex.put(client.users.elementAt(i), i); //각 유저 아이디와 보드 index 연결하기 
         }
-
+ 
         this.tetris.startGame();
         String delimiter = "\\:";
         String[] datas;
@@ -164,12 +170,27 @@ public class MultiPlay {
         randomNum = random.nextInt(myBoard.COL_COUNT);
         return randomNum;
     }
+
     
     public int getGamerCount() {
     	return this.gamerCount;
     }
     
     public BoardPanel getBoard(int ind) {
-    	return this.gamersBoard[ind];
+	return this.gamersBoard[ind];
     }
+
+
+    public void finishGame(){
+        String message = "finish Game";
+        client.send(message);
+    }
+
+    public void afterFinishGame(){
+        String message = "dummy";
+        while(true){
+            client.send(message);
+        }
+    }
+
 }

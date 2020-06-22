@@ -143,15 +143,17 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 			System.out.println(memberNum);
 			dispose();
 			// ReadyFrame r = new ReadyFrame(this,client);
-			threadEx t = new threadEx(client,this);
-		}
+	//		threadEx t = new threadEx(client,this);
+			waiting w = new waiting(client,this);
+			}
 		
 	}
 	
 	public void createRoom(String roomname) {
 //		ReadyFrame ready = new ReadyFrame(this,client);
 		dispose();
-		threadEx t = new threadEx(client,this);
+//		threadEx t = new threadEx(client,this);
+		waiting w = new waiting(client,this);
 	}
 	
 	public String str_refining(String message) {

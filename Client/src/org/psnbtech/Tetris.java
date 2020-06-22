@@ -2,6 +2,7 @@ package org.psnbtech;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -29,9 +30,6 @@ import java.nio.file.Paths;
 import hoon2woon2.*;
 
 import hoon2woon2.Items.ItemManager;
-//import javafx.embed.swing.JFXPanel;
-//import javafx.scene.media.Media;
-//import javafx.scene.media.MediaPlayer;
 
 
 /**
@@ -206,7 +204,7 @@ public class Tetris extends JFrame implements ActionListener{
 	private int addTimer=1;
 	
 	
-	private int gamer = 1; //chacha
+	private int gamer = 1; // chacha
 	
 	/** 2020-04-28 Seungun-Park
 	 */
@@ -245,7 +243,6 @@ public class Tetris extends JFrame implements ActionListener{
 	* */
 	String getpath = Paths.get("").toUri().toString();
 	Mediaplay player = new Mediaplay();
-	
 
 
 	/**
@@ -266,7 +263,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 * play music
 		 */
 		player.play_music("backgroundmusic_long.wav", -10.0f);
-		
+
 		client = c;
 		
 		//loginframe = new LoginFrame(this, client);
@@ -276,17 +273,21 @@ public class Tetris extends JFrame implements ActionListener{
 		 */
 		this.board = new BoardPanel(this);
 		this.side = new SidePanel(this);
+		
+	
 		this.rank = new RankPanel(this, client);
+		
 		this.tetrisBag = new ArrayList<Integer>();
 		
 		/**2020-04-28 Seungun-Park
 		 * Menu control
 		 */
+		
 		item_new.addActionListener(this);
 		item_exit.addActionListener(this);
 		item_login.addActionListener(this);
 		item_logout.addActionListener(this);
-		item_register.addActionListener(this); //cha seung hoon 2020.06.10 Register Frame
+		item_register.addActionListener(this); // cha seung hoon 2020.06.10 Register Frame
 		item_basic.addActionListener(this);
 		item_disturb.addActionListener(this);
 		item_item.addActionListener(this);
@@ -311,13 +312,13 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * Add the BoardPanel and SidePanel instances to the window.
 		 */
-		add(rank);
+		
 		add(board);
-		add(side);
-
+		add(side);	
+		add(rank);
 		rank.rankup();
 		rank.repaint();
-		
+
 		/*
 		 * Adds a custom anonymous KeyListener to the frame.
 		 */
@@ -512,15 +513,15 @@ public class Tetris extends JFrame implements ActionListener{
 		setLocationRelativeTo(null);
 		setVisible(true);
 		board.setVisible(true);
+	
+	
 	}
 
-	public Tetris(Client c,MultiPlay m) {
+	public Tetris(Client c, MultiPlay m) {
 		/*
 		 * Set the basic properties of the window.
 		 */
 		super("Tetris");
-		this.multiPlay = m;
-		
 		setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
@@ -529,7 +530,7 @@ public class Tetris extends JFrame implements ActionListener{
 		 * play music
 		 */
 		player.play_music("backgroundmusic_long.wav", -10.0f);
-		
+
 		client = c;
 		
 		//loginframe = new LoginFrame(this, client);
@@ -539,16 +540,18 @@ public class Tetris extends JFrame implements ActionListener{
 		 */
 		this.board = new BoardPanel(this);
 		this.side = new SidePanel(this);
+		
 		this.tetrisBag = new ArrayList<Integer>();
 		
 		/**2020-04-28 Seungun-Park
 		 * Menu control
 		 */
+		
 		item_new.addActionListener(this);
 		item_exit.addActionListener(this);
 		item_login.addActionListener(this);
 		item_logout.addActionListener(this);
-		item_register.addActionListener(this); //cha seung hoon 2020.06.10 Register Frame
+		item_register.addActionListener(this); // cha seung hoon 2020.06.10 Register Frame
 		item_basic.addActionListener(this);
 		item_disturb.addActionListener(this);
 		item_item.addActionListener(this);
@@ -573,12 +576,14 @@ public class Tetris extends JFrame implements ActionListener{
 		/*
 		 * Add the BoardPanel and SidePanel instances to the window.
 		 */
+		
 		add(board);
-		add(side);
+		add(side);	
 
-		
-		
-addKeyListener(new KeyAdapter() {
+		/*
+		 * Adds a custom anonymous KeyListener to the frame.
+		 */
+		addKeyListener(new KeyAdapter() {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -756,36 +761,42 @@ addKeyListener(new KeyAdapter() {
 			}
 			
 		});
-		
+				
 		/*
 		 * Here we resize the frame to hold the BoardPanel and SidePanel instances,
 		 * center the window on the screen, and show it to the user.
 		 */
 		getContentPane().setBackground(Color.BLACK);
 		
-		switch (multiPlay.getGamerCount()) {
+		switch(m.getGamerCount()) {
 		case 2:
-			//setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67);
-			setSize(557,650);
-			multiPlay.getBoard(0).setBounds(250,130,368,188);
-			d_start = getSize();
-			setMinimumSize(d_start);
-			setLocationRelativeTo(null);
-			setVisible(true);
-			board.setVisible(true);
+			//setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67+side.getHeight());
+			 setSize(650,557);
+			board.setBounds(0,0,board.getWidth(),board.getHeight());
+			side.setBounds(490, 0, 200, 123);
+			 BoardPanel user1 = m.getBoard(0);
+			 user1.setBounds(490,200,200,392);
+			 add(user1);
+			// user1.setVisible(true);
 			break;
+			
 		case 3:
+			setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67+side.getHeight());
+			
 			break;
+			
 		case 4:
+			setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67+side.getHeight());
+			
 			break;
 		}
-			
-//		setSize(board.getWidth() + side.getWidth()*2, board.getHeight()+67);
-//		d_start = getSize();
-//		setMinimumSize(d_start);
-//		setLocationRelativeTo(null);
-//		setVisible(true);
-//		board.setVisible(true);
+		
+		d_start = getSize();
+		System.out.println(d_start);
+		setMinimumSize(d_start);
+//                         		setLocationRelativeTo(null);
+		setVisible(true);
+		board.setVisible(true);
 	}
 	
 	/**
@@ -925,7 +936,7 @@ addKeyListener(new KeyAdapter() {
 			/*
 			 * Check to see if adding the new piece resulted in any cleared lines. If so,
 			 * increase the player's score. (Up to 4 lines can be cleared in a single go;
-			 * [1 = 100pts, 2 = 200pts, 3 = 400pts, 4 = 800pts]).
+			 * [1 = 100pts, 2 = 67pts, 3 = 400pts, 4 = 800pts]).
 			 */
 			int cleared = board.checkLines();
 			if(cleared > 0) {
@@ -936,7 +947,9 @@ addKeyListener(new KeyAdapter() {
 				else{
 					score += 50 << cleared;
 				}
-				//multiPlay.attack(cleared);
+				if(mode == 3){
+					multiPlay.attack(cleared);
+				}
 			}
 			
 			/*
@@ -1099,6 +1112,10 @@ addKeyListener(new KeyAdapter() {
 			this.isGameOver = true;
 			logicTimer.setPaused(true);
 			player.play_music("gameover.wav", 0);
+			if(mode == 3){
+				multiPlay.finishGame();
+				multiPlay.afterFinishGame();
+			}
 		}		
 	}
 
@@ -1368,19 +1385,19 @@ addKeyListener(new KeyAdapter() {
 		}
 		if(event.getSource() == item_basic) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 0;
 		}
 		if(event.getSource() == item_disturb) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 2;
 		}
 		if(event.getSource() == item_item) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 1;
 		}
@@ -1393,26 +1410,26 @@ addKeyListener(new KeyAdapter() {
 		}
 		if(event.getSource() == item_basic) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 0;
 		}
 		if(event.getSource() == item_disturb) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 2;
 		}
 		if(event.getSource() == item_item) {
 			isPaused = false;
-			isGameOver = false;
+			isGameOver = true;
 			isNewGame = true;
 			mode = 1;
 		}
 		if(event.getSource()==item_multi) {
 			if(client.isLogined()) {
 				isPaused = false;
-				isGameOver = false;
+				isGameOver = true;
 				isNewGame = true;
 				mode = 3;
 				MultiFrame m = new MultiFrame(this,client);
@@ -1422,4 +1439,5 @@ addKeyListener(new KeyAdapter() {
 			}
 		}
 	}
+
 }

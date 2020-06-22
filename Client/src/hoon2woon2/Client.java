@@ -42,13 +42,13 @@ public class Client {
 		ranking = new String[10];
 		for(int i = 0; i < 10; i++)
 			ranking[i] = "";
-		try {
+		//try {
 			socket = new Socket();
-			prop.load(new FileInputStream(inipath));
+		//	prop.load(new FileInputStream(inipath));
 			connect();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+		//} catch(IOException e) {
+		//	e.printStackTrace();
+		//}
 
 	}
 	
