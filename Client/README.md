@@ -19,6 +19,7 @@ The file has the following format.
 
 ---------------------------------
 ip='your server's ip address'
+
 port='your server's port number'
 
 ---------------------------------
