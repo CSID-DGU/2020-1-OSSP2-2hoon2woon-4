@@ -33,6 +33,6 @@ All images were drawn by [Jihoon Kim](https://github.com/KimJihoon18 "김지훈"
 
 ### Musics
 
-Background music is [Jeremy Blake - Powerup! NO COPYRIGHT 8-bit Music](https://www.youtube.com/watch?v=l7SwiFWOQqM&list=PLwJjxqYuirCLkq42mGw4XKGQlpZSfxsYd&index=4).
+Background music is [Jeremy Blake - Powerup! NO COPYRIGHT 8-bit Music](https://youtu.be/l7SwiFWOQqM).
 
 All the sounds except background music were made by [Jihoon Kim](https://github.com/KimJihoon18 "김지훈").
