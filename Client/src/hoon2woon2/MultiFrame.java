@@ -31,7 +31,7 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 	public static JButton btn_MakeRoom = new JButton("Make Room");
 	public static JScrollPane sp;
 	Client client;
-	Tetris tetris;
+	public static Tetris tetris ;
 	
 	public MultiFrame(Tetris t, Client c) {
 		super("Tetris.net");
@@ -128,6 +128,7 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 	
 	public void enterRoom(String roomName) {
 		client.send("enterroom");
+        client.receive();
 		System.out.println("after enterroom:"+roomName);
 		this.roomName = roomName;
 		client.send(roomName);
@@ -168,6 +169,7 @@ public class MultiFrame extends JFrame implements ActionListener, ListSelectionL
 		
 		if(event.getSource()==btn_MakeRoom) {
 			client.send("createroom"); // buffer 128
+            client.receive();
 			client.send(tf_roomName.getText());
 
 			

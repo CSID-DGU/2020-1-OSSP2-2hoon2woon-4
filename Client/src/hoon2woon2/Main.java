@@ -140,7 +140,7 @@ public class Main extends JFrame{
                 client = new Client();
                 tetris = new Tetris(client);
                 tetris.startGame();
-                multi = new MultiPlay(client);
+//                multi = new MultiPlay(client);
             }
         }
     }

@@ -32,8 +32,9 @@ public class Client {
 	private static int user = -1;
 	private static String userid = "";
 	private int gamecount;
+	private int mode;
 	
-	public static Vector<String>users = new Vector<String>();
+	public static Vector<String>userList = new Vector<String>();
 	public static String[] ranking;
 	
 	Properties prop = new Properties();
@@ -81,6 +82,7 @@ public class Client {
 		try {
 			if(!socket.isConnected()) return false;
 			send("login");
+			receive();
 			send(id);
 			buf = new byte[256];
 			is.read(buf);
@@ -118,6 +120,7 @@ public class Client {
 		 try {
 	         if(!socket.isConnected()) return false;
 	         send("register");
+	         receive();
 	         send(id);
 	         buf = new byte[256];
 	         is.read(buf);
@@ -210,5 +213,11 @@ public class Client {
 	
 	public void setGamerCount(int gamecount) {
 		this.gamecount = gamecount;
+	}
+
+	
+	public void setUserList(Vector <String> userList) {
+		for(int i = 0 ; userList.size()>i;i++)
+			this.userList.add(userList.elementAt(i));
 	}
 }

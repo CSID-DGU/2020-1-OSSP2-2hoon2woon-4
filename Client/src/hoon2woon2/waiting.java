@@ -11,23 +11,30 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
+
+import org.psnbtech.Tetris;
+
 class Socket extends Thread{
 	Client c;
-
+	Tetris t;
 	private String receivedMessage;
-	 static String sendMessage="ready";
+	static String sendMessage="ready";
 	static boolean master = false;
 	static Vector<String> users = new Vector<String>();
+
 	
-	Socket(Client c) {
+	Socket(Client c,Tetris t) {
 		super("Socket");
 		this.c = c ;
+		this.t = t;
+		users.add(c.getUserid());
 	}
 	
 	public void run() {
 		while(true) {
 			c.send(sendMessage);
 			receivedMessage = c.receive();
+			receivedMessage = receivedMessage.replaceAll("\0", "");
 			
 			if(receivedMessage.equals("success")) {
 				sendMessage = "ready";
@@ -42,7 +49,9 @@ class Socket extends Thread{
 			}
 			
 			else if(receivedMessage.equals("start")) {
-				MultiPlay m = new MultiPlay(c);
+				c.setGamerCount(users.size());
+				c.setUserList(users);
+				MultiPlay m = new MultiPlay(c,t);
 				break;
 			}
 			
@@ -75,7 +84,8 @@ class GUI extends JFrame implements Runnable,ActionListener{
 	
 	static Client client;
 	MultiFrame multi;
-	
+	boolean w = true;
+
 	GUI(Client c,MultiFrame m) {
 		
 		super("Waiting Room");
@@ -84,7 +94,7 @@ class GUI extends JFrame implements Runnable,ActionListener{
 	}
 
 	public void run() {
-setLayout(null);
+		setLayout(null);
 		
 		la_name = new JLabel("Room name: " + multi.roomName);
 		
@@ -102,7 +112,7 @@ setLayout(null);
 		setSize(300,300);
 		setVisible(true);
 		
-		while(true) {
+		while(w) {
 		userList.setListData(Socket.users);
 		}
 	}
@@ -116,6 +126,8 @@ setLayout(null);
 		else
 			JOptionPane.showMessageDialog(null, "Permission denied. you can't start the game.");
 			}
+		w = false;
+		dispose();
 		}
 }
 
@@ -123,8 +135,8 @@ setLayout(null);
 public class waiting {
 	
 	waiting(Client c,MultiFrame m) {
-		Socket s = new Socket(c);
-		
+		Socket s = new Socket(c,m.tetris);
+
 		Runnable r = new GUI(c,m);
 		Thread g = new Thread(r);
 		
