@@ -5,18 +5,18 @@ This source code writen by C++17.
 
 ## How to build and run
 
-### 'make'
+### `make`
 
 If you want to compile without additional configuration, use the 'make' command in 'Server' directory.
 
-### './Server'
+### `./Server`
 
 Use the './Server' command in 'Server' directory to run server program.
 
-### 'Ctrl+C'
+### `Ctrl+C`
 
 Use the 'Ctrl+C' to exit the program.
 
-### 'nohup ./Server &'
+### `nuhup ./Server &`
 
 Use nohup to run the server as a background program.
