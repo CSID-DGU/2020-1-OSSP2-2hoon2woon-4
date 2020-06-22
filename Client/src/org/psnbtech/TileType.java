@@ -252,7 +252,7 @@ public enum TileType {
 	/**
 	 * The dimensions of the array for this piece.
 	 */
-	private int dimension;
+	private int dimension=0;
 	
 	/**
 	 * The number of rows in this piece. (Only valid when rotation is 0 or 2,

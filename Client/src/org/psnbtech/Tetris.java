@@ -203,7 +203,7 @@ public class Tetris extends JFrame implements ActionListener{
 	
 	private int addTimer=1;
 	
-	
+	public int flag = 0;
 	private int gamer = 1; // chacha
 	
 	/** 2020-04-28 Seungun-Park
@@ -525,7 +525,7 @@ public class Tetris extends JFrame implements ActionListener{
 		setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
-
+		flag = 1;
 		/*
 		 * play music
 		 */
@@ -838,7 +838,8 @@ public class Tetris extends JFrame implements ActionListener{
 		rotationIndex = true;
 		reverseIndex = false;
 		
-		rank.rankup();
+		if(mode!=3)
+			rank.rankup();
 		
 		/*
 		 * Setup the timer to keep the game from running before the user presses enter

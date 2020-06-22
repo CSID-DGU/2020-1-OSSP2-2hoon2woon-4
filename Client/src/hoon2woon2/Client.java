@@ -33,7 +33,7 @@ public class Client {
 	private static String userid = "";
 	private int gamecount;
 	
-	public static Vector<String>users = new Vector<String>();
+	public static Vector<String>userList = new Vector<String>();
 	public static String[] ranking;
 	
 	Properties prop = new Properties();
@@ -210,5 +210,10 @@ public class Client {
 	
 	public void setGamerCount(int gamecount) {
 		this.gamecount = gamecount;
+	}
+	
+	public void setUserList(Vector <String> userList) {
+		for(int i = 0 ; userList.size()>i;i++)
+			this.userList.add(userList.elementAt(i));
 	}
 }

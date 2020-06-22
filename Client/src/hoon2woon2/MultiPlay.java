@@ -26,9 +26,10 @@ public class MultiPlay {
      * TODO comment
      */
     private static int gamerCount;
-    private BoardPanel[] gamersBoard = new BoardPanel[gamerCount];
-    private HashMap<String, Integer> userId2boardIndex;
-
+    private BoardPanel[] gamersBoard;
+    private HashMap <String,Boolean> status=new HashMap();  
+    private HashMap<String, Integer> userId2boardIndex=new HashMap();
+    
     private String receivedString;
 
     /**
@@ -36,19 +37,35 @@ public class MultiPlay {
      * TODO comment
      */
     MultiPlay(Client c){
-        this.client = c;	
+        this.client = c;
+        
         gamerCount = c.getGamerCount();
-      
+        System.out.println(gamerCount);
+        gamersBoard = new BoardPanel[gamerCount];
+        
+        for(int i=0;gamerCount>i;i++) {
+        	System.out.println(client.userList.elementAt(i));
+        }
+        
+//        Tetris [] tArr = tArr
+//        for(int i = 0;gamerCount>i;i++) {
+//        		tArr[i]=new Tetris(client,this);
+//        }
+        
         for(int i=0; i<gamerCount; i++){
             gamersBoard[i] = new BoardPanel(tetris);
-            userId2boardIndex.put(client.users.elementAt(i), i); //각 유저 아이디와 보드 index 연결하기 
+            userId2boardIndex.put(client.userList.elementAt(i), i); //각 유저 아이디와 보드 index 연결하기 
+            status.put(client.userList.elementAt(i),true);
+            gamersBoard[i].setMultiplay(this);
+            gamersBoard[i].setUserId(client.userList.elementAt(i));
         }
         
         this.tetris = new Tetris(client,this);
         this.tetris.setMultiPlay(this);
         // this.myBoard = new BoardPanel(tetris);
         this.tetris.setMode(3);
-    
+        start();
+        //TODO : 게임 시작
     }
 
     /**
@@ -56,10 +73,9 @@ public class MultiPlay {
      * TODO comment
      */
     void start(){
-
         for(int i=0; i<gamerCount; i++){
             gamersBoard[i] = new BoardPanel(tetris);
-            userId2boardIndex.put(client.users.elementAt(i), i); //각 유저 아이디와 보드 index 연결하기 
+            userId2boardIndex.put(client.userList.elementAt(i), i); //각 유저 아이디와 보드 index 연결하기 
         }
  
         this.tetris.startGame();
@@ -191,6 +207,10 @@ public class MultiPlay {
         while(true){
             client.send(message);
         }
+    }
+    
+    public HashMap getStatus() {
+    	return status;
     }
 
 }

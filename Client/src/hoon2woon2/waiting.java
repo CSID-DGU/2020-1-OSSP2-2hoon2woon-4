@@ -28,6 +28,7 @@ class Socket extends Thread{
 		while(true) {
 			c.send(sendMessage);
 			receivedMessage = c.receive();
+			receivedMessage = receivedMessage.replaceAll("\0", "");
 			
 			if(receivedMessage.equals("success")) {
 				sendMessage = "ready";
@@ -42,6 +43,8 @@ class Socket extends Thread{
 			}
 			
 			else if(receivedMessage.equals("start")) {
+				c.setGamerCount(users.size());
+				c.setUserList(users);
 				MultiPlay m = new MultiPlay(c);
 				break;
 			}
