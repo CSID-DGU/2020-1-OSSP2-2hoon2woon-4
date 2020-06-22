@@ -1,5 +1,5 @@
 This source code writen by C++17.
-It is recommended to compile with g++ on Linux systems.
+ It is recommended to compile with g++ on Linux systems.
 
 
 
