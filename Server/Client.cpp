@@ -55,6 +55,7 @@ Client::Client(int _fd, struct sockaddr_in _addr, Server& _server)
  * */
 Client::~Client()
 {
+	exit();
 	mysql_close(sqlconnection);
 	close(client_fd);
 }
@@ -75,16 +76,23 @@ void Client::run()
 		std::fill(buf, buf + BUF_LEN, '\0');
 		readLen = read(client_fd, buf, BUF_LEN);
 		fprintf(log, "%s\n", buf);
+		
 		if(readLen < 1) break;
+
+		if(strcmp("ready", buf) == 0) ready();
+		else{
+		printf("%s\n", buf);
+		}
+
 		if(strcmp("login", buf) == 0) login();
+		else if(strcmp("logout", buf) == 0) logout();
 		else if(strcmp("register", buf) == 0) regist();
 		else if(strcmp("rank", buf) == 0) rank();
 		else if(strcmp("rankupdate", buf) == 0) rankupdate();
-		else if(strcmp("join", buf) == 0)
+		else if(strcmp("enterroom", buf) == 0)
 		{
 			if(room)
 				exit();
-
 			server.join(*this, client_fd, userid);
 
 		}
@@ -92,11 +100,14 @@ void Client::run()
 		{
 			if(room)
 				exit();
-			server.createRoom(*this, client_fd, userid);
+			server.createRoom(client_fd, *this, userid);
 		}
 		else if(strcmp("exit", buf) == 0) exit();
-		else if(strcmp("game start", buf) == 0) gamestart();
+		else if(strcmp("gamestart", buf) == 0) gamestart();
 		else if(strcmp("game", buf) == 0) game();
+		else if(strcmp("getroominfo", buf) == 0) server.getroominfo(client_fd);
+		else if(strcmp("game", buf) == 0) game();
+		//else write(client_fd, buf, BUF_LEN);
 	}
 	
 	//save log file
@@ -105,11 +116,17 @@ void Client::run()
 	runnable = false;
 }
 
+bool Client::logout()
+{
+	exit();
+	write(client_fd, "success", 7);
+}
+
 bool Client::exit()
 {
 	if(!room)
 	{
-		write(client_fd, "exit failed", 11);
+		write(client_fd, "fail", 4);
 		return false;
 	}
 	for(int i = 0; i < 4; i++)
@@ -128,8 +145,8 @@ bool Client::exit()
 	}
 	(room->number)--;
 	server.exit();
-
 	room.reset();
+	write(client_fd, "success", 7);
 	return true;
 }
 
@@ -150,7 +167,6 @@ char* Client::ip()
  * */
 bool Client::login()
 {
-	printf("login\n");
 	//receive id
 	std::fill(buf, buf + BUF_LEN, '\0');
 	readLen = read(client_fd, buf, BUF_LEN);
@@ -191,13 +207,13 @@ bool Client::login()
 			if(strcmp(pw.c_str(), sql_row[2]) == 0)
 			{
 				write(client_fd, "login success", 13);
-				fprintf(log, "login : %s\n", sql_row[1]);
+				fprintf(log, "login : %s\n", userid.c_str());
 				return true;
 			}
 			else
 			{
 				write(client_fd, "wrong password", 14);
-				fprintf(log, "login failed : %s\n", sql_row[1]);
+				fprintf(log, "login failed : %s\n", userid.c_str());
 				return false;
 			}
 		}
@@ -325,24 +341,64 @@ bool Client::rankupdate()
 
 void Client::game()
 {
-	while(1)
-	{
-		read(client_fd, buf, BUF_LEN);
-		for(int i = 0; i < (*room).getNumber(); i++)
+	if(room->game)
+	{	
+		write(client_fd, "start", 5);
+		while(1)
 		{
-			if((*room).clients[i] != client_fd)
-				write((*room).clients[i], buf, BUF_LEN);
+			read(client_fd, buf, BUF_LEN);
+			for(int i = 0; i < (*room).getNumber(); i++)
+			{
+				if((*room).clients[i] != client_fd)
+					write((*room).clients[i], buf, BUF_LEN);
+			}
 		}
+	}
+	else
+	{
+		write(client_fd, "fail", 4);
 	}
 }
 
-void Client::gamestart()
+bool Client::gamestart()
 {
 	if(room->clients[0] == client_fd)
 	{
-		for(int i = 0; i < room->number; i++)
+		room->game = true;
+		write(client_fd, "success", 7);
+		return true;
+	}
+	else
+	{
+		write(client_fd, "fail", 4);
+		return false;
+	}
+}
+
+bool Client::ready()
+{
+	if(room)
+	{
+		if(room->game)
 		{
-			write(room->clients[i], "gamestart", 9);
+			write(client_fd, "gamestart", 9);
 		}
+		else
+		{
+			char buf[256];
+			std::fill(buf, buf + 256, '\0');
+			for(int i = 0; i < room->getNumber(); i++)
+			{
+				strcat(buf, room->names[i].c_str());
+				strcat(buf, ",");
+			}
+			write(client_fd, buf, 256);
+		}
+		return true;
+	}
+	else
+	{
+		write(client_fd, "notinroom", 9);
+		return false;
 	}
 }

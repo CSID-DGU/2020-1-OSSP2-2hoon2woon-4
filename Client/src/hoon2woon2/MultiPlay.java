@@ -25,7 +25,7 @@ public class MultiPlay {
      * gowoon-choi
      * TODO comment
      */
-    private int gamerCount;
+    private static int gamerCount;
     private BoardPanel[] gamersBoard = new BoardPanel[gamerCount];
     private HashMap<String, Integer> userId2boardIndex;
 
@@ -36,11 +36,19 @@ public class MultiPlay {
      * TODO comment
      */
     MultiPlay(Client c){
-        this.client = c;
-        this.tetris = new Tetris(client);
-        this.myBoard = new BoardPanel(tetris);
-        this.tetris.setMode(3);
+        this.client = c;	
+        gamerCount = c.getGamerCount();
+      
+        for(int i=0; i<gamerCount; i++){
+            gamersBoard[i] = new BoardPanel(tetris);
+            userId2boardIndex.put(client.users.elementAt(i), i); //각 유저 아이디와 보드 index 연결하기 
+        }
+        
+        this.tetris = new Tetris(client,this);
         this.tetris.setMultiPlay(this);
+        // this.myBoard = new BoardPanel(tetris);
+        this.tetris.setMode(3);
+    
     }
 
     /**
@@ -48,14 +56,12 @@ public class MultiPlay {
      * TODO comment
      */
     void start(){
-        // TODO gamerCount 할당
 
         for(int i=0; i<gamerCount; i++){
             gamersBoard[i] = new BoardPanel(tetris);
+            userId2boardIndex.put(client.users.elementAt(i), i); //각 유저 아이디와 보드 index 연결하기 
         }
-
-        // TODO 각 유저 아이디와 보드 index 연결하기 > userId2boardIndex
-
+ 
         this.tetris.startGame();
         String delimiter = "\\:";
         String[] datas;
@@ -165,6 +171,16 @@ public class MultiPlay {
         return randomNum;
     }
 
+    
+    public int getGamerCount() {
+    	return this.gamerCount;
+    }
+    
+    public BoardPanel getBoard(int ind) {
+	return this.gamersBoard[ind];
+    }
+
+
     public void finishGame(){
         String message = "finish Game";
         client.send(message);
@@ -176,6 +192,5 @@ public class MultiPlay {
             client.send(message);
         }
     }
-
 
 }
