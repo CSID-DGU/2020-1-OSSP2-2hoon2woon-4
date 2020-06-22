@@ -16,9 +16,11 @@ This files should be in the root directory of your Client project.
 'server.properties' has the server address and port number. If you will use local server, server address is 'localhost'.
 
 The file has the following format.
+
 ---------------------------------
 ip='your server's ip address'
 port='your server's port number'
+
 ---------------------------------
 
 
