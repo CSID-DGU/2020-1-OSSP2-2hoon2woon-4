@@ -371,7 +371,7 @@ public class BoardPanel extends JPanel {
 				String msg = tetris.isNewGame() ? "TETRIS" : "GAME OVER";
 				if(tetris.getMode()==2)
 				{
-					if(tetris.isGameOver()) itemManager.clear();
+					//if(tetris.isGameOver()) itemManager.clear();
 				}
 				g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
 				g.setFont(SMALL_FONT);
@@ -458,7 +458,6 @@ public class BoardPanel extends JPanel {
 				itemManager = tetris.getItemManager();
 				for(int i=0; i<itemManager.getItems().size(); i++){
 					drawItem(itemManager.getItems().get(i).getX()*TILE_SIZE + TILE_SIZE/4,(itemManager.getItems().get(i).getY()-HIDDEN_ROW_COUNT)*TILE_SIZE + TILE_SIZE/2,itemManager.getItems().get(i).getItemIndex(),g);
-
 				}
 			}
 
