@@ -47,7 +47,7 @@ public class ItemManager {
     public Point itemLocation(){
         Point location = new Point();
         Vector<Point> list = new Vector<>();
-        for(int row = 0; row < board.VISIBLE_ROW_COUNT; row++){
+        for(int row = 0; row < board.ROW_COUNT; row++){
             for(int col = 0; col < board.COL_COUNT; col++){
                 if(board.getTile(col, row)!= null && board.getTile(col, row) != TileType.UnTypeX){
                     for(int i=0; i<items.size(); i++){
@@ -58,7 +58,7 @@ public class ItemManager {
             }
         }
         Random random = new Random();
-        int randomIndex = random.nextInt(list.size()-1);
+        int randomIndex = random.nextInt(list.size());
         location.x = list.get(randomIndex).x;
         location.y = list.get(randomIndex).y;
         return location;
