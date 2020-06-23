@@ -893,7 +893,7 @@ public class Tetris extends JFrame implements ActionListener{
 			 * writer : gowoon-choi
 			 * The code for item mode in startGame
 			 */
-			if(mode == 1){
+			if(mode == 2){
 				if(!rotationIndex){
 					if(System.currentTimeMillis() - rotaionTimer >= TIME_LIMIT*1000){
 						rotationIndex = true;
@@ -1006,7 +1006,7 @@ public class Tetris extends JFrame implements ActionListener{
 				 * writer: choi gowoon
 				 * item action
 				 */
-			case 1:
+			case 2:
 				itemManager.generateItem();
 				itemManager.manageBadItem();
 
@@ -1018,7 +1018,7 @@ public class Tetris extends JFrame implements ActionListener{
 			 * fixed by cha seung hoon on 2020.05.19
 			 * because of adding interrupt block
 			 */
-			case 2:
+			case 1:
 				if(cleared>0)
 					makeInterrupt();
 				break;
@@ -1429,13 +1429,13 @@ public class Tetris extends JFrame implements ActionListener{
 			isPaused = false;
 			isGameOver = true;
 			isNewGame = true;
-			mode = 2;
+			mode = 1;
 		}
 		if(event.getSource() == item_item) {
 			isPaused = false;
 			isGameOver = true;
 			isNewGame = true;
-			mode = 1;
+			mode = 2;
 		}
 		if(event.getSource()==item_register) { 	// cha seung hoon 2020.06.10 Register Frame
 				if(!isGameOver && !isNewGame) {
@@ -1454,13 +1454,13 @@ public class Tetris extends JFrame implements ActionListener{
 			isPaused = false;
 			isGameOver = true;
 			isNewGame = true;
-			mode = 2;
+			mode = 1;
 		}
 		if(event.getSource() == item_item) {
 			isPaused = false;
 			isGameOver = true;
 			isNewGame = true;
-			mode = 1;
+			mode = 2;
 		}
 		if(event.getSource()==item_multi) {
 			if(client.isLogined()) {
