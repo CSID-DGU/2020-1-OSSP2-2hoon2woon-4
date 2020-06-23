@@ -113,7 +113,7 @@ class GUI extends JFrame implements Runnable,ActionListener{
 		setVisible(true);
 		
 		while(w) {
-		userList.setListData(Socket.users);
+			userList.setListData(Socket.users);
 		}
 	}
 	
