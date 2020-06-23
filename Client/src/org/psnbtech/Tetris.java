@@ -91,13 +91,13 @@ public class Tetris extends JFrame implements ActionListener{
 	/**
 	 * The BoardPanel instance.
 	 */
-	private BoardPanel board;
+	public static BoardPanel board;
 	
 	
 	/**
 	 * The SidePanel instance.
 	 */
-	private SidePanel side;
+	public static SidePanel side;
 	
 	/**
 	 * The RankPanel instance.
@@ -813,7 +813,7 @@ public class Tetris extends JFrame implements ActionListener{
 		setVisible(true);
 		board.setVisible(true);
 	}
-	
+
 	/**
 	 * writer : github.com/choi-gowoon
 	 * hold function
@@ -1040,15 +1040,15 @@ public class Tetris extends JFrame implements ActionListener{
         board.setPieceRow(getPieceRow());
         board.setRotation(getPieceRotation());
 		if(gamerCount == 1) {
-		d_now = getSize();
-		board.resize((d_now.getHeight() / d_start.getHeight()) < (d_now.getWidth() / d_start.getWidth()) ? (d_now.getHeight()/ d_start.getHeight()) : (d_now.getWidth() / d_start.getWidth()));
-		int left = (d_now.width - board.getWidth()) / 2;
-		int top = ((d_now.height - 67) - board.getHeight()) / 2;
-		board.setBounds(left,top,board.getWidth(), board.getHeight());
-		board.repaint();
-		side.setBounds(left + board.getWidth(), top, side.getWidth(), side.getHeight());
-		side.repaint();
-		rank.repaint();
+			d_now = getSize();
+			board.resize((d_now.getHeight() / d_start.getHeight()) < (d_now.getWidth() / d_start.getWidth()) ? (d_now.getHeight()/ d_start.getHeight()) : (d_now.getWidth() / d_start.getWidth()));
+			int left = (d_now.width - board.getWidth()) / 2;
+			int top = ((d_now.height - 67) - board.getHeight()) / 2;
+			board.setBounds(left,top,board.getWidth(), board.getHeight());
+			board.repaint();
+			side.setBounds(left + board.getWidth(), top, side.getWidth(), side.getHeight());
+			side.repaint();
+			rank.repaint();
 		}
 		else{
 		    board.setType(getPieceType());
@@ -1056,7 +1056,7 @@ public class Tetris extends JFrame implements ActionListener{
 		    board.setPieceRow(getPieceRow());
 		    board.setRotation(getPieceRotation());
             board.repaint();
-            for(int i=1; i<multiPlay.getGamerCount(); i++){
+            for(int i=1; i<boards.length; i++){
                 boards[i].repaint();
             }
         }
@@ -1069,7 +1069,6 @@ public class Tetris extends JFrame implements ActionListener{
 //			board.repaint();
 //		}
 	}
-
 	
 	/**
 	 * Resets the game variables to their default values at the start
@@ -1143,6 +1142,7 @@ public class Tetris extends JFrame implements ActionListener{
 				rank.rankup(score);
 			}
 			this.isGameOver = true;
+			this.multiPlay.setStatus(client.getUserid());
 			logicTimer.setPaused(true);
 			player.play_music("gameover.wav");
 			if(mode == 3){
@@ -1355,13 +1355,10 @@ public class Tetris extends JFrame implements ActionListener{
 		return this.gamerCount;
 	}
 	
-	public BoardPanel getBoardPanel() {
-		return this.board;
+	public void setGamerCount(int a) {
+		this.gamerCount = a;
 	}
 	
-	public SidePanel getSidePanel() {
-		return this.side;
-	}
 	public void makeInterrupt() {
 		int randCol;
 		int randRow;

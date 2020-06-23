@@ -1,8 +1,9 @@
 package hoon2woon2;
 
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -21,7 +22,6 @@ class Socket extends Thread{
 	static String sendMessage="ready";
 	static boolean master = false;
 	static Vector<String> users = new Vector<String>();
-
 	
 	Socket(Client c,Tetris t) {
 		super("Socket");
@@ -85,7 +85,7 @@ class GUI extends JFrame implements Runnable,ActionListener{
 	static Client client;
 	MultiFrame multi;
 	boolean w = true;
-
+	WindowListener wListener;
 	GUI(Client c,MultiFrame m) {
 		
 		super("Waiting Room");
@@ -108,7 +108,7 @@ class GUI extends JFrame implements Runnable,ActionListener{
 		add(userList);
 		add(btn_gameStart);
 		add(la_name);
-		
+		addWindowListener(new WinEvent());
 		setSize(300,300);
 		setVisible(true);
 		
@@ -129,8 +129,48 @@ class GUI extends JFrame implements Runnable,ActionListener{
 		w = false;
 		dispose();
 		}
+
 }
 
+class WinEvent implements WindowListener{
+	public void windowActivated(WindowEvent e) {}
+	
+	public void windowClosing(WindowEvent e) {
+		Socket.sendMessage="exit";
+		System.out.println("exit");
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		Socket.sendMessage="exit";
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
 
 public class waiting {
 	
