@@ -93,7 +93,7 @@ public class MultiPlay {
         
         this.tetris.side.setLocation(x+10,0);
 		this.tetris.add(this.tetris.side);
-        
+		System.out.println(this.tetris.side.getLocation());
       this.tetris.repaint();
       this.tetris.setMultiPlay(this);
         // this.myBoard = new BoardPanel(tetris);
