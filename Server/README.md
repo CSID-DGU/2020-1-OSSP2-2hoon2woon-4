@@ -17,7 +17,7 @@ Use the './Server' command in 'Server' directory to run server program.
 
 Use the 'Ctrl+C' to exit the program.
 
-### `nuhup ./Server &`
+### `nohup ./Server &`
 
 Use nohup to run the server as a background program.
 
